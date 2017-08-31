@@ -3,8 +3,9 @@ from torch import nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 from preprocess import load_training_data
-from utils import idx_words, text2seq, idx_tags, tags2idx, load_embeddings
-from config import EMBEDDING_FILE, EMBEDDING_DIMS
+from src.utils import idx_words, text2seq, idx_tags, tags2idx, load_embeddings
+from src.config import EMBEDDING_FILE, EMBEDDING_DIMS
+import numpy as np
 import sys
 
 torch.manual_seed(1)
@@ -29,19 +30,15 @@ class BiLSTM(nn.Module):
         self.embeddings = nn.Embedding(self.vocab_size, self.emb_dims)
         self.lstm = nn.LSTM(self.emb_dims, hidden_dims)
         self.hidden2tag = nn.Linear(hidden_dims, 1)
-        self.hidden = self.init_hidden()
 
-        # Set weights
+        # Initialize weights
         self.embeddings.weight = nn.Parameter(torch.from_numpy(self.embedding_matrix).float(),
                                               requires_grad=True)      # Don't update weights of embeddings
+        self.hidden = self.init_hidden()
 
-    def init_hidden(self):
-        # Before we've done anything, we dont have any hidden state.
-        # Refer to the Pytorch documentation to see exactly
-        # why they have this dimensionality.
-        # The axes semantics are (num_layers, minibatch_size, hidden_dim)
-        return (Variable(torch.zeros(1, 1, self.hidden_dims)),
-                Variable(torch.zeros(1, 1, self.hidden_dims)))
+    def xavier_initialization(self):
+        return (Variable(torch.random.randn(1, 1, self.hidden_dims) * np.sqrt(2/self.hidden_dims)),
+                Variable(torch.random.randn(1, 1, self.hidden_dims) * np.sqrt(2/self.hidden_dims)))
 
     def forward(self, sentence):
         embeds = self.embeddings(sentence)
