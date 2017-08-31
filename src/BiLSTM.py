@@ -59,7 +59,7 @@ if __name__ == "__main__":
     cli_parser.add_argument("--annotation-dir", type=str, help="Directory with ann files in BRAT standoff format")
     args = cli_parser.parse_args()
 
-    data = load_training_data()
+    data = load_training_data(args["text-dir"], args["annotation-dir"])
     training_data = data[:10]
     word2idx = idx_words(training_data)
     tag2idx = idx_tags(training_data)
