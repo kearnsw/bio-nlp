@@ -1,11 +1,11 @@
 import torch
 from torch import nn
-import torch.nn.functional as F
+import torch.nn.functional as func
 from torch.autograd import Variable
-from preprocess import load_training_data
-from utils import idx_words, text2seq, idx_tags, tags2idx, load_embeddings
-from config import EMBEDDING_FILE, EMBEDDING_DIMS
+from src.preprocess import load_training_data
+from src.utils import idx_words, text2seq, idx_tags, tags2idx, load_embeddings
 import sys
+from argparse import ArgumentParser
 
 torch.manual_seed(1)
 
@@ -19,7 +19,7 @@ class BiLSTM(nn.Module):
 
     def __init__(self, tag2idx, hidden_dims):
         super().__init__()
-        self.embedding_matrix, self.word2idx = load_embeddings(EMBEDDING_FILE, EMBEDDING_DIMS)
+        self.embedding_matrix, self.word2idx = load_embeddings(cli_parser.embedding, cli_parser.emb_dim)
         self.vocab_size = len(word2idx) + 1             # Plus one to include <UNK>
         self.emb_dims = self.embedding_matrix.shape[1]
         self.num_tags = len(tag2idx)
@@ -52,9 +52,15 @@ class BiLSTM(nn.Module):
 
 
 if __name__ == "__main__":
+    cli_parser = ArgumentParser()
+    cli_parser.add_argument("-e", "--embedding", type=str, help="Path to the binary embedding file")
+    cli_parser.add_argument("-d", "--emb_dim", type=int, help="Embedding dimensions")
+    cli_parser.add_argument("--text-dir", type=str, help="Directory with raw text files")
+    cli_parser.add_argument("--annotation-dir", type=str, help="Directory with ann files in BRAT standoff format")
+    args = cli_parser.parse_args()
 
     data = load_training_data()
-    training_data = data[:100]
+    training_data = data[:10]
     word2idx = idx_words(training_data)
     tag2idx = idx_tags(training_data)
     model = BiLSTM(tag2idx, 64)
