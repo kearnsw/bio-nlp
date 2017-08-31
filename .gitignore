@@ -1,0 +1,5 @@
+data
+vectors
+models
+*.pyc
+__pycache__

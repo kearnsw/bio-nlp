@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import re
-from src.LinkedList import LinkedList
+from .LinkedList import LinkedList
 
 punctuation = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', '.', ':', ';',
                '=', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~', '/', '.', ',']

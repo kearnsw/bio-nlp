@@ -2,8 +2,8 @@ import torch
 from torch import nn
 import torch.nn.functional as func
 from torch.autograd import Variable
-from src.preprocess import load_training_data
-from src.utils import idx_words, text2seq, idx_tags, tags2idx, load_embeddings, to_one_hot
+from .preprocess import load_training_data
+from .utils import idx_words, text2seq, idx_tags, tags2idx, load_embeddings, to_one_hot
 import numpy as np
 import sys
 from argparse import ArgumentParser
