@@ -34,7 +34,7 @@ class BiLSTM(nn.Module):
         # Initialize weights
         self.embeddings.weight = nn.Parameter(torch.from_numpy(self.embedding_matrix).float(),
                                               requires_grad=True)      # Don't update weights of embeddings
-        self.hidden = self.init_hidden()
+        self.hidden = self.xavier_initialization()
 
     def xavier_initialization(self):
         return (Variable(torch.random.randn(1, 1, self.hidden_dims) * np.sqrt(2/self.hidden_dims)),
