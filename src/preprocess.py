@@ -1,8 +1,7 @@
-from config import DATA_DIR
 import pandas as pd
 import os
 import re
-from LinkedList import LinkedList
+from src.LinkedList import LinkedList
 
 punctuation = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', '.', ':', ';',
                '=', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~', '/', '.', ',']
@@ -11,12 +10,10 @@ punctuation = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', '.', ':', 
 def strip_punctuation(s):
     for c in punctuation:
         s = s.replace(c, " ")
-    return str(s)
+    return s
 
 
-def load_training_data():
-    text_dir = os.sep.join([DATA_DIR, "text", ""])
-    ann_dir = os.sep.join([DATA_DIR, "original", ""])
+def load_training_data(text_dir, ann_dir):
 
     parser = BratParser()
     text = {}
@@ -122,8 +119,9 @@ class BratParser:
 
 
 if __name__ == "__main__":
-    text_dir = os.sep.join([DATA_DIR, "text", ""])
-    ann_dir = os.sep.join([DATA_DIR, "original", ""])
+
+    text_dir = os.sep.join([args["dir"], "text", ""])
+    ann_dir = os.sep.join([args["dir"], "original", ""])
 
     parser = BratParser()
     text = {}

@@ -6,10 +6,11 @@ Utilities for NN models using Pytorch
 
 import torch
 from torch import autograd
-from config import START_TAG, STOP_TAG, EMBEDDING_FILE
 import numpy as np
 from gensim.models.keyedvectors import KeyedVectors
-import seaborn as sb
+
+START_TAG = "<s>"
+STOP_TAG = "</s>"
 
 def idx_words(text):
     word2idx = {}
@@ -65,9 +66,15 @@ def generate_emb_matrix(word2vec, dims):
 def load_embeddings(filename, dims):
     return generate_emb_matrix(load_emb(filename), dims)
 
+
+def to_one_hot(idx, shape):
+    one_hot = np.zeros(shape)
+    one_hot[idx] = 1
+    return one_hot
+
 if __name__ == "__main__":
 
-    emb_matrix, word2idx = generate_emb_matrix(load_emb(EMBEDDING_FILE), 200)
+    emb_matrix, word2idx = generate_emb_matrix(load_emb("../vectors/PubMed-shuffle-win-30.bin"), 200)
 
     nausea = emb_matrix[word2idx["nausea"]]
     vomitting = emb_matrix[word2idx["vomitting"]]
