@@ -14,33 +14,40 @@ STOP_TAG = "</s>"
 
 def idx_words(text):
     word2idx = {}
-    for sentence, _ in text:
+    for sentence in text:
         for word in sentence:
             if word not in word2idx:
                 word2idx[word] = len(word2idx)
     return word2idx
 
 
-def text2seq(sentence, word2idx):
+def text2seq(sentence, word2idx, pytorch=False):
     sequence = np.zeros(len(sentence), dtype=int)   #LongTensor requires dtype int, e.g. breaks with np.int8
     for i, word in enumerate(sentence):
         if word in word2idx:
             sequence[i] = word2idx[word]
-            print(sequence[i])
         else:
             sequence[i] = len(word2idx) + 1
-    tensor = torch.LongTensor(sequence)
-    return autograd.Variable(tensor)
+
+    if pytorch:
+        tensor = torch.LongTensor(sequence)
+        return autograd.Variable(tensor)
+    else:
+        return sequence
 
 
-def tags2idx(seq, tag2idx):
-    tensor = torch.LongTensor([tag2idx[t] for t in seq])
-    return autograd.Variable(tensor)
+def tags2idx(seq, tag2idx, pytorch=False):
+    seq = [tag2idx[t] for t in seq]
+    if pytorch:
+        tensor = torch.LongTensor(seq)
+        return autograd.Variable(tensor)
+    else:
+        return np.array(seq)
 
 
-def idx_tags(data):
+def idx_tags(tags):
     tag2idx = {START_TAG: 0, STOP_TAG: 1}
-    for _, seq in data:
+    for seq in tags:
         for tag in seq:
             if tag not in tag2idx:
                 tag2idx[tag] = len(tag2idx)
@@ -71,6 +78,15 @@ def to_one_hot(idx, shape):
     one_hot = np.zeros(shape)
     one_hot[idx] = 1
     return one_hot
+
+def seq_to_one_hot(array, shape):
+    one_hot = np.zeros(shape)
+    for idx, value in enumerate(array):
+        if not value:
+            return np.array([])
+        one_hot[idx][value] = 1
+    return one_hot
+
 
 if __name__ == "__main__":
 

@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import re
-from .LinkedList import LinkedList
+from LinkedList import LinkedList
 
 punctuation = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', '.', ':', ';',
                '=', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~', '/', '.', ',']
@@ -24,13 +24,15 @@ def load_training_data(text_dir, ann_dir):
         bio[filename.replace(".txt", "")] = parser.parse_to_bio(txt_path, ann_path)
         text[filename.replace(".txt", "")] = parser.text
 
-    data = []
+    docs = []
+    labels = []
     for idx, fn in enumerate(bio):
         raw_text = strip_punctuation(text[fn]).split()
         bio_seq = bio[fn]
-        data.append((raw_text, bio_seq))
+        docs.append(raw_text)
+        labels.append(bio_seq)
 
-    return data
+    return docs, labels
 
 
 class BratParser:

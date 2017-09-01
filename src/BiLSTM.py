@@ -2,8 +2,8 @@ import torch
 from torch import nn
 import torch.nn.functional as func
 from torch.autograd import Variable
-from .preprocess import load_training_data
-from .utils import idx_words, text2seq, idx_tags, tags2idx, load_embeddings, to_one_hot
+from preprocess import load_training_data
+from utils import idx_words, text2seq, idx_tags, tags2idx, load_embeddings, to_one_hot
 import numpy as np
 import sys
 from argparse import ArgumentParser
@@ -11,18 +11,13 @@ from argparse import ArgumentParser
 torch.manual_seed(1)
 
 
-def argmax(vec):
-    # return the argmax as a python int
-    _, idx = torch.max(vec, 1)
-    return idx.view(-1).data.tolist()[0]
-
-
 class BiLSTM(nn.Module):
 
     def __init__(self, tag2idx, hidden_dims):
         super().__init__()
         self.embedding_matrix, self.word2idx = load_embeddings(args.embedding, args.emb_dim)
-        self.vocab_size = len(word2idx) + 1             # Plus one to include <UNK>
+        self.tag2idx = tags2idx
+        self.vocab_size = len(self.word2idx) + 1             # Plus one to include <UNK>
         self.emb_dims = self.embedding_matrix.shape[1]
         self.num_tags = len(tag2idx)
         self.hidden_dims = hidden_dims
@@ -58,28 +53,35 @@ if __name__ == "__main__":
     cli_parser.add_argument("--ann", type=str, help="Directory with ann files in BRAT standoff format")
     args = cli_parser.parse_args()
 
-    data = load_training_data(args.text, args.ann)
-    training_data = data[:10]
-    word2idx = idx_words(training_data)
-    tag2idx = idx_tags(training_data)
-    model = BiLSTM(tag2idx, 64)
+    # Load training data and split into training and dev
+    docs, labels = load_training_data(args.text, args.ann)
+    split_idx = 10
+    x_train = docs[:split_idx]
+    y_train = labels[:split_idx]
+    x_dev = docs[split_idx:]
+    y_dev = docs[split_idx:]
 
+    # Create the model
+    tag2idx = idx_tags(y_train)
+    model = BiLSTM(tag2idx, 64)
     loss_func = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=0.1,
                                  weight_decay=0.001)
 
+    # Convert data into sequence using indices from embeddings
+    x_train = [text2seq(sentence, model.word2idx, pytorch=True) for sentence in x_train]
+    y_train = [tags2idx(tag_seq, model.tag2idx, pytorch=True) for tag_seq in y_train]
+
+    # Train
     for epoch in range(20):
         sys.stdout.write("Epoch {0}...\n".format(epoch))
         sys.stdout.flush()
 
-        for sentence, tags in training_data:
+        for sentence, labels in zip(x_train, y_train):
             model.zero_grad()
-
-            idx_seq = text2seq(sentence, word2idx)
-
-            true_tags = Variable(torch.LongTensor([to_one_hot(tag2idx[t], model.num_tags) for t in tags]))
-            pred_tags = model(idx_seq)
+            true_tags = Variable(torch.LongTensor(labels))
+            pred_tags = model(sentence)
             print(true_tags)
             print(pred_tags)
             loss = loss_func(pred_tags, true_tags)
@@ -88,10 +90,3 @@ if __name__ == "__main__":
 
     torch.save(model, "model.pkl")
     torch.save(model.state_dict(), "state.pkl")
-    prediction = model(text2seq(data[200][0], word2idx))
-    truth = tags2idx(data[200][1], tag2idx)
-    print(truth.size())
-    truth = truth.resize(1, truth.size()[0])
-    print(truth)
-    print(prediction)
-    print(tag2idx)
