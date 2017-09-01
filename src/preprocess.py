@@ -29,6 +29,10 @@ def load_training_data(text_dir, ann_dir):
     for idx, fn in enumerate(bio):
         raw_text = strip_punctuation(text[fn]).split()
         bio_seq = bio[fn]
+
+        # Don't include files with no text (why are these even in the data set??)
+        if not raw_text:
+            continue
         docs.append(raw_text)
         labels.append(bio_seq)
 
@@ -145,3 +149,33 @@ if __name__ == "__main__":
 
         training_data = zip(raw_text, bio_seq)
 
+"""
+    if "indexed_data.pkl" not in os.listdir("."):
+        # Load training data and split into training and dev
+        docs, labels = load_training_data(args.text, args.ann)
+        split_idx = 10
+        x_train = docs[:split_idx]
+        y_train = labels[:split_idx]
+        x_dev = docs[split_idx:]
+        y_dev = docs[split_idx:]
+
+        # Load the word vectors and index the vocabulary of the embeddings and annotation tags
+        embeddings, word2idx = load_embeddings(args.embedding, args.emb_dim)
+        tag2idx = idx_tags(y_train)
+
+        # Convert data into sequence using indices from embeddings
+        x_train = [text2seq(sentence, word2idx, pytorch=True) for sentence in x_train]
+        y_train = [tags2idx(tag_seq, tag2idx, pytorch=True) for tag_seq in y_train]
+
+        with open("indexed_data.pkl", "wb") as f:
+            pkl.dump({"x": x_train, "y": y_train, "embeddings": embeddings, "word2idx": word2idx, "tag2idx": tag2idx}, f)
+
+    else:
+        with open("indexed_data.pkl", "rb") as f:
+            data = pkl.load(f)
+            embeddings = data["embeddings"]
+            word2idx = data["word2idx"]
+            tag2idx = data["tag2idx"]
+            x_train = data["x"]
+            y_train = data["y"]
+"""

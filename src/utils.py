@@ -8,6 +8,7 @@ import torch
 from torch import autograd
 import numpy as np
 from gensim.models.keyedvectors import KeyedVectors
+from tqdm import *
 
 START_TAG = "<s>"
 STOP_TAG = "</s>"
@@ -27,7 +28,7 @@ def text2seq(sentence, word2idx, pytorch=False):
         if word in word2idx:
             sequence[i] = word2idx[word]
         else:
-            sequence[i] = len(word2idx) + 1
+            sequence[i] = len(word2idx)
 
     if pytorch:
         tensor = torch.LongTensor(sequence)
@@ -55,15 +56,38 @@ def idx_tags(tags):
 
 
 def load_emb(filename):
-    return KeyedVectors.load_word2vec_format(filename, binary=True)
+    if ".bin" in filename:
+        return KeyedVectors.load_word2vec_format(filename, binary=True, limit=100)
+
+    elif ".txt" in filename:
+        word2vec = {}
+        print("Loading Word Embeddings...")
+        with open(filename, "r") as f:
+            lines = f.read().split("\n")
+            for line in tqdm(lines):
+                if line:
+                    cols = line.split()
+                    word = cols[0]
+                    embedding = np.array(cols[1:], dtype=np.float)
+                    word2vec[word] = embedding
+        return word2vec
 
 
 def generate_emb_matrix(word2vec, dims):
     word2idx = {}
-    embedding_matrix = np.zeros((len(word2vec.vocab) + 1, dims))
-    for idx, word in enumerate(word2vec.vocab):
-        embedding_matrix[idx] = word2vec.word_vec(word)
-        word2idx[word] = idx
+    print("Initializing Embedding Matrix...")
+
+    if type(word2vec) == dict:
+        embedding_matrix = np.zeros((len(word2vec) + 1, dims))
+        for idx, word in enumerate(tqdm(word2vec)):
+            embedding_matrix[idx] = word2vec[word]
+            word2idx[word] = idx
+
+    else:
+        embedding_matrix = np.zeros((len(word2vec.vocab) + 1, dims))
+        for idx, word in enumerate(tqdm(word2vec.vocab)):
+            embedding_matrix[idx] = word2vec.word_vec(word)
+            word2idx[word] = idx
 
     embedding_matrix[-1] = np.random.rand(1, dims)          # Add vector for <UNK>
 
@@ -100,3 +124,5 @@ if __name__ == "__main__":
     print(np.dot(nausea, vomitting.T))
     print(np.dot(nausea, diabetes.T))
     print(np.dot(nausea, the.T))
+
+
