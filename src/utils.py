@@ -28,6 +28,7 @@ def text2seq(sentence, word2idx, pytorch=False):
         if word in word2idx:
             sequence[i] = word2idx[word]
         else:
+            print(word)
             sequence[i] = len(word2idx)
 
     if pytorch:
@@ -103,6 +104,7 @@ def to_one_hot(idx, shape):
     one_hot[idx] = 1
     return one_hot
 
+
 def seq_to_one_hot(array, shape):
     one_hot = np.zeros(shape)
     for idx, value in enumerate(array):
@@ -111,6 +113,19 @@ def seq_to_one_hot(array, shape):
         one_hot[idx][value] = 1
     return one_hot
 
+
+def handle_unk_words(word):
+    # dosage word
+    if "mg" in word:
+        return
+
+    # time
+    if any(["year", "weeks", "wks", "days"]) in word:
+        return
+
+    # misspelled medical terms
+    if "olest" in word:
+        return "cholesterol"
 
 if __name__ == "__main__":
 
