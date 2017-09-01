@@ -1,5 +1,5 @@
 import torch
-from torch import nn
+import torch.nn as nn
 import torch.nn.functional as func
 from torch.autograd import Variable
 from preprocess import load_training_data
@@ -84,20 +84,30 @@ if __name__ == "__main__":
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=0.1,
                                  weight_decay=0.001)
+    loss = []
 
     print("Number of training examples:{0}".format(len(y_train)))
-
     # Train
     for epoch in range(args.epochs):
         sys.stdout.write("Epoch {0}...\n".format(epoch))
         sys.stdout.flush()
 
+        total_loss = 0
         for sentence, labels in tqdm(zip(x_train, y_train), total=len(x_train)):
-            model.zero_grad()               # Zero out the gradient from last batch
+            model.zero_grad()                   # Zero out the gradient from last batch
             pred_tags = model(sentence)
-            loss = loss_func(pred_tags, labels)
-            loss.backward(retain_graph=True)
-            optimizer.step()
+            total_loss += loss_func(pred_tags, labels)
+
+        # Compute loss
+        loss[epoch] = total_loss.data[0]
+        print("Loss: {0}".format(loss[epoch]))
+        total_loss.backward(retain_graph=True)
+        optimizer.step()
+
+        # Early Stopping
+        if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
+            break
 
     torch.save(model, "model.pkl")
     torch.save(model.state_dict(), "state.pkl")
+
