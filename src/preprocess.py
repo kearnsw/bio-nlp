@@ -2,9 +2,25 @@ import pandas as pd
 import os
 import re
 from LinkedList import LinkedList
-
+from torch.utils.data import Dataset
 punctuation = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', '.', ':', ';',
                '=', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~', '/', '.', ',']
+
+
+class CadecDataset(Dataset):
+
+    def __init__(self, text_dir, ann_dir, transform=None):
+        self.data = load_data(text_dir, ann_dir)
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        text, labels = self.data[idx]
+        if self.transform:
+            seq = self.tranform(text)
+
+        return
 
 
 def strip_punctuation(s):
@@ -13,7 +29,7 @@ def strip_punctuation(s):
     return s
 
 
-def load_training_data(text_dir, ann_dir):
+def load_data(text_dir, ann_dir):
 
     parser = BratParser()
     text = {}
@@ -35,9 +51,6 @@ def load_training_data(text_dir, ann_dir):
         if not raw_text:
             continue
         if len(raw_text) != len(bio_seq):
-            print("Lengths of text and tag sequence do not align")
-            print(raw_text)
-            print(bio_seq)
             misaligned_count += 1
             continue
         docs.append(raw_text)

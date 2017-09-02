@@ -9,6 +9,8 @@ from torch import autograd
 import numpy as np
 from gensim.models.keyedvectors import KeyedVectors
 from tqdm import *
+import matplotlib.pyplot as plt
+import seaborn as sb
 
 START_TAG = "<s>"
 STOP_TAG = "</s>"
@@ -28,7 +30,6 @@ def text2seq(sentence, word2idx, pytorch=False):
         if word in word2idx:
             sequence[i] = word2idx[word]
         else:
-            print(word)
             sequence[i] = len(word2idx)
 
     if pytorch:
@@ -127,6 +128,30 @@ def handle_unk_words(word):
     if "olest" in word:
         return "cholesterol"
 
+
+def create_batches(data, batch_size):
+    num_batches = int(len(data)/batch_size)
+    batch = np.empty(num_batches, dtype=list)
+    for k in range(num_batches - 1):
+        batch[k] = data[k*batch_size:(k+1)*batch_size]
+    batch[num_batches - 1] = data[-batch_size:]
+
+    return batch
+
+
+def plot_loss(loss_array):
+    # Use seaborn style
+    sb.set_style("darkgrid")
+
+    # Plot data and label axes
+    plt.plot(loss_array)
+    plt.ylabel("loss")
+    plt.xlabel("iteration")
+    plt.title("Loss over time")
+
+    # Save to disk
+    plt.savefig("loss_plot.png")
+
 if __name__ == "__main__":
 
     emb_matrix, word2idx = generate_emb_matrix(load_emb("../vectors/PubMed-shuffle-win-30.bin"), 200)
@@ -139,5 +164,3 @@ if __name__ == "__main__":
     print(np.dot(nausea, vomitting.T))
     print(np.dot(nausea, diabetes.T))
     print(np.dot(nausea, the.T))
-
-
