@@ -16,6 +16,7 @@ torch.manual_seed(1)
 class BiLSTM(nn.Module):
     def __init__(self, tag2idx, word2idx, embedding_matrix, hidden_units):
         super().__init__()
+
         self.embedding_matrix = embedding_matrix
         self.word2idx = word2idx
         self.tag2idx = tag2idx
@@ -23,10 +24,15 @@ class BiLSTM(nn.Module):
         self.emb_dims = self.embedding_matrix.shape[1]
         self.num_classes = len(tag2idx)
         self.hidden_units = hidden_units
+        self.nb_layers = 2
+        self.bidirectional = True
 
         # Model
         self.embeddings = nn.Embedding(self.vocab_size, self.emb_dims)
-        self.lstm = nn.LSTM(self.emb_dims, hidden_units)
+        self.lstm = nn.LSTM(input_size=self.emb_dims,
+                            hidden_size=hidden_units // 2,
+                            num_layers= self.nb_layers,
+                            bidirectional=self.bidirectional)
         self.hidden2tag = nn.Linear(hidden_units, self.num_classes)
         self.softmax = nn.LogSoftmax()
 
@@ -38,15 +44,20 @@ class BiLSTM(nn.Module):
     def xavier_initialization(self):
         """
         Initializes the hidden unit and cell state of the LSTM 
-        :return: 
+        :return: a matrix of initial weights as an Autograd variable
         """
-        return (Variable(torch.randn(1, 1, self.hidden_units) * np.sqrt(2 / self.hidden_units), requires_grad=True),
-                Variable(torch.randn(1, 1, self.hidden_units) * np.sqrt(2 / self.hidden_units), requires_grad=True))
+
+        if self.bidirectional:
+            return (Variable(torch.randn(self.nb_layers * 2, 1, self.hidden_units // 2) * np.sqrt(2 / self.hidden_units)),
+                    Variable(torch.randn(self.nb_layers * 2, 1, self.hidden_units // 2) * np.sqrt(2 / self.hidden_units)))
+        else:
+            return (Variable(torch.randn(self.nb_layers, 1, self.hidden_units) * np.sqrt(2 / self.hidden_units)),
+                    Variable(torch.randn(self.nb_layers, 1, self.hidden_units) * np.sqrt(2 / self.hidden_units)))
 
     def forward(self, sentence):
         emb = self.embeddings(sentence)
         lstm_out, (self.hidden, self.cell_state) = self.lstm(emb.view(len(sentence), 1, -1), (self.hidden, self.cell_state))
-        tag_space = self.hidden2tag(lstm_out.view(len(sentence), -1))
+        tag_space = self.hidden2tag(lstm_out.view(len(sentence), self.hidden_units))
         tag_scores = func.log_softmax(tag_space)
         return tag_scores
 
@@ -60,24 +71,29 @@ if __name__ == "__main__":
     cli_parser.add_argument("--ann", type=str, help="Directory with ann files in BRAT standoff format")
     cli_parser.add_argument("--epochs", type=int, help="Number of epochs")
     cli_parser.add_argument("--hidden", type=int, help="Number of hidden units in LSTM")
+    cli_parser.add_argument("--batch-size", type=int, default=10)
     cli_parser.add_argument("--cuda", action="store_true")
     args = cli_parser.parse_args()
 
     # Load training data and split into training and dev
-    docs, labels = load_data(args.text, args.ann)
-    split_idx = int(len(docs) * 0.9)
+    docs, labels = load_data(args.text, args.ann, shuffle=True)
+    split_idx = int(len(docs) * 0.90)
+
     x_train = docs[:split_idx]
     y_train = labels[:split_idx]
     x_dev = docs[split_idx:]
-    y_dev = docs[split_idx:]
+    y_dev = labels[split_idx:]
 
     # Load the word vectors and index the vocabulary of the embeddings and annotation tags
     embeddings, word2idx = load_embeddings(args.embedding, args.emb_dim)
     tag2idx = idx_tags(y_train)
 
     # Convert data into sequence using indices from embeddings
-    x_train = [text2seq(sentence, word2idx, pytorch=True) for sentence in x_train]
-    y_train = [tags2idx(tag_seq, tag2idx, pytorch=True) for tag_seq in y_train]
+    x_train = [text2seq(sentence, word2idx) for sentence in x_train]
+    y_train = [tags2idx(tag_seq, tag2idx) for tag_seq in y_train]
+
+    x_dev = [text2seq(sentence, word2idx) for sentence in x_dev]
+    y_dev = [tags2idx(tag_seq, tag2idx) for tag_seq in y_dev]
 
     # Create model and set loss and optimization parameters
     model = BiLSTM(tag2idx, word2idx, embeddings, args.hidden)
@@ -89,14 +105,14 @@ if __name__ == "__main__":
     # Store loss from each epoch for early stopping and plotting loss-curve
     loss = np.zeros(args.epochs)
 
-    # Move model parameters to GPU
+    # Move model parameters and data to GPU
     if args.cuda:
         model.cuda()
         x_train = [var.cuda() for var in x_train]
         y_train = [var.cuda() for var in y_train]
 
     # Create batches
-    mini_batches = create_batches(list(zip(x_train, y_train)), 10)
+    mini_batches = create_batches(list(zip(x_train, y_train)), 100)
 
     print("Number of training examples:{0}".format(len(y_train)))
     # Train model using mini-batches
@@ -129,3 +145,14 @@ if __name__ == "__main__":
     torch.save(model, "model.pkl")
     torch.save(model.state_dict(), "state.pkl")
     plot_loss(loss)
+
+    pos = 0
+    neg = 0
+    for sentence, labels in zip(x_dev, y_dev):
+        pred_tags = model(sentence)
+        for i in range(len(pred_tags)):
+            if pred_tags[i] == labels[i]:
+                pos += 1
+            else:
+                neg += 1
+    print("Accuracy: {0}".format(pos/pos+neg))

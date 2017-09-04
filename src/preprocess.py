@@ -3,6 +3,9 @@ import os
 import re
 from LinkedList import LinkedList
 from torch.utils.data import Dataset
+import numpy as np
+from numpy.random import permutation
+
 punctuation = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', '.', ':', ';',
                '=', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~', '/', '.', ',']
 
@@ -29,7 +32,7 @@ def strip_punctuation(s):
     return s
 
 
-def load_data(text_dir, ann_dir):
+def load_data(text_dir, ann_dir, shuffle=False):
 
     parser = BratParser()
     text = {}
@@ -55,6 +58,13 @@ def load_data(text_dir, ann_dir):
             continue
         docs.append(raw_text)
         labels.append(bio_seq)
+
+    docs = np.array(docs)
+    labels = np.array(labels)
+    if shuffle:
+        perm = permutation(len(docs))
+        docs = docs[perm]
+        labels = labels[perm]
 
     print("Misaligned documents: {0}".format(misaligned_count))
     return docs, labels

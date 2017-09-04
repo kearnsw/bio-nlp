@@ -24,7 +24,7 @@ def idx_words(text):
     return word2idx
 
 
-def text2seq(sentence, word2idx, pytorch=False):
+def text2seq(sentence, word2idx, pytorch=True):
     sequence = np.zeros(len(sentence), dtype=int)   #LongTensor requires dtype int, e.g. breaks with np.int8
     for i, word in enumerate(sentence):
         if word in word2idx:
@@ -39,7 +39,7 @@ def text2seq(sentence, word2idx, pytorch=False):
         return sequence
 
 
-def tags2idx(seq, tag2idx, pytorch=False):
+def tags2idx(seq, tag2idx, pytorch=True):
     seq = [tag2idx[t] for t in seq]
     if pytorch:
         tensor = torch.LongTensor(seq)
