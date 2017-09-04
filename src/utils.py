@@ -5,7 +5,7 @@ Utilities for NN models using Pytorch
 """
 
 import torch
-from torch import autograd
+from torch.autograd import Variable
 import numpy as np
 from gensim.models.keyedvectors import KeyedVectors
 from tqdm import *
@@ -34,7 +34,7 @@ def text2seq(sentence, word2idx, pytorch=False):
 
     if pytorch:
         tensor = torch.LongTensor(sequence)
-        return autograd.Variable(tensor)
+        return Variable(tensor)
     else:
         return sequence
 
@@ -43,7 +43,7 @@ def tags2idx(seq, tag2idx, pytorch=False):
     seq = [tag2idx[t] for t in seq]
     if pytorch:
         tensor = torch.LongTensor(seq)
-        return autograd.Variable(tensor)
+        return Variable(tensor)
     else:
         return np.array(seq)
 

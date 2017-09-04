@@ -33,19 +33,19 @@ class BiLSTM(nn.Module):
         # Initialize weights
         self.embeddings.weight = nn.Parameter(torch.from_numpy(self.embedding_matrix).float(),
                                               requires_grad=True)  # Don't update weights of embeddings
-        self.hidden = self.xavier_initialization()
+        self.hidden, self.cell_state = self.xavier_initialization()
 
     def xavier_initialization(self):
         """
-        Initializes the hidden units with 
+        Initializes the hidden unit and cell state of the LSTM 
         :return: 
         """
-        return (Variable(torch.randn(1, 1, self.hidden_units) * np.sqrt(2 / self.hidden_units)),
-                Variable(torch.randn(1, 1, self.hidden_units) * np.sqrt(2 / self.hidden_units)))
+        return (Variable(torch.randn(1, 1, self.hidden_units) * np.sqrt(2 / self.hidden_units), requires_grad=True),
+                Variable(torch.randn(1, 1, self.hidden_units) * np.sqrt(2 / self.hidden_units), requires_grad=True))
 
     def forward(self, sentence):
         emb = self.embeddings(sentence)
-        lstm_out, self.hidden = self.lstm(emb.view(len(sentence), 1, -1), self.hidden)
+        lstm_out, (self.hidden, self.cell_state) = self.lstm(emb.view(len(sentence), 1, -1), (self.hidden, self.cell_state))
         tag_space = self.hidden2tag(lstm_out.view(len(sentence), -1))
         tag_scores = func.log_softmax(tag_space)
         return tag_scores
@@ -65,8 +65,7 @@ if __name__ == "__main__":
 
     # Load training data and split into training and dev
     docs, labels = load_data(args.text, args.ann)
-    # split_idx = int(len(docs) * 0.9)
-    split_idx = 10
+    split_idx = int(len(docs) * 0.9)
     x_train = docs[:split_idx]
     y_train = labels[:split_idx]
     x_dev = docs[split_idx:]
@@ -80,15 +79,12 @@ if __name__ == "__main__":
     x_train = [text2seq(sentence, word2idx, pytorch=True) for sentence in x_train]
     y_train = [tags2idx(tag_seq, tag2idx, pytorch=True) for tag_seq in y_train]
 
-    # Create batches
-    mini_batches = create_batches(list(zip(x_train, y_train)), 10)
-
     # Create model and set loss and optimization parameters
     model = BiLSTM(tag2idx, word2idx, embeddings, args.hidden)
-    loss_func = nn.CrossEntropyLoss()
+    loss_func = nn.NLLLoss()
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=0.1,
-                                 weight_decay=0.001)
+                                 weight_decay=0.01)
 
     # Store loss from each epoch for early stopping and plotting loss-curve
     loss = np.zeros(args.epochs)
@@ -96,6 +92,11 @@ if __name__ == "__main__":
     # Move model parameters to GPU
     if args.cuda:
         model.cuda()
+        x_train = [var.cuda() for var in x_train]
+        y_train = [var.cuda() for var in y_train]
+
+    # Create batches
+    mini_batches = create_batches(list(zip(x_train, y_train)), 10)
 
     print("Number of training examples:{0}".format(len(y_train)))
     # Train model using mini-batches
@@ -104,14 +105,15 @@ if __name__ == "__main__":
         sys.stdout.flush()
 
         for mini_batch in tqdm(mini_batches, total=len(mini_batches)):
-            batch_loss = 0            # Zero out the loss from last batch
-            model.zero_grad()         # Zero out the gradient from last batch
-            for sentence, tags in mini_batch:
-                pred_tags = model(sentence)
+            batch_loss = Variable(torch.FloatTensor([0]))  # Zero out the loss from last batch
+            model.zero_grad()                              # Zero out the gradient from last batch
+            for doc, tags in mini_batch:
+                model.hidden, model.cell_state = model.xavier_initialization()
+                pred_tags = model(doc)
                 batch_loss += loss_func(pred_tags, tags)
 
             # Backpropagate the loss for each mini-batch
-            batch_loss.backward(retain_graph=True)
+            batch_loss.backward()
             optimizer.step()
             loss[epoch] += batch_loss.data[0]
 
