@@ -76,10 +76,11 @@ if __name__ == "__main__":
     cli_parser.add_argument("--batch-size", type=int, default=10)
     cli_parser.add_argument("--layers", type=int, default=1, help="number of layers")
     cli_parser.add_argument("--cuda", action="store_true")
+    cli_parser.add_argument("--models", type=str, help="model directory")
     args = cli_parser.parse_args()
 
-    state_file = "hid{0}_lay{1}_emb{2}.states".format(args.hidden, args.layers, args.emb_dim)
-    model_file = "hid{0}_lay{1}_emb{2}.model".format(args.hidden, args.layers, args.emb_dim)
+    state_file = os.sep.join([args.models, "hid{0}_lay{1}_emb{2}.states".format(args.hidden, args.layers, args.emb_dim)])
+    model_file = os.sep.join([args.models, "hid{0}_lay{1}_emb{2}.model".format(args.hidden, args.layers, args.emb_dim)])
 
     # Load training data and split into training and dev
     docs, labels = load_data(args.text, args.ann, shuffle=True)
@@ -109,6 +110,7 @@ if __name__ == "__main__":
 
     # Load checkpoint file if it exists
     if os.path.isfile(state_file):
+        print("Initializing model state from file...")
         model.load_state_dict(torch.load(state_file))
 
     # Store loss from each epoch for early stopping and plotting loss-curve
@@ -150,24 +152,9 @@ if __name__ == "__main__":
             break
 
         # Checkpoint
-        torch.save(model.state_dict(), "hid{0}_lay{1}_emb{2}.states".format(model.hidden_units,
-                                                                            model.nb_layers,
-                                                                            model.emb_dims))
+        torch.save(model.state_dict(), state_file)
 
     # Save best model
-    torch.save(model, "hid{0}_lay{1}_emb{2}.model".format(model.hidden_units,
-                                                          model.nb_layers,
-                                                          model.emb_dims))
+    torch.save(model, model_file)
 
     plot_loss(loss)
-
-    pos = 0
-    neg = 0
-    for sentence, labels in zip(x_dev, y_dev):
-        pred_tags = model(sentence)
-        for i in range(len(pred_tags)):
-            if torch.max(pred_tags[i]) == labels[i]:
-                pos += 1
-            else:
-                neg += 1
-    print("Accuracy: {0}".format(pos/pos+neg))
