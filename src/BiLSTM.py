@@ -8,13 +8,15 @@ from utils import create_batches
 from tqdm import *
 import numpy as np
 import sys
+import os
 from argparse import ArgumentParser
 
 torch.manual_seed(1)
 
 
 class BiLSTM(nn.Module):
-    def __init__(self, tag2idx, word2idx, embedding_matrix, hidden_units):
+
+    def __init__(self, tag2idx, word2idx, embedding_matrix, hidden_units, num_layers):
         super().__init__()
 
         self.embedding_matrix = embedding_matrix
@@ -24,7 +26,7 @@ class BiLSTM(nn.Module):
         self.emb_dims = self.embedding_matrix.shape[1]
         self.num_classes = len(tag2idx)
         self.hidden_units = hidden_units
-        self.nb_layers = 2
+        self.nb_layers = num_layers
         self.bidirectional = True
 
         # Model
@@ -72,8 +74,12 @@ if __name__ == "__main__":
     cli_parser.add_argument("--epochs", type=int, help="Number of epochs")
     cli_parser.add_argument("--hidden", type=int, help="Number of hidden units in LSTM")
     cli_parser.add_argument("--batch-size", type=int, default=10)
+    cli_parser.add_argument("--layers", type=int, default=1, help="number of layers")
     cli_parser.add_argument("--cuda", action="store_true")
     args = cli_parser.parse_args()
+
+    state_file = "hid{0}_lay{1}_emb{2}.states".format(args.hidden, args.layers, args.emb_dim)
+    model_file = "hid{0}_lay{1}_emb{2}.model".format(args.hidden, args.layers, args.emb_dim)
 
     # Load training data and split into training and dev
     docs, labels = load_data(args.text, args.ann, shuffle=True)
@@ -91,16 +97,19 @@ if __name__ == "__main__":
     # Convert data into sequence using indices from embeddings
     x_train = [text2seq(sentence, word2idx) for sentence in x_train]
     y_train = [tags2idx(tag_seq, tag2idx) for tag_seq in y_train]
-
     x_dev = [text2seq(sentence, word2idx) for sentence in x_dev]
     y_dev = [tags2idx(tag_seq, tag2idx) for tag_seq in y_dev]
 
     # Create model and set loss and optimization parameters
-    model = BiLSTM(tag2idx, word2idx, embeddings, args.hidden)
+    model = BiLSTM(tag2idx, word2idx, embeddings, args.hidden, args.layers)
     loss_func = nn.NLLLoss()
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=0.1,
                                  weight_decay=0.01)
+
+    # Load checkpoint file if it exists
+    if os.path.isfile(state_file):
+        model.load_state_dict(torch.load(state_file))
 
     # Store loss from each epoch for early stopping and plotting loss-curve
     loss = np.zeros(args.epochs)
@@ -140,10 +149,16 @@ if __name__ == "__main__":
         if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
             break
 
-            # Checkpoint
-            # torch.save(model.state_dict(), "best_state.pkl")
-    torch.save(model, "model.pkl")
-    torch.save(model.state_dict(), "state.pkl")
+        # Checkpoint
+        torch.save(model.state_dict(), "hid{0}_lay{1}_emb{2}.states".format(model.hidden_units,
+                                                                            model.nb_layers,
+                                                                            model.emb_dims))
+
+    # Save best model
+    torch.save(model, "hid{0}_lay{1}_emb{2}.model".format(model.hidden_units,
+                                                          model.nb_layers,
+                                                          model.emb_dims))
+
     plot_loss(loss)
 
     pos = 0
@@ -151,7 +166,7 @@ if __name__ == "__main__":
     for sentence, labels in zip(x_dev, y_dev):
         pred_tags = model(sentence)
         for i in range(len(pred_tags)):
-            if pred_tags[i] == labels[i]:
+            if torch.max(pred_tags[i]) == labels[i]:
                 pos += 1
             else:
                 neg += 1
