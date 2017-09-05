@@ -12,10 +12,16 @@ from tqdm import *
 import matplotlib.pyplot as plt
 import seaborn as sb
 
-START_TAG = "<s>"
-STOP_TAG = "</s>"
+START_TAG = "<S>"
+STOP_TAG = "</S>"
+
 
 def idx_words(text):
+    """
+    Index the words of a collection
+    :param text: full text of the collection
+    :return: a dictionary with words as keys and their indices as values
+    """
     word2idx = {}
     for sentence in text:
         for word in sentence:
@@ -24,31 +30,52 @@ def idx_words(text):
     return word2idx
 
 
-def text2seq(sentence, word2idx, pytorch=True):
+def text2seq(sentence, word2idx, autograd=True):
+    """
+    Convert a sequence of words into a sequence of indices
+    :param sentence: the sentence to be converted to indexed sequence
+    :param word2idx: a dictionary with words as keys and their index as the values 
+    :param autograd: if true return an autograd variable, else return a numpy array
+    :return: 
+    """
     sequence = np.zeros(len(sentence), dtype=int)   #LongTensor requires dtype int, e.g. breaks with np.int8
+
     for i, word in enumerate(sentence):
+        # If the word is in the vocabulary then return the index
+        # Else assign an index of unknown tag <UNK>, i.e. vocab size + 1
         if word in word2idx:
             sequence[i] = word2idx[word]
         else:
             sequence[i] = len(word2idx)
 
-    if pytorch:
-        tensor = torch.LongTensor(sequence)
-        return Variable(tensor)
+    # Return embeddings as a np.array or autograd variable
+    if autograd:
+        return Variable(torch.LongTensor(sequence))
     else:
         return sequence
 
 
-def tags2idx(seq, tag2idx, pytorch=True):
-    seq = [tag2idx[t] for t in seq]
-    if pytorch:
-        tensor = torch.LongTensor(seq)
-        return Variable(tensor)
+def tags2idx(tags, tag2idx, autograd=True):
+    """
+    Convert a sequence of tags to a sequence of indices
+    :param tags: list of tags to index
+    :param tag2idx: a dictionary with tags as keys, e.g. B-ADR, and their indices as values
+    :param autograd: return a pytorch autograd variable or a numpy array 
+    :return: 
+    """
+    tags = [tag2idx[t] for t in tags]
+    if autograd:
+        return Variable(torch.LongTensor(tags))
     else:
-        return np.array(seq)
+        return np.array(tags)
 
 
 def idx_tags(tags):
+    """
+    Index the set of all tags/classes of a collection
+    :param tags: the collection of all tags
+    :return: a dictionary with unique tags as keys and their index as the value
+    """
     tag2idx = {START_TAG: 0, STOP_TAG: 1}
     for seq in tags:
         for tag in seq:
@@ -58,8 +85,9 @@ def idx_tags(tags):
 
 
 def load_emb(filename):
+
     if ".bin" in filename:
-        return KeyedVectors.load_word2vec_format(filename, binary=True, limit=100)
+        return KeyedVectors.load_word2vec_format(filename, binary=True)
 
     elif ".txt" in filename:
         word2vec = {}
@@ -97,17 +125,38 @@ def generate_emb_matrix(word2vec, dims):
 
 
 def load_embeddings(filename, dims):
+    """
+    Load the embeddings from a binary or text file and return an embedding matrix
+    and an index of the words that have embeddings
+    :param filename: a .bin file for Word2Vec format embeddings or .txt for GloVe embeddings
+    :param dims: number of dimensions of the embeddings
+    :return: a tuple of (embedding matrix, word2idx)
+    """
     return generate_emb_matrix(load_emb(filename), dims)
 
 
-def to_one_hot(idx, shape):
-    one_hot = np.zeros(shape)
+def to_one_hot(idx, nb_classes):
+    """
+    Converts a single index to a one-hot representation
+    e.g. 3 -> [0,0,0,1,0] if there are 5 classes 
+    :param idx: the index of the class starting from 0
+    :param nb_classes: total number of classes
+    :return: a one-hot vector representation of the class
+    """
+    one_hot = np.zeros(1, nb_classes)
     one_hot[idx] = 1
     return one_hot
 
 
-def seq_to_one_hot(array, shape):
-    one_hot = np.zeros(shape)
+def seq_to_one_hot(array, nb_classes):
+    """
+    Convert a sequence of indexed classes, e.g. w/ 4 classes [3, 2, 0]
+    into a one-hot vector representation [[0,0,1,0][0,1,0,0][1,0,0,0]]
+    :param array: a flat array of class indices
+    :param nb_classes: number of classes total
+    :return: a one-hot vector representation with dims (array_len, nb_classes)
+    """
+    one_hot = np.zeros(len(array), nb_classes)
     for idx, value in enumerate(array):
         if not value:
             return np.array([])
@@ -130,13 +179,21 @@ def handle_unk_words(word):
 
 
 def create_batches(data, batch_size):
+    """
+    Segments a list into batches of specified size (last batch may be < batch_size)
+    :param data: the list to be separated into batches 
+    :param batch_size: the number of samples in each batch
+    :return: a list of lists with dimensions (num_batches, batch_size)
+    """
     num_batches = int(len(data)/batch_size)
-    batch = np.empty(num_batches, dtype=list)
+    batches = np.empty(num_batches, dtype=list)
     for k in range(num_batches - 1):
-        batch[k] = data[k*batch_size:(k+1)*batch_size]
-    batch[num_batches - 1] = data[-batch_size:]
+        batches[k] = data[k*batch_size:(k+1)*batch_size]
 
-    return batch
+    # Add the remaining samples to the last batch
+    batches[num_batches - 1] = data[-batch_size:]
+
+    return batches
 
 
 def plot_loss(loss_array):
