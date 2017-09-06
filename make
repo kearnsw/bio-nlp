@@ -1,3 +1,4 @@
 #!/bin/bash
 
-pip install torchwordemb
+conda install pytorch torchvision cuda80 -c soumith
+conda install gensim
