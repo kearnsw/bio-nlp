@@ -9,6 +9,8 @@ from numpy.random import permutation
 punctuation = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', '.', ':', ';',
                '=', '?', '@', '[', ']', '^', '_', '`', '{', '|', '}', '~', '/', '.', ',']
 
+np.random.seed(1985)
+
 
 class CadecDataset(Dataset):
 

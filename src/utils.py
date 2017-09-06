@@ -63,11 +63,11 @@ def tags2idx(tags, tag2idx, autograd=True):
     :param autograd: return a pytorch autograd variable or a numpy array 
     :return: 
     """
-    tags = [tag2idx[t] for t in tags]
+    indices = [tag2idx[t] for t in tags]
     if autograd:
-        return Variable(torch.LongTensor(tags))
+        return Variable(torch.LongTensor(indices))
     else:
-        return np.array(tags)
+        return np.array(indices)
 
 
 def idx_tags(tags):
