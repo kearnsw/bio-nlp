@@ -1,0 +1,669 @@
+text|0.0|shoulder impingement|C1655733|[dsyn]|"shoulder impingement"-tx-71-"shoulder impingement"-NN-0|tx|5784:20|
+text|0.0|Right ring finger|C0930956|[bpoc]|"Right ring finger"-tx-83-"Right ring finger"-RB-0|tx|6539:17|
+text|0.0|Syndrome|C0039082|[dsyn]|"Syndrome"-tx-125-"syndrome"-NN-0|tx|9479:8|
+text|0.0|Clothing|C0009072|[mnob]|"Clothing"-tx-2-"Clothes"-NNS-0|tx|203:7|
+text|0.0|Neuropathy|C0442874|[dsyn]|"Neuropathy"-tx-122-"Neuropathy"-NNP-0|tx|9227:10|
+text|0.0|Hospitals|C0019994|[mnob, hcro]|"Hospitals"-tx-87-"hospital"-NN-0|tx|6745:8|
+text|0.0|Study|C2603343|[resa]|"Study"-tx-110-"study"-NN-0|tx|8083:5|
+text|0.0|Room of building - Study|C0557651|[mnob]|"Room of building - Study"-tx-110-"study"-NN-0|tx|8083:5|
+text|0.0|Involvement with|C1314939|[ftcn]|"Involvement with"-tx-120-"involvement"-NN-0|tx|9158:11|
+text|0.0|Power (Psychology)|C0032863|[hcpp]|"Power (Psychology)"-tx-100-"power"-NN-0|tx|7314:5|
+text|0.0|Vasculitis|C0042384|[dsyn]|"Vasculitis"-tx-12-"vasculitis"-NN-0|tx|1834:10|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-39-"patient"-JJ-0|tx|3829:7|
+text|0.0|Provider|C1138603|[prog]|"Provider"-tx-9-"Provider"-NNP-0|tx|1189:8|
+text|0.0|Act Code - provider|C1555587|[idcn]|"Act Code - provider"-tx-9-"Provider"-NNP-0|tx|1189:8|
+text|0.0|Bone structure of tibia|C0040184|[bpoc]|"Bone structure of tibia"-tx-129-"tibial"-JJ-0|tx|9899:6|
+text|0.0|Low Back Pain|C0024031|[sosy]|"Low Back Pain"-tx-63-"Low back pain"-NNP-0|tx|5554:13|
+text|0.0|Polyneuropathy|C0152025|[dsyn]|"Polyneuropathy"-tx-113-"polyneuropathy"-JJ-0|tx|8419:14|
+text|0.0|Upper Extremity|C1140618|[bpoc]|"Upper Extremity"-tx-126-"upper
+extremities"-JJ-0|tx|9513:17|
+text|0.0|Very|C0442824|[qlco]|"Very"-tx-50-"very"-RB-0|tx|4752:4|
+text|0.0|Anterior cervical spine approach|C0442011|[spco]|"Anterior cervical spine approach"-tx-79-"anterior cervical"-JJ-0|tx|6252:17|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-17-"Plaquenil"-NNP-0|tx|2356:9|
+text|0.0|Alopecia|C0002170|[fndg]|"Alopecia"-tx-90-"alopecia"-NN-1|tx|6876:8|
+text|0.0|motor movement|C1513492|[ftcn]|"motor movement"-tx-113-"motor"-NN-0|tx|8465:5|
+text|0.0|Anterior decompression of shoulder joint|C0408159|[topp]|"Anterior decompression of shoulder joint"-tx-69-"subacromial decompression"-JJ-0|tx|5713:25|
+text|0.0|Ulnar|C0442044|[blor]|"Ulnar"-tx-52-"ulnar"-JJ-0|tx|5004:5|
+text|0.0|Independently able|C1299583|[fndg]|"Independently able"-tx-129-"independent"-JJ-0|tx|10008:11|
+text|0.0|Lesion|C0221198|[fndg]|"Lesion"-tx-119-"lesions"-NNS-0|tx|9031:7|
+text|0.0|Inhibitor|C1999216|[qlco]|"Inhibitor"-tx-13-"inhibitor"-NN-0|tx|1942:9|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-121-"Plaquenil"-NNP-0|tx|9213:9|
+text|0.0|May|C3812381|[qlco]|"May"-tx-46-"May"-NNP-0|tx|4331:3|
+text|0.0|Target Awareness - partial|C1550516|[idcn]|"Target Awareness - partial"-tx-71-"partial"-JJ-0|tx|5810:7|
+text|0.0|Partial|C0728938|[qnco]|"Partial"-tx-71-"partial"-JJ-0|tx|5810:7|
+text|0.0|Anterior cervical spine approach|C0442011|[spco]|"Anterior cervical spine approach"-tx-76-"Anterior cervical"-NNP-0|tx|6082:17|
+text|0.0|Affected Area|C1879646|[fndg]|"Affected Area"-tx-5-"affected area"-JJ-0|tx|426:13|
+text|0.0|Intact|C0205266|[qlco]|"Intact"-tx-91-"intact"-JJ-0|tx|6940:6|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-10-"mouth"-NN-0|tx|1466:5|
+text|0.0|Thyroxine|C0040165|[horm, aapp, phsu]|"Thyroxine"-tx-8-"levothyroxine"-NN-0|tx|713:13|
+text|0.0|Synthetic Levothyroxine|C1881373|[orch, phsu]|"Synthetic Levothyroxine"-tx-8-"levothyroxine"-NN-0|tx|713:13|
+text|0.0|day|C0439228|[tmco]|"day"-tx-10-"day"-NN-0|tx|1335:3|
+text|0.0|Evidence of|C0332120|[ftcn]|"Evidence of"-tx-111-"evidence"-NN-0|tx|8101:8|
+text|0.0|Area|C0205146|[spco]|"Area"-tx-53-"area"-NN-0|tx|5135:4|
+text|0.0|Negative|C0205160|[qlco]|"Negative"-tx-56-"negative"-JJ-0|tx|5397:8|
+text|0.0|Cervical spondylosis|C1384641|[dsyn]|"Cervical spondylosis"-tx-124-"cervical
+spondylosis"-JJ-0|tx|9328:20|
+text|0.0|Lesion|C0221198|[fndg]|"Lesion"-tx-48-"lesions"-NNS-0|tx|4518:7|
+text|0.0|inflammatory|C0333348|[ftcn]|"inflammatory"-tx-103-"inflammatory"-JJ-0|tx|7582:12|
+text|0.0|Perception|C0030971|[menp]|"Perception"-tx-101-"perception"-NN-0|tx|7497:10|
+text|0.0|Equal|C0205163|[qlco]|"Equal"-tx-91-"equal"-JJ-0|tx|6893:5|
+text|0.0|Relational Operator - Equal|C1549782|[idcn]|"Relational Operator - Equal"-tx-91-"equal"-JJ-0|tx|6893:5|
+text|0.0|Problem|C0033213|[fndg]|"Problem"-tx-37-"problem"-NN-0|tx|3750:7|
+text|0.0|Neurology speciality|C0027855|[bmod]|"Neurology speciality"-tx-130-"Neurology"-NNP-0|tx|10149:9|
+text|0.0|Mononeuritis Multiplex|C0151295|[dsyn]|"Mononeuritis Multiplex"-tx-25-"mononeuritis multiplex"-NN-0|tx|3012:22|
+text|0.0|Devices|C0699733|[mnob]|"Devices"-tx-80-"device"-NN-0|tx|6365:6|
+text|0.0|Aspect - Kind of quantity|C1547011|[qnco]|"Aspect - Kind of quantity"-tx-101-"aspect"-NN-0|tx|7448:6|
+text|0.0|Aspect (characteristic)|C1879746|[qlco]|"Aspect (characteristic)"-tx-101-"aspect"-NN-0|tx|7448:6|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-20-"patient"-JJ-0|tx|2502:7|
+text|0.0|Sensory (qualifier value)|C0445254|[qlco]|"Sensory (qualifier value)"-tx-113-"sensory"-JJ-0|tx|8444:7|
+text|0.0|Multivitamin tablet|C0978787|[phsu]|"Multivitamin tablet"-tx-10-"multivitamin tablet"-NN-0|tx|1430:19|
+text|0.0|week|C0439230|[tmco]|"week"-tx-84-"week"-NN-0|tx|6653:4|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-55-"patient"-JJ-0|tx|5299:7|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-45-"patient"-NN-0|tx|4033:7|
+text|0.0|Electromyography|C0013839|[diap]|"Electromyography"-tx-124-"electromyography"-NN-0|tx|9374:16|
+text|0.0|Median Neuropathy|C0751922|[dsyn]|"Median Neuropathy"-tx-111-"median neuropathy"-JJ-0|tx|8126:17|
+text|0.0|Involvement with|C1314939|[ftcn]|"Involvement with"-tx-21-"involvement"-NN-0|tx|2717:11|
+text|0.0|Cholecalciferol|C0008318|[strd, vita, phsu]|"Cholecalciferol"-tx-10-"cholecalciferol"-NN-0|tx|1257:15|
+text|0.0|Patient Visit|C1512346|[hlca]|"Patient Visit"-tx-46-"visit"-NN-0|tx|4221:5|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-24-"patient"-JJ-0|tx|2777:7|
+text|0.0|Dose Adjustment|C2826232|[hlca]|"Dose Adjustment"-tx-10-"Dose adjustment"-NNP-0|tx|1199:15|
+text|0.0|Structure of right foot|C0230460|[bpoc]|"Structure of right foot"-tx-101-"right foot"-JJ-0|tx|7515:10|
+text|0.0|Old|C0580836|[tmco]|"Old"-tx-11-"old"-JJ-0|tx|1675:3|
+text|0.0|Response process|C0871261|[orga]|"Response process"-tx-115-"response"-NN-0|tx|8614:8|
+text|0.0|Disease Response|C1704632|[fndg]|"Disease Response"-tx-115-"response"-NN-0|tx|8614:8|
+text|0.0|Shortened|C1282927|[qlco]|"Shortened"-tx-20-"short"-JJ-0|tx|2576:5|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-118-"Plaquenil"-NNP-0|tx|8886:9|
+text|0.0|Topical Cream|C0991551|[bodm]|"Topical Cream"-tx-4-"topical cream"-JJ-0|tx|402:13|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-49-"Plaquenil"-NNP-0|tx|4595:9|
+text|0.0|Release (procedure)|C1963578|[topp]|"Release (procedure)"-tx-46-"release"-NN-0|tx|4320:7|
+text|0.0|Released (action)|C0391871|[ftcn]|"Released (action)"-tx-46-"release"-NN-0|tx|4320:7|
+text|0.0|Discharge (release)|C0680255|[hlca]|"Discharge (release)"-tx-46-"release"-NN-0|tx|4320:7|
+text|0.0|Steroids|C0038317|[strd]|"Steroids"-tx-33-"steroids"-NNS-0|tx|3575:8|
+text|0.0|day|C0439228|[tmco]|"day"-tx-8-"day"-NN-0|tx|829:3|
+text|0.0|Lateral|C0205093|[spco]|"Lateral"-tx-50-"lateral"-JJ-0|tx|4711:7|
+text|0.0|New|C0205314|[tmco]|"New"-tx-10-"new"-JJ-0|tx|1218:3|
+text|0.0|Act Code - provider|C1555587|[idcn]|"Act Code - provider"-tx-8-"Provider"-NNP-0|tx|687:8|
+text|0.0|Provider|C1138603|[prog]|"Provider"-tx-8-"Provider"-NNP-0|tx|687:8|
+text|0.0|January|C3829466|[qlco]|"January"-tx-45-"January"-NNP-0|tx|4194:7|
+text|0.0|Urticaria|C0042109|[dsyn]|"Urticaria"-tx-12-"hives"-NNS-0|tx|1776:5|
+text|0.0|Drugs, Non-Prescription|C0013231|[phsu]|"Drugs, Non-Prescription"-tx-10-"OTC"-NNP-0|tx|1410:3|
+text|0.0|Severe (severity modifier)|C0205082|[qlco]|"Severe (severity modifier)"-tx-52-"severe"-JJ-0|tx|5065:6|
+text|0.0|Screw|C0301559|[medd]|"Screw"-tx-79-"screws"-NNS-0|tx|6316:6|
+text|0.0|Appointments|C0003629|[idcn]|"Appointments"-tx-10-"appointment"-NN-0|tx|1639:11|
+text|0.0|Hour|C0439227|[tmco]|"Hour"-tx-48-"hours"-NNS-0|tx|4544:5|
+text|0.0|Abnormal|C0205161|[qlco]|"Abnormal"-tx-110-"Abnormal"-JJ-0|tx|8074:8|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-10-"Tablet"-NN-0|tx|1453:6|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-10-"Tablet"-NN-0|tx|1453:6|
+text|0.0|Microbial anatomical capsule structure|C1325531|[celc]|"Microbial anatomical capsule structure"-tx-10-"capsule"-NN-0|tx|1297:7|
+text|0.0|capsule (pharmacologic)|C0006935|[bodm]|"capsule (pharmacologic)"-tx-10-"capsule"-NN-0|tx|1297:7|
+text|0.0|Sensory (qualifier value)|C0445254|[qlco]|"Sensory (qualifier value)"-tx-108-"sensory"-JJ-0|tx|7946:7|
+text|0.0|Cartridge device|C0179630|[medd]|"Cartridge device"-tx-7-"cartridge"-NN-0|tx|640:9|
+text|0.0|Variable (uniformity)|C0439828|[qlco]|"Variable (uniformity)"-tx-52-"variable"-JJ-0|tx|4925:8|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-8-"tablet"-NN-0|tx|734:6|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-8-"tablet"-NN-0|tx|734:6|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-119-"patient"-NN-0|tx|8980:7|
+text|0.0|Ankle|C0003086|[blor]|"Ankle"-tx-82-"ankle"-NN-0|tx|6524:5|
+text|0.0|Reporting|C0700287|[hlca]|"Reporting"-tx-52-"reports"-NNS-0|tx|4891:7|
+text|0.0|Report (document)|C0684224|[inpr]|"Report (document)"-tx-52-"reports"-NNS-0|tx|4891:7|
+text|0.0|CENPJ gene|C1424863|[gngm]|"CENPJ gene"-tx-35-"CPAP"-NNP-0|tx|3663:4|
+text|0.0|Continuous Positive Airway Pressure|C0199451|[topp]|"Continuous Positive Airway Pressure"-tx-35-"CPAP"-NNP-0|tx|3663:4|
+text|0.0|Polyneuropathy|C0152025|[dsyn]|"Polyneuropathy"-tx-123-"polyneuropathy"-NN-0|tx|9304:14|
+text|0.0|day|C0439228|[tmco]|"day"-tx-10-"day"-NN-0|tx|1479:3|
+text|0.0|Lateral|C0205093|[spco]|"Lateral"-tx-101-"lateral"-JJ-0|tx|7440:7|
+text|0.0|Negative|C0205160|[qlco]|"Negative"-tx-13-"negative"-JJ-0|tx|1870:8|
+text|0.0|Aspirin Enteric Coated|C0718690|[orch, phsu]|"Aspirin Enteric Coated"-tx-8-"Enteric Coated Aspirin"-JJ-0|tx|995:22|
+text|0.0|Lung|C0024109|[bpoc]|"Lung"-tx-32-"lung"-NN-0|tx|3452:4|
+text|0.0|Diarrhea|C0011991|[sosy]|"Diarrhea"-tx-14-"diarrhea"-NN-0|tx|2100:8|
+text|0.0|Structure of left wrist|C0230366|[bpoc]|"Structure of left wrist"-tx-111-"left wrist"-JJ-0|tx|8151:10|
+text|0.0|Progress|C1280477|[ftcn]|"Progress"-tx-0-"Progress"-NN-0|tx|0:8|
+text|0.0|status - In progress|C1272688|[ftcn]|"status - In progress"-tx-0-"Progress"-NN-0|tx|0:8|
+text|0.0|Cervical arthrodesis|C0186010|[topp]|"Cervical arthrodesis"-tx-76-"cervical arthrodesis"-JJ-0|tx|6091:20|
+text|0.0|teratologic|C0000769|[ftcn]|"teratologic"-tx-130-"abnormalities"-NNS-0|tx|10200:13|
+text|0.0|Present|C0150312|[qnco]|"Present"-tx-10-"PRESENT"-JJ-0|tx|1564:7|
+text|0.0|Lymphadenopathy|C0497156|[fndg]|"Lymphadenopathy"-tx-94-"adenopathy"-JJ-1|tx|7023:10|
+text|0.0|Right|C0205090|[spco]|"Right"-tx-108-"right"-JJ-0|tx|7933:5|
+text|0.0|Pain|C0030193|[sosy]|"Pain"-tx-37-"painful"-JJ-0|tx|3742:7|
+text|0.0|Dependent - ability|C0851827|[qlco]|"Dependent - ability"-tx-57-"dependent"-JJ-0|tx|5440:9|
+text|0.0|dependent|C3244310|[ftcn]|"dependent"-tx-57-"dependent"-JJ-0|tx|5440:9|
+text|0.0|Today (temporal qualifier)|C0750526|[tmco]|"Today (temporal qualifier)"-tx-47-"today"-NN-0|tx|4365:5|
+text|0.0|Singular|C0205171|[qnco]|"Singular"-tx-88-"Single"-NNP-0|tx|6755:6|
+text|0.0|Unmarried|C0087136|[fndg]|"Unmarried"-tx-88-"Single"-NNP-0|tx|6755:6|
+text|0.0|Unmarried person|C0037179|[popg]|"Unmarried person"-tx-88-"Single"-NNP-0|tx|6755:6|
+text|0.0|Unit|C0439148|[qnco]|"Unit"-tx-10-"unit"-NN-0|tx|1292:4|
+text|0.0|Unit of Measure|C1519795|[qnco]|"Unit of Measure"-tx-10-"unit"-NN-0|tx|1292:4|
+text|0.0|Episode of|C0332189|[tmco]|"Episode of"-tx-29-"episodes"-NNS-0|tx|3178:8|
+text|0.0|Urticaria|C0042109|[dsyn]|"Urticaria"-tx-48-"urticarial"-JJ-0|tx|4507:10|
+text|0.0|Operative Surgical Procedures|C0543467|[hlca]|"Operative Surgical Procedures"-tx-54-"surgery"-NN-0|tx|5258:7|
+text|0.0|Surgical aspects|C0038895|[ftcn]|"Surgical aspects"-tx-54-"surgery"-NN-0|tx|5258:7|
+text|0.0|Normal|C0205307|[qlco]|"Normal"-tx-20-"normal"-JJ-0|tx|2600:6|
+text|0.0|Operative Surgical Procedures|C0543467|[hlca]|"Operative Surgical Procedures"-tx-47-"operation"-NN-0|tx|4437:9|
+text|0.0|Usage|C0457083|[ftcn]|"Usage"-tx-5-"Use"-NNP-0|tx|452:3|
+text|0.0|Use - dosing instruction imperative|C1947944|[inpr]|"Use - dosing instruction imperative"-tx-5-"Use"-NNP-0|tx|452:3|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-21-"Plaquenil"-NNP-0|tx|2676:9|
+text|0.0|Psychological fixation|C0728733|[menp]|"Psychological fixation"-tx-79-"fixation"-NN-0|tx|6287:8|
+text|0.0|Fixation - action|C0185023|[topp]|"Fixation - action"-tx-79-"fixation"-NN-0|tx|6287:8|
+text|0.0|Status post|C0231290|[tmco]|"Status post"-tx-124-"status post"-NN-0|tx|9349:11|
+text|0.0|Weakness|C3714552|[sosy]|"Weakness"-tx-55-"weakness"-NN-1|tx|5321:8|
+text|0.0|Sheet - faceted volume|C2349187|[qnco]|"Sheet - faceted volume"-tx-0-"sheet"-NN-0|tx|129:5|
+text|0.0|Radiculopathy, Cervical|C0742186|[dsyn]|"Radiculopathy, Cervical"-tx-124-"cervical radiculopathy"-JJ-0|tx|9410:22|
+text|0.0|Diabetes Mellitus, Insulin-Dependent|C0011854|[dsyn]|"Diabetes Mellitus, Insulin-Dependent"-tx-57-"Insulin-dependent diabetes mellitus"-NNP-0|tx|5432:35|
+text|0.0|Vasculitis|C0042384|[dsyn]|"Vasculitis"-tx-129-"vasculitis"-NN-0|tx|9941:10|
+text|0.0|Act Relationship Subset - previous|C1552607|[tmco]|"Act Relationship Subset - previous"-tx-113-"previous"-JJ-0|tx|8306:8|
+text|0.0|Previous|C0205156|[tmco]|"Previous"-tx-113-"previous"-JJ-0|tx|8306:8|
+text|0.0|Lesion|C0221198|[fndg]|"Lesion"-tx-20-"lesions"-NNS-0|tx|2588:7|
+text|0.0|Reactive|C0205332|[qlco]|"Reactive"-tx-91-"reactive"-JJ-0|tx|6910:8|
+text|0.0|impression (attitude)|C0596764|[inbe]|"impression (attitude)"-tx-110-"Impression"-NN-0|tx|8062:10|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-11-"patient"-JJ-0|tx|1679:7|
+text|0.0|Pink color|C0332585|[qlco]|"Pink color"-tx-92-"pink"-JJ-0|tx|6961:4|
+text|0.0|Rheumatologist|C0334889|[prog]|"Rheumatologist"-tx-0-"RHEUMATOLOGIST"-NNP-0|tx|45:14|
+text|0.0|Cyanosis|C0010520|[sosy]|"Cyanosis"-tx-98-"cyanosis"-NN-1|tx|7220:8|
+text|0.0|Bruit|C0006318|[fndg]|"Bruit"-tx-94-"bruits"-NNS-1|tx|7054:6|
+text|0.0|Device Plate|C1139930|[medd]|"Device Plate"-tx-79-"plate"-NN-0|tx|6303:5|
+text|0.0|Diagnosis|C0011900|[fndg]|"Diagnosis"-tx-108-"diagnosis"-NN-0|tx|7988:9|
+text|0.0|diagnosis aspect|C1704338|[qlco]|"diagnosis aspect"-tx-108-"diagnosis"-NN-0|tx|7988:9|
+text|0.0|Tender|C0234234|[qlco]|"Tender"-tx-97-"tender"-NN-0|tx|7173:6|
+text|0.0|Natures|C1262865|[ftcn]|"Natures"-tx-130-"nature"-NN-0|tx|10184:6|
+text|0.0|Nature|C0349590|[idcn]|"Nature"-tx-130-"nature"-NN-0|tx|10184:6|
+text|0.0|Absence (morphologic abnormality)|C1689985|[anab]|"Absence (morphologic abnormality)"-tx-108-"absence"-NN-1|tx|7889:7|
+text|0.0|Absent|C0332197|[ftcn]|"Absent"-tx-108-"absence"-NN-1|tx|7889:7|
+text|0.0|Local|C0205276|[spco]|"Local"-tx-87-"local"-JJ-0|tx|6739:5|
+text|0.0|Upper arm|C0446516|[blor]|"Upper arm"-tx-54-"arms"-NNS-0|tx|5222:4|
+text|0.0|hand - unit of measure|C1552914|[qnco]|"hand - unit of measure"-tx-17-"hand"-NN-0|tx|2295:4|
+text|0.0|Hand|C0018563|[bpoc]|"Hand"-tx-17-"hand"-NN-0|tx|2295:4|
+text|0.0|TSC22D3 wt Allele|C3539618|[gngm]|"TSC22D3 wt Allele"-tx-36-"DIP"-NNP-0|tx|3695:3|
+text|0.0|Lesion|C0221198|[fndg]|"Lesion"-tx-17-"lesions"-NNS-0|tx|2319:7|
+text|0.0|Radiculopathy|C0700594|[dsyn]|"Radiculopathy"-tx-112-"radiculopathies"-NNS-0|tx|8237:15|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-84-"patient"-NN-0|tx|6612:7|
+text|0.0|Most|C0205393|[qnco]|"Most"-tx-48-"most"-JJS-0|tx|4560:4|
+text|0.0|Tissue fiber|C1304649|[tisu]|"Tissue fiber"-tx-113-"fibers"-NNS-0|tx|8471:6|
+text|0.0|Diabetic|C0241863|[fndg]|"Diabetic"-tx-25-"diabetic"-JJ-0|tx|2891:8|
+text|0.0|Entire abdomen|C1281594|[bpoc]|"Entire abdomen"-tx-97-"ABDOMEN"-NN-0|tx|7154:7|
+text|0.0|Abdominal Cavity|C0230168|[blor]|"Abdominal Cavity"-tx-97-"ABDOMEN"-NN-0|tx|7154:7|
+text|0.0|Abdomen|C0000726|[blor]|"Abdomen"-tx-97-"ABDOMEN"-NN-0|tx|7154:7|
+text|0.0|Pharmaceutical Preparations|C0013227|[phsu]|"Pharmaceutical Preparations"-tx-4-"Medications"-NNS-0|tx|340:11|
+text|0.0|sensory exam|C2229507|[hlca]|"sensory exam"-tx-50-"sensation"-NN-0|tx|4789:9|
+text|0.0|Esthesia|C0036658|[ortf]|"Esthesia"-tx-50-"sensation"-NN-0|tx|4789:9|
+text|0.0|Observation of Sensation|C0542538|[fndg]|"Observation of Sensation"-tx-50-"sensation"-NN-0|tx|4789:9|
+text|0.0|Infrequent|C0521114|[tmco]|"Infrequent"-tx-48-"occasional"-JJ-0|tx|4496:10|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-54-"patient"-JJ-0|tx|5145:7|
+text|0.0|teratologic|C0000769|[ftcn]|"teratologic"-tx-30-"abnormalities"-NNS-0|tx|3237:13|
+text|0.0|Consistent with|C0332290|[idcn]|"Consistent with"-tx-12-"consistent with"-JJ-0|tx|1818:15|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-50-"patient"-JJ-0|tx|4638:7|
+text|0.0|Ophthalmologist (occupation)|C1704292|[prog]|"Ophthalmologist (occupation)"-tx-15-"ophthalmologist"-NN-0|tx|2188:15|
+text|0.0|Pulse taking|C0034107|[hlca]|"Pulse taking"-tx-98-"pulses"-NNS-1|tx|7247:6|
+text|0.0|Physiologic pulse|C0391850|[phsf]|"Physiologic pulse"-tx-98-"pulses"-NNS-1|tx|7247:6|
+text|0.0|Few|C0205388|[qnco]|"Few"-tx-20-"few"-JJ-0|tx|2562:3|
+text|0.0|Evidence of|C0332120|[ftcn]|"Evidence of"-tx-21-"evidence of"-NN-0|tx|2690:11|
+text|0.0|Neuropathy|C0442874|[dsyn]|"Neuropathy"-tx-54-"neuropathy"-JJ-0|tx|5208:10|
+text|0.0|week|C0439230|[tmco]|"week"-tx-5-"weeks"-NNS-0|tx|468:5|
+text|0.0|Neuropathy|C0442874|[dsyn]|"Neuropathy"-tx-129-"neuropathy"-JJ-0|tx|9997:10|
+text|0.0|Old|C0580836|[tmco]|"Old"-tx-117-"old"-JJ-0|tx|8761:3|
+text|0.0|Sometimes|C1998882|[tmco]|"Sometimes"-tx-52-"sometimes"-RB-0|tx|4967:9|
+text|0.0|Serological aspects|C0220911|[ftcn]|"Serological aspects"-tx-13-"serology"-NN-0|tx|1879:8|
+text|0.0|Study of serum|C0036745|[bmod]|"Study of serum"-tx-13-"serology"-NN-0|tx|1879:8|
+text|0.0|History of present illness|C0262512|[orga]|"History of present illness"-tx-10-"HISTORY OF PRESENT ILLNESS"-NN-0|tx|1553:26|
+text|0.0|Right carpal tunnel|C0833261|[bsoj]|"Right carpal tunnel"-tx-40-"right carpal tunnel syndrome"-JJ-0|tx|3881:28|
+text|0.0|November|C3828767|[tmco]|"November"-tx-113-"November"-NNP-0|tx|8334:8|
+text|0.0|November|C3828767|[tmco]|"November"-tx-45-"November"-NNP-0|tx|4052:8|
+text|0.0|Sleep Apnea, Obstructive|C0520679|[dsyn]|"Sleep Apnea, Obstructive"-tx-34-"obstructive sleep apnea"-JJ-0|tx|3628:23|
+text|0.0|Crestor|C1098080|[orch, phsu]|"Crestor"-tx-8-"Crestor"-NNP-0|tx|861:7|
+text|0.0|Tunnel structure|C0337138|[mnob]|"Tunnel structure"-tx-111-"tunnel"-NN-0|tx|8175:6|
+text|0.0|Diabetes Mellitus|C0011849|[dsyn]|"Diabetes Mellitus"-tx-41-"Diabetes mellitus"-NNP-0|tx|3914:17|
+text|0.0|impression (attitude)|C0596764|[inbe]|"impression (attitude)"-tx-106-"Impression"-NN-0|tx|7749:10|
+text|0.0|Table Cell Horizontal Align - left|C1552822|[ftcn]|"Table Cell Horizontal Align - left"-tx-36-"Left"-NNP-0|tx|3683:4|
+text|0.0|Left|C0205091|[spco]|"Left"-tx-36-"Left"-NNP-0|tx|3683:4|
+text|0.0|Device Plate|C1139930|[medd]|"Device Plate"-tx-77-"plate"-NN-0|tx|6144:5|
+text|0.0|Few|C0205388|[qnco]|"Few"-tx-119-"few"-JJ-0|tx|9003:3|
+text|0.0|Transitory|C0205374|[tmco]|"Transitory"-tx-20-"transient"-JJ-0|tx|2566:9|
+text|0.0|All extremities|C0278454|[bpoc]|"All extremities"-tx-98-"EXTREMITIES"-NNS-0|tx|7204:11|
+text|0.0|Limb structure|C0015385|[bpoc]|"Limb structure"-tx-98-"EXTREMITIES"-NNS-0|tx|7204:11|
+text|0.0|Have|C3539897|[qlco]|"Have"-tx-86-"Has"-NNP-0|tx|6685:3|
+text|0.0|Dyspnea|C0013404|[sosy]|"Dyspnea"-tx-32-"shortness of breath"-NN-1|tx|3412:19|
+text|0.0|Devices|C0699733|[mnob]|"Devices"-tx-75-"device"-NN-0|tx|6058:6|
+text|0.0|More|C0205172|[ftcn]|"More"-tx-54-"more"-JJR-0|tx|5183:4|
+text|0.0|Focal|C0205234|[spco]|"Focal"-tx-116-"focal"-JJ-0|tx|8681:5|
+text|0.0|Organ|C0178784|[bpoc]|"Organ"-tx-21-"organ"-NN-0|tx|2711:5|
+text|0.0|Hyperlipidemia|C0020473|[dsyn]|"Hyperlipidemia"-tx-60-"Hyperlipidemia"-NNP-0|tx|5518:14|
+text|0.0|Serum lipids high (finding)|C0428465|[fndg]|"Serum lipids high (finding)"-tx-60-"Hyperlipidemia"-NNP-0|tx|5518:14|
+text|0.0|Tunnel structure|C0337138|[mnob]|"Tunnel structure"-tx-40-"tunnel"-NN-0|tx|3894:6|
+text|0.0|Cervical|C0205064|[spco]|"Cervical"-tx-112-"cervical"-JJ-0|tx|8228:8|
+text|0.0|Response process|C0871261|[orga]|"Response process"-tx-108-"response"-NN-0|tx|7954:8|
+text|0.0|Disease Response|C1704632|[fndg]|"Disease Response"-tx-108-"response"-NN-0|tx|7954:8|
+text|0.0|Debridement by Maggots|C3245462|[inpr]|"Debridement by Maggots"-tx-70-"Debridement"-NN-0|tx|5740:11|
+text|0.0|Debridement|C0011079|[topp]|"Debridement"-tx-70-"Debridement"-NN-0|tx|5740:11|
+text|0.0|Neuropathy|C0442874|[dsyn]|"Neuropathy"-tx-128-"neuropathy"-JJ-0|tx|9792:10|
+text|0.0|Axonal neuropathy|C0270921|[dsyn]|"Axonal neuropathy"-tx-127-"axonal
+neuropathy"-JJ-0|tx|9638:17|
+text|0.0|Auscultation|C0004339|[diap]|"Auscultation"-tx-95-"auscultation"-NN-0|tx|7078:12|
+text|0.0|Severe (severity modifier)|C0205082|[qlco]|"Severe (severity modifier)"-tx-34-"severe"-JJ-0|tx|3621:6|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-27-"patient"-NN-0|tx|3065:7|
+text|0.0|Lesion|C0221198|[fndg]|"Lesion"-tx-19-"lesions"-NNS-1|tx|2429:7|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-8-"mouth"-NN-0|tx|816:5|
+text|0.0|Swelling|C0038999|[fndg]|"Swelling"-tx-102-"swollen"-JJ-1|tx|7547:7|
+text|0.0|Aspect (characteristic)|C1879746|[qlco]|"Aspect (characteristic)"-tx-50-"aspect"-NN-0|tx|4719:6|
+text|0.0|Aspect - Kind of quantity|C1547011|[qnco]|"Aspect - Kind of quantity"-tx-50-"aspect"-NN-0|tx|4719:6|
+text|0.0|Main|C1542147|[qlco]|"Main"-tx-52-"predominant"-JJ-0|tx|4985:11|
+text|0.0|Drugs, Non-Prescription|C0013231|[phsu]|"Drugs, Non-Prescription"-tx-10-"OTC"-NNP-0|tx|1486:3|
+text|0.0|Table Cell Vertical Align - middle|C1552826|[idcn]|"Table Cell Vertical Align - middle"-tx-36-"middle"-JJ-0|tx|3688:6|
+text|0.0|Midline (qualifier value)|C0549183|[spco]|"Midline (qualifier value)"-tx-36-"middle"-JJ-0|tx|3688:6|
+text|0.0|Anterior cervical spine approach|C0442011|[spco]|"Anterior cervical spine approach"-tx-75-"Anterior cervical"-JJ-0|tx|5996:17|
+text|0.0|Right ring finger|C0930956|[bpoc]|"Right ring finger"-tx-46-"right fourth finger"-JJ-0|tx|4252:19|
+text|0.0|Bone structure of tibia|C0040184|[bpoc]|"Bone structure of tibia"-tx-81-"tibial"-JJ-0|tx|6469:6|
+text|0.0|December|C3830550|[qlco]|"December"-tx-104-"December"-NNP-0|tx|7629:8|
+text|0.0|May|C3812381|[qlco]|"May"-tx-51-"May"-NNP-0|tx|4849:3|
+text|0.0|Hypocomplementemic urticarial vasculitis|C0343206|[dsyn]|"Hypocomplementemic urticarial vasculitis"-tx-11-"Hypocomplementemic urticarial vasculitis"-NNP-0|tx|1719:40|
+text|0.0|Discharge (release)|C0680255|[hlca]|"Discharge (release)"-tx-80-"release"-NN-0|tx|6417:7|
+text|0.0|Release (procedure)|C1963578|[topp]|"Release (procedure)"-tx-80-"release"-NN-0|tx|6417:7|
+text|0.0|Released (action)|C0391871|[ftcn]|"Released (action)"-tx-80-"release"-NN-0|tx|6417:7|
+text|0.0|Up|C0547043|[spco]|"Up"-tx-5-"up to"-JJ-0|tx|460:5|
+text|0.0|Tendinitis|C0039503|[dsyn]|"Tendinitis"-tx-46-"tendonitis"-NN-0|tx|4279:10|
+text|0.0|Early|C1279919|[tmco]|"Early"-tx-12-"early"-JJ-0|tx|1788:5|
+text|0.0|Sometimes|C1998882|[tmco]|"Sometimes"-tx-52-"sometimes"-RB-0|tx|5018:9|
+text|0.0|Colchicine|C0009262|[orch, phsu]|"Colchicine"-tx-14-"colchicine"-NN-0|tx|2007:10|
+text|0.0|Polyneuropathy|C0152025|[dsyn]|"Polyneuropathy"-tx-25-"polyneuropathy"-NN-0|tx|2939:14|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-133-"Plaquenil"-NNP-0|tx|10360:9|
+text|0.0|Structure of right foot|C0230460|[bpoc]|"Structure of right foot"-tx-24-"right foot"-JJ-0|tx|2809:10|
+text|0.0|Moist|C0205381|[qlco]|"Moist"-tx-93-"moist"-JJ-0|tx|6973:5|
+text|0.0|CHRONIC GENERALIZED|C0742414|[idcn]|"CHRONIC GENERALIZED"-tx-107-"chronic generalized"-JJ-0|tx|7820:19|
+text|0.0|Lesion|C0221198|[fndg]|"Lesion"-tx-93-"lesions"-NNS-1|tx|6997:7|
+text|0.0|Mucocele|C0026683|[anab]|"Mucocele"-tx-36-"mucous cyst"-JJ-0|tx|3699:11|
+text|0.0|Clinical Trials, Monitoring|C1516647|[resa]|"Clinical Trials, Monitoring"-tx-133-"monitoring"-NN-0|tx|10370:10|
+text|0.0|Preventive monitoring|C0150369|[hlca]|"Preventive monitoring"-tx-133-"monitoring"-NN-0|tx|10370:10|
+text|0.0|February|C3830166|[qlco]|"February"-tx-109-"February"-NNP-0|tx|8043:8|
+text|0.0|year|C0439234|[tmco]|"year"-tx-117-"year"-NN-0|tx|8756:4|
+text|0.0|Able (finding)|C1299581|[fndg]|"Able (finding)"-tx-115-"able"-JJ-0|tx|8627:4|
+text|0.0|Due to|C0678226|[ftcn]|"Due to"-tx-14-"due to"-JJ-0|tx|2081:6|
+text|0.0|Medical History|C0262926|[fndg]|"Medical History"-tx-57-"MEDICAL HISTORY"-JJ-0|tx|5412:15|
+text|0.0|Medical History Domain|C1704706|[idcn]|"Medical History Domain"-tx-57-"MEDICAL HISTORY"-JJ-0|tx|5412:15|
+text|0.0|Scientific Control|C1882979|[cnce]|"Scientific Control"-tx-119-"control"-NN-0|tx|8935:7|
+text|0.0|control aspects|C0243148|[qlco]|"control aspects"-tx-119-"control"-NN-0|tx|8935:7|
+text|0.0|Excellent (qualifier value)|C1961136|[qlco]|"Excellent (qualifier value)"-tx-119-"excellent"-JJ-0|tx|8925:9|
+text|0.0|Excellent - Specimen Quality|C1548784|[qlco]|"Excellent - Specimen Quality"-tx-119-"excellent"-JJ-0|tx|8925:9|
+text|0.0|Insulin pump|C1140609|[medd]|"Insulin pump"-tx-8-"Insulin pump"-NNP-0|tx|651:12|
+text|0.0|Rhythm|C0871269|[fndg]|"Rhythm"-tx-96-"rhythm"-NN-0|tx|7116:6|
+text|0.0|rhythmic process (biological)|C1523018|[phsf]|"rhythmic process (biological)"-tx-96-"rhythm"-NN-0|tx|7116:6|
+text|0.0|Following|C0332282|[tmco]|"Following"-tx-117-"following"-JJ-0|tx|8782:9|
+text|0.0|Cholecalciferol|C0008318|[strd, vita, phsu]|"Cholecalciferol"-tx-10-"vitamin D3"-NN-0|tx|1274:10|
+text|0.0|Upper Extremity|C1140618|[bpoc]|"Upper Extremity"-tx-45-"upper extremities"-JJ-0|tx|4144:17|
+text|0.0|Operative Surgical Procedures|C0543467|[hlca]|"Operative Surgical Procedures"-tx-46-"surgical"-JJ-0|tx|4311:8|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-8-"tablet"-NN-0|tx|744:6|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-8-"tablet"-NN-0|tx|744:6|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-10-"mouth"-NN-0|tx|1322:5|
+text|0.0|September|C3828193|[tmco]|"September"-tx-20-"September"-NNP-0|tx|2527:9|
+text|0.0|mostly|C0750554|[idcn]|"mostly"-tx-25-"mostly"-RB-0|tx|2920:6|
+text|0.0|Few|C0205388|[qnco]|"Few"-tx-17-"few"-JJ-0|tx|2305:3|
+text|0.0|Aspects of signs|C0220912|[ftcn]|"Aspects of signs"-tx-0-"Signs"-NNS-0|tx|123:5|
+text|0.0|Manufactured sign|C0220913|[mnob]|"Manufactured sign"-tx-0-"Signs"-NNS-0|tx|123:5|
+text|0.0|Physical findings|C0311392|[fndg]|"Physical findings"-tx-0-"Signs"-NNS-0|tx|123:5|
+text|0.0|Report (document)|C0684224|[inpr]|"Report (document)"-tx-48-"reports"-NNS-0|tx|4466:7|
+text|0.0|Reporting|C0700287|[hlca]|"Reporting"-tx-48-"reports"-NNS-0|tx|4466:7|
+text|0.0|Bone structure of tibia|C0040184|[bpoc]|"Bone structure of tibia"-tx-108-"tibial"-JJ-0|tx|7907:6|
+text|0.0|Drink (dietary substance)|C0452428|[food]|"Drink (dietary substance)"-tx-84-"drinks"-NNS-0|tx|6644:6|
+text|0.0|Study|C2603343|[resa]|"Study"-tx-113-"study"-NN-0|tx|8315:5|
+text|0.0|Room of building - Study|C0557651|[mnob]|"Room of building - Study"-tx-113-"study"-NN-0|tx|8315:5|
+text|0.0|Future|C0016884|[tmco]|"Future"-tx-37-"future"-JJ-0|tx|3722:6|
+text|0.0|Proximal|C0205107|[spco]|"Proximal"-tx-100-"proximal"-JJ-0|tx|7324:8|
+text|0.0|Motor response|C1285623|[clna]|"Motor response"-tx-127-"motor response"-NN-0|tx|9615:14|
+text|0.0|Radiculopathy, Cervical|C0742186|[dsyn]|"Radiculopathy, Cervical"-tx-129-"cervical
+radiculopathy"-JJ-0|tx|10055:22|
+text|0.0|November|C3828767|[tmco]|"November"-tx-105-"November"-NNP-0|tx|7730:8|
+text|0.0|Lower Extremity|C0023216|[blor]|"Lower Extremity"-tx-55-"lower extremities"-JJR-0|tx|5349:17|
+text|0.0|Arthrotomy of shoulder|C0186334|[topp]|"Arthrotomy of shoulder"-tx-82-"arthrotomy"-NN-0|tx|6484:10|
+text|0.0|Temporomandibular joint arthrotomy by dentist|C0700234|[topp]|"Temporomandibular joint arthrotomy by dentist"-tx-82-"arthrotomy"-NN-0|tx|6484:10|
+text|0.0|Arthrotomy|C0185160|[topp]|"Arthrotomy"-tx-82-"arthrotomy"-NN-0|tx|6484:10|
+text|0.0|Levels (qualifier value)|C0441889|[qlco]|"Levels (qualifier value)"-tx-120-"levels"-NNS-0|tx|9076:6|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-120-"patient"-NN-0|tx|9091:7|
+text|0.0|Evidence of|C0332120|[ftcn]|"Evidence of"-tx-125-"evidence of"-NN-0|tx|9448:11|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-19-"Plaquenil"-NNP-0|tx|2438:9|
+text|0.0|history of prior surgery|C0744961|[fndg]|"history of prior surgery"-tx-66-"SURGICAL HISTORY"-JJ-0|tx|5609:16|
+text|0.0|Pain score|C0582148|[fndg]|"Pain score"-tx-4-"Pain Score"-NNP-0|tx|224:10|
+text|0.0|Anterior cervical spine approach|C0442011|[spco]|"Anterior cervical spine approach"-tx-74-"Anterior cervical"-NNP-0|tx|5945:17|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-8-"mouth"-NN-0|tx|757:5|
+text|0.0|British Mile|C2347127|[qnco]|"British Mile"-tx-51-"mile"-NN-0|tx|4868:4|
+text|0.0|Miles|C0331865|[qnco]|"Miles"-tx-51-"mile"-NN-0|tx|4868:4|
+text|0.0|Survey Mile|C2348616|[qnco]|"Survey Mile"-tx-51-"mile"-NN-0|tx|4868:4|
+text|0.0|year|C0439234|[tmco]|"year"-tx-11-"year"-NN-0|tx|1670:4|
+text|0.0|Nerve|C0027740|[tisu]|"Nerve"-tx-99-"nerves"-NNS-0|tx|7285:6|
+text|0.0|Intact|C0205266|[qlco]|"Intact"-tx-101-"intact"-JJ-0|tx|7353:6|
+text|0.0|Cetirizine|C0055147|[orch, phsu]|"Cetirizine"-tx-8-"cetirizine"-NN-0|tx|1102:10|
+text|0.0|findings aspects|C2607943|[ftcn]|"findings aspects"-tx-129-"findings"-NNS-0|tx|9847:8|
+text|0.0|Drug abuse|C0013146|[mobd]|"Drug abuse"-tx-85-"recreational drug use"-JJ-1|tx|6662:21|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-8-"tablet"-NN-0|tx|875:6|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-8-"tablet"-NN-0|tx|875:6|
+text|0.0|Polysomnography|C0162701|[diap]|"Polysomnography"-tx-34-"sleep study"-NN-0|tx|3587:11|
+text|0.0|Sleep studies - specialty|C1321597|[bmod]|"Sleep studies - specialty"-tx-34-"sleep study"-NN-0|tx|3587:11|
+text|0.0|Structure of right shoulder region|C0524468|[blor]|"Structure of right shoulder region"-tx-69-"Right
+shoulder"-RB-0|tx|5685:14|
+text|0.0|Uncertainty|C0087130|[qlco]|"Uncertainty"-tx-10-"uncertain"-JJ-0|tx|1399:9|
+text|0.0|Mild (qualifier value)|C2945599|[qlco]|"Mild (qualifier value)"-tx-111-"mild"-JJ-0|tx|8116:4|
+text|0.0|Right triceps brachii|C0829135|[bpoc]|"Right triceps brachii"-tx-53-"right triceps"-JJ-0|tx|5121:13|
+text|0.0|DNA|C0012854|[bacs, nnon]|"DNA"-tx-13-"dsDNA"-NN-0|tx|1908:5|
+text|0.0|Dyspnea|C0013404|[sosy]|"Dyspnea"-tx-29-"shortness of breath"-NN-0|tx|3190:19|
+text|0.0|Evidence of|C0332120|[ftcn]|"Evidence of"-tx-107-"evidence"-NN-0|tx|7805:8|
+text|0.0|Prednisone|C0032952|[horm, strd, phsu]|"Prednisone"-tx-18-"prednisone"-NN-0|tx|2399:10|
+text|0.0|Data call receiving device|C3245479|[medd]|"Data call receiving device"-tx-113-"data"-NNS-0|tx|8376:4|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-52-"patient"-JJ-0|tx|4883:7|
+text|0.0|Musculoskeletal|C0497254|[ftcn]|"Musculoskeletal"-tx-102-"MUSCULOSKELETAL"-NN-0|tx|7527:15|
+text|0.0|Musculoskeletal:-:Point in time:^Patient:-|C2707260|[clna]|"Musculoskeletal:-:Point in time:^Patient:-"-tx-102-"MUSCULOSKELETAL"-NN-0|tx|7527:15|
+text|0.0|Pneumovax|C0071315|[imft, phsu]|"Pneumovax"-tx-43-"Pneumovax"-NNP-0|tx|3952:9|
+text|0.0|Supple|C0332254|[ftcn]|"Supple"-tx-94-"Supple"-NN-0|tx|7012:6|
+text|0.0|Smoke|C0037366|[eehu, hops]|"Smoke"-tx-84-"smoke"-NN-0|tx|6629:5|
+text|0.0|Pulmonary Function Tests:-:Point in time:^Patient:-|C2598152|[clna]|"Pulmonary Function Tests:-:Point in time:^Patient:-"-tx-31-"Pulmonary function tests"-JJ-0|tx|3307:24|
+text|0.0|Pulmonary function tests|C0024119|[diap]|"Pulmonary function tests"-tx-31-"Pulmonary function tests"-JJ-0|tx|3307:24|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-8-"tablet"-NN-0|tx|803:6|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-8-"tablet"-NN-0|tx|803:6|
+text|0.0|Motor response|C1285623|[clna]|"Motor response"-tx-129-"motor response"-NN-0|tx|9906:14|
+text|0.0|Html Link Type - index|C1552854|[idcn]|"Html Link Type - index"-tx-13-"index"-NN-0|tx|1977:5|
+text|0.0|Index|C0918012|[inpr]|"Index"-tx-13-"index"-NN-0|tx|1977:5|
+text|0.0|Combined|C0205195|[qlco]|"Combined"-tx-10-"COMBINATION"-NN-0|tx|1361:11|
+text|0.0|combination - answer to question|C3811910|[fndg]|"combination - answer to question"-tx-10-"COMBINATION"-NN-0|tx|1361:11|
+text|0.0|combination of objects|C1947911|[phob]|"combination of objects"-tx-10-"COMBINATION"-NN-0|tx|1361:11|
+text|0.0|Upper Extremity|C1140618|[bpoc]|"Upper Extremity"-tx-128-"upper extremities"-JJ-0|tx|9681:17|
+text|0.0|Reporting|C0700287|[hlca]|"Reporting"-tx-54-"reports"-NNS-0|tx|5153:7|
+text|0.0|Report (document)|C0684224|[inpr]|"Report (document)"-tx-54-"reports"-NNS-0|tx|5153:7|
+text|0.0|Right|C0205090|[spco]|"Right"-tx-115-"right"-JJ-0|tx|8601:5|
+text|0.0|Daily|C0332173|[tmco]|"Daily"-tx-7-"daily"-JJ-0|tx|574:5|
+text|0.0|Synovectomy|C0185304|[topp]|"Synovectomy"-tx-83-"synovectomy"-NN-0|tx|6579:11|
+text|0.0|Temporomandibular joint synovectomy|C0498272|[topp]|"Temporomandibular joint synovectomy"-tx-83-"synovectomy"-NN-0|tx|6579:11|
+text|0.0|Drugs, Non-Prescription|C0013231|[phsu]|"Drugs, Non-Prescription"-tx-10-"OTC"-NNP-0|tx|1342:3|
+text|0.0|Intermittent|C0205267|[tmco]|"Intermittent"-tx-52-"intermittent"-JJ-0|tx|4912:12|
+text|0.0|Hydroxychloroquine|C0020336|[orch, phsu]|"Hydroxychloroquine"-tx-6-"hydroxychloroquine"-JJ-0|tx|517:18|
+text|0.0|Hepatitis C virus|C0220847|[virs]|"Hepatitis C virus"-tx-44-"HCV"-NNP-0|tx|3991:3|
+text|0.0|Normal|C0205307|[qlco]|"Normal"-tx-120-"normal"-JJ-0|tx|9069:6|
+text|0.0|sensory exam|C2229507|[hlca]|"sensory exam"-tx-50-"sensation"-NN-0|tx|4682:9|
+text|0.0|Observation of Sensation|C0542538|[fndg]|"Observation of Sensation"-tx-50-"sensation"-NN-0|tx|4682:9|
+text|0.0|Esthesia|C0036658|[ortf]|"Esthesia"-tx-50-"sensation"-NN-0|tx|4682:9|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-89-"patient"-JJ-0|tx|6815:7|
+text|0.0|Abnormal|C0205161|[qlco]|"Abnormal"-tx-106-"Abnormal"-JJ-0|tx|7761:8|
+text|0.0|Scanning|C0441633|[diap]|"Scanning"-tx-31-"scan"-JJ-0|tx|3341:4|
+text|0.0|Suggestive of|C0332299|[ftcn]|"Suggestive of"-tx-112-"suggestive of"-JJ-0|tx|8209:13|
+text|0.0|Joints|C0022417|[bsoj]|"Joints"-tx-102-"joints"-NNS-0|tx|7565:6|
+text|0.0|Articular system|C0392905|[bdsy]|"Articular system"-tx-102-"joints"-NNS-0|tx|7565:6|
+text|0.0|Structure of right foot|C0230460|[bpoc]|"Structure of right foot"-tx-101-"right foot"-JJ-0|tx|7462:10|
+text|0.0|Sensory polyneuropathy axonal|C0857382|[dsyn]|"Sensory polyneuropathy axonal"-tx-107-"sensory axonal polyneuropathy"-JJ-0|tx|7854:29|
+text|0.0|Reduction - action|C0441610|[topp]|"Reduction - action"-tx-101-"reduction"-NN-0|tx|7474:9|
+text|0.0|Reduction (chemical)|C0301630|[npop]|"Reduction (chemical)"-tx-101-"reduction"-NN-0|tx|7474:9|
+text|0.0|Circumpennate|C0920847|[cnce]|"Circumpennate"-tx-115-"radial"-JJ-0|tx|8607:6|
+text|0.0|Radial|C0442038|[cnce]|"Radial"-tx-115-"radial"-JJ-0|tx|8607:6|
+text|0.0|Status post|C0231290|[tmco]|"Status post"-tx-40-"Status post"-NNP-0|tx|3869:11|
+text|0.0|Entire right shoulder region|C1288639|[blor]|"Entire right shoulder region"-tx-67-"Right shoulder"-RB-0|tx|5630:14|
+text|0.0|Structure of right shoulder region|C0524468|[blor]|"Structure of right shoulder region"-tx-67-"Right shoulder"-RB-0|tx|5630:14|
+text|0.0|Infrequent|C0521114|[tmco]|"Infrequent"-tx-53-"occasional"-JJ-0|tx|5081:10|
+text|0.0|Electromyography|C0013839|[diap]|"Electromyography"-tx-45-"electromyography"-NN-0|tx|4123:16|
+text|0.0|aspects of adverse effects|C0001688|[ftcn]|"aspects of adverse effects"-tx-49-"side effects"-JJ-0|tx|4620:12|
+text|0.0|Tendon structure|C0039508|[bpoc]|"Tendon structure"-tx-81-"tendon"-NN-0|tx|6476:6|
+text|0.0|Augmentation procedure|C1293122|[topp]|"Augmentation procedure"-tx-78-"augmentation"-NN-0|tx|6220:12|
+text|0.0|Data call receiving device|C3245479|[medd]|"Data call receiving device"-tx-112-"data"-NNS-0|tx|8196:4|
+text|0.0|Hypocomplementemic urticarial vasculitis|C0343206|[dsyn]|"Hypocomplementemic urticarial vasculitis"-tx-117-"Hypocomplementemic urticarial vasculitis"-NNP-0|tx|8805:40|
+text|0.0|Pulmonary (qualifier value)|C2709248|[qlco]|"Pulmonary (qualifier value)"-tx-33-"Pulmonary"-JJ-0|tx|3496:9|
+text|0.0|Lung|C0024109|[bpoc]|"Lung"-tx-33-"Pulmonary"-JJ-0|tx|3496:9|
+text|0.0|Suggestive of|C0332299|[ftcn]|"Suggestive of"-tx-108-"suggestive of"-JJ-0|tx|7970:13|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-132-"patient"-JJ-0|tx|10331:7|
+text|0.0|Operative Surgical Procedures|C0543467|[hlca]|"Operative Surgical Procedures"-tx-37-"surgically"-RB-0|tx|3781:10|
+text|0.0|Natures|C1262865|[ftcn]|"Natures"-tx-114-"nature"-NN-0|tx|8573:6|
+text|0.0|Nature|C0349590|[idcn]|"Nature"-tx-114-"nature"-NN-0|tx|8573:6|
+text|0.0|Edema|C0013604|[patf]|"Edema"-tx-98-"edema"-NN-1|tx|7233:5|
+text|0.0|Aspirin 81 MG|C0983882|[clnd]|"Aspirin 81 MG"-tx-8-"Aspirin 81 mg"-NNP-0|tx|1010:13|
+text|0.0|Decompressive incision|C0021153|[topp]|"Decompressive incision"-tx-72-"decompression"-NN-0|tx|5877:13|
+text|0.0|Therapeutic procedure|C0087111|[topp]|"Therapeutic procedure"-tx-134-"treatment"-NN-0|tx|10478:9|
+text|0.0|therapeutic aspects|C0039798|[ftcn]|"therapeutic aspects"-tx-134-"treatment"-NN-0|tx|10478:9|
+text|0.0|Consistent with|C0332290|[idcn]|"Consistent with"-tx-128-"consistent with"-JJ-0|tx|9707:15|
+text|0.0|Fusion procedure|C1293131|[topp]|"Fusion procedure"-tx-78-"fusion"-NN-0|tx|6213:6|
+text|0.0|Fused structure|C0332466|[ftcn]|"Fused structure"-tx-78-"fusion"-NN-0|tx|6213:6|
+text|0.0|Walking (activity)|C0080331|[dora]|"Walking (activity)"-tx-51-"walk"-NN-0|tx|4873:4|
+text|0.0|Target Awareness - partial|C1550516|[idcn]|"Target Awareness - partial"-tx-73-"partial"-JJ-0|tx|5907:7|
+text|0.0|Partial|C0728938|[qnco]|"Partial"-tx-73-"partial"-JJ-0|tx|5907:7|
+text|0.0|Transitory|C0205374|[tmco]|"Transitory"-tx-17-"transient"-JJ-0|tx|2309:9|
+text|0.0|microgram|C0439211|[qnco]|"microgram"-tx-8-"mcg"-JJ-0|tx|730:3|
+text|0.0|Date Fruit|C2348077|[food]|"Date Fruit"-tx-0-"Date"-NNP-0|tx|20:4|
+text|0.0|Date in time|C0011008|[tmco]|"Date in time"-tx-0-"Date"-NNP-0|tx|20:4|
+text|0.0|Antineutrophil Cytoplasmic Antibodies|C0103647|[imft]|"Antineutrophil Cytoplasmic Antibodies"-tx-13-"ANCA"-NNP-0|tx|1902:4|
+text|0.0|Losartan|C0126174|[orch, phsu]|"Losartan"-tx-8-"LOSARTAN"-NNP-0|tx|767:8|
+text|0.0|Absent|C0332197|[ftcn]|"Absent"-tx-127-"absence"-NN-0|tx|9588:7|
+text|0.0|Chest|C0817096|[blor]|"Chest"-tx-31-"chest"-NN-0|tx|3353:5|
+text|0.0|Upper|C1282910|[spco]|"Upper"-tx-55-"upper"-JJ-0|tx|5340:5|
+text|0.0|Delayed-release tablet|C1337602|[bodm]|"Delayed-release tablet"-tx-8-"tablet, delayed release"-NN-0|tx|1024:23|
+text|0.0|impression (attitude)|C0596764|[inbe]|"impression (attitude)"-tx-21-"impression"-NN-0|tx|2614:10|
+text|0.0|Regulatory Application|C2347934|[inpr]|"Regulatory Application"-tx-78-"Application"-NNP-0|tx|6178:11|
+text|0.0|Application procedure|C0185125|[hlca]|"Application procedure"-tx-78-"Application"-NNP-0|tx|6178:11|
+text|0.0|Application (Document)|C1947919|[inpr]|"Application (Document)"-tx-78-"Application"-NNP-0|tx|6178:11|
+text|0.0|Application Dosing Unit|C3539080|[qnco]|"Application Dosing Unit"-tx-78-"Application"-NNP-0|tx|6178:11|
+text|0.0|Normal|C0205307|[qlco]|"Normal"-tx-13-"normal"-JJ-0|tx|1932:6|
+text|0.0|Peripheral demyelinating neuropathy|C0270922|[dsyn]|"Peripheral demyelinating neuropathy"-tx-128-"demyelinating polyneuropathy"-JJ-0|tx|9723:28|
+text|0.0|Transfusion (procedure)|C1879316|[topp]|"Transfusion (procedure)"-tx-86-"transfusions"-NNS-0|tx|6702:12|
+text|0.0|Transfusion - action|C0199960|[ftcn]|"Transfusion - action"-tx-86-"transfusions"-NNS-0|tx|6702:12|
+text|0.0|Evidence of|C0332120|[ftcn]|"Evidence of"-tx-124-"evidence of"-NN-0|tx|9398:11|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-8-"tablet"-NN-0|tx|1119:6|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-8-"tablet"-NN-0|tx|1119:6|
+text|0.0|Operative Surgical Procedures|C0543467|[hlca]|"Operative Surgical Procedures"-tx-124-"surgery"-NN-0|tx|9361:7|
+text|0.0|Surgical aspects|C0038895|[ftcn]|"Surgical aspects"-tx-124-"surgery"-NN-0|tx|9361:7|
+text|0.0|Bone structure of tibia|C0040184|[bpoc]|"Bone structure of tibia"-tx-127-"tibial"-JJ-0|tx|9608:6|
+text|0.0|Hypesthesia|C0020580|[fndg]|"Hypesthesia"-tx-24-"hypoesthesia"-NN-0|tx|2821:12|
+text|0.0|Involvement with|C1314939|[ftcn]|"Involvement with"-tx-32-"involvement"-NN-0|tx|3457:11|
+text|0.0|Assessed|C1516048|[acty]|"Assessed"-tx-117-"ASSESSMENT"-JJ-0|tx|8730:10|
+text|0.0|Evaluation procedure|C1261322|[hlca]|"Evaluation procedure"-tx-117-"ASSESSMENT"-JJ-0|tx|8730:10|
+text|0.0|Evaluation|C0220825|[hlca]|"Evaluation"-tx-117-"ASSESSMENT"-JJ-0|tx|8730:10|
+text|0.0|Mononeuropathy Multiplex|C0740343|[dsyn]|"Mononeuropathy Multiplex"-tx-108-"mononeuropathy
+multiplex"-JJ-0|tx|8012:24|
+text|0.0|Medical contraindication|C1301624|[fndg]|"Medical contraindication"-tx-15-"contraindication"-NN-1|tx|2213:16|
+text|0.0|Contraindication|C0522473|[qlco]|"Contraindication"-tx-15-"contraindication"-NN-1|tx|2213:16|
+text|0.0|Neurologic (qualifier value)|C0205494|[qlco]|"Neurologic (qualifier value)"-tx-99-"NEUROLOGIC"-NN-0|tx|7258:10|
+text|0.0|Program|C2728259|[phsu]|"Program"-tx-87-"program"-NN-0|tx|6718:7|
+text|0.0|Programs|C3484370|[ftcn]|"Programs"-tx-87-"program"-NN-0|tx|6718:7|
+text|0.0|Program - framework of goals|C1709697|[cnce]|"Program - framework of goals"-tx-87-"program"-NN-0|tx|6718:7|
+text|0.0|day|C0439228|[tmco]|"day"-tx-8-"day"-NN-0|tx|1077:3|
+text|0.0|Internal|C0205102|[spco]|"Internal"-tx-120-"internal"-JJ-0|tx|9143:8|
+text|0.0|Numbness|C0028643|[sosy]|"Numbness"-tx-52-"numbness"-NN-0|tx|4944:8|
+text|0.0|Hypesthesia|C0020580|[fndg]|"Hypesthesia"-tx-52-"numbness"-NN-0|tx|4944:8|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-118-"patient"-NN-0|tx|8851:7|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-117-"patient"-JJ-0|tx|8765:7|
+text|0.0|Internal|C0205102|[spco]|"Internal"-tx-21-"internal"-JJ-0|tx|2702:8|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-21-"patient"-JJ-0|tx|2638:7|
+text|0.0|Neuropathy|C0442874|[dsyn]|"Neuropathy"-tx-23-"Neuropathy"-NNP-0|tx|2761:10|
+text|0.0|August|C3831448|[qlco]|"August"-tx-133-"August"-NNP-0|tx|10407:6|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-15-"Plaquenil"-NNP-0|tx|2154:9|
+text|0.0|Hypertension Adverse Event|C1963138|[fndg]|"Hypertension Adverse Event"-tx-61-"Hypertension"-NNP-0|tx|5537:12|
+text|0.0|Hypertensive disease|C0020538|[dsyn]|"Hypertensive disease"-tx-61-"Hypertension"-NNP-0|tx|5537:12|
+text|0.0|Reactive airway disease|C3714497|[dsyn]|"Reactive airway disease"-tx-33-"reactive airway disease"-JJ-0|tx|3528:23|
+text|0.0|Chronic Obstructive Airway Disease|C0024117|[dsyn]|"Chronic Obstructive Airway Disease"-tx-33-"reactive airway disease"-JJ-0|tx|3528:23|
+text|0.0|Study|C2603343|[resa]|"Study"-tx-114-"study"-NN-0|tx|8510:5|
+text|0.0|Room of building - Study|C0557651|[mnob]|"Room of building - Study"-tx-114-"study"-NN-0|tx|8510:5|
+text|0.0|Room of building - Study|C0557651|[mnob]|"Room of building - Study"-tx-106-"study"-NN-0|tx|7770:5|
+text|0.0|Study|C2603343|[resa]|"Study"-tx-106-"study"-NN-0|tx|7770:5|
+text|0.0|Hepatitis C virus|C0220847|[virs]|"Hepatitis C virus"-tx-13-"HCV"-NNP-0|tx|1897:3|
+text|0.0|Social and personal history|C0424945|[fndg]|"Social and personal history"-tx-84-"SOCIAL HISTORY"-JJ-0|tx|6592:14|
+text|0.0|social history|C3714536|[fndg]|"social history"-tx-84-"SOCIAL HISTORY"-JJ-0|tx|6592:14|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-129-"patient"-NN-0|tx|9969:7|
+text|0.0|subcutaneous|C0443315|[spco]|"subcutaneous"-tx-7-"subcutaneous"-JJ-0|tx|627:12|
+text|0.0|Motor response|C1285623|[clna]|"Motor response"-tx-108-"motor response"-NN-0|tx|7914:14|
+text|0.0|December|C3830550|[qlco]|"December"-tx-27-"December"-NNP-0|tx|3113:8|
+text|0.0|Tendinopathy|C1568272|[dsyn]|"Tendinopathy"-tx-67-"tendinopathy"-NN-0|tx|5658:12|
+text|0.0|Drugs, Non-Prescription|C0013231|[phsu]|"Drugs, Non-Prescription"-tx-8-"OTC"-NNP-0|tx|1084:3|
+text|0.0|Drugs, Non-Prescription|C0013231|[phsu]|"Drugs, Non-Prescription"-tx-8-"OTC"-NNP-0|tx|956:3|
+text|0.0|Chronic urticaria|C0263338|[dsyn]|"Chronic urticaria"-tx-64-"Chronic urticaria"-NNP-0|tx|5572:17|
+text|0.0|Leg|C1140621|[blor]|"Leg"-tx-50-"leg"-NN-0|tx|4814:3|
+text|0.0|manager|C0335141|[prog]|"manager"-tx-87-"manager"-NN-0|tx|6726:7|
+text|0.0|Problems - What subject filter|C1546466|[idcn]|"Problems - What subject filter"-tx-117-"problems"-NNS-0|tx|8792:8|
+text|0.0|Right carpal tunnel|C0833261|[bsoj]|"Right carpal tunnel"-tx-80-"Right carpal tunnel"-NNP-0|tx|6397:19|
+text|0.0|Documents|C1301746|[inpr]|"Documents"-tx-135-"document"-NN-0|tx|10549:8|
+text|0.0|Document type|C1547673|[inpr]|"Document type"-tx-135-"document"-NN-0|tx|10549:8|
+text|0.0|Biopsy of skin procedure|C0150866|[diap]|"Biopsy of skin procedure"-tx-12-"skin biopsy"-NN-0|tx|1802:11|
+text|0.0|Improvement|C2986411|[cnce]|"Improvement"-tx-19-"improvement"-NN-0|tx|2470:11|
+text|0.0|Symptoms aspect|C0683368|[ftcn]|"Symptoms aspect"-tx-54-"symptoms"-NNS-0|tx|5188:8|
+text|0.0|Symptoms|C1457887|[sosy]|"Symptoms"-tx-54-"symptoms"-NNS-0|tx|5188:8|
+text|0.0|Symptoms|C1457887|[sosy]|"Symptoms"-tx-51-"symptoms"-NNS-0|tx|4825:8|
+text|0.0|Symptoms aspect|C0683368|[ftcn]|"Symptoms aspect"-tx-51-"symptoms"-NNS-0|tx|4825:8|
+text|0.0|Consciousness clear|C0239110|[fndg]|"Consciousness clear"-tx-89-"alert"-JJ-0|tx|6827:5|
+text|0.0|Neuropathy|C0442874|[dsyn]|"Neuropathy"-tx-134-"neuropathy"-JJ-0|tx|10492:10|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-7-"mouth"-NN-0|tx|568:5|
+text|0.0|acute|C0205178|[tmco]|"acute"-tx-89-"acute"-JJ-0|tx|6850:5|
+text|0.0|Clear|C2963144|[qlco]|"Clear"-tx-95-"Clear"-JJ-0|tx|7069:5|
+text|0.0|Report (document)|C0684224|[inpr]|"Report (document)"-tx-50-"reports"-NNS-0|tx|4646:7|
+text|0.0|Reporting|C0700287|[hlca]|"Reporting"-tx-50-"reports"-NNS-0|tx|4646:7|
+text|0.0|Normal|C0205307|[qlco]|"Normal"-tx-31-"normal"-JJ-0|tx|3364:6|
+text|0.0|Neuropathy|C0442874|[dsyn]|"Neuropathy"-tx-129-"neuropathy"-JJ-0|tx|10027:10|
+text|0.0|Normal|C0205307|[qlco]|"Normal"-tx-96-"normal"-JJ-0|tx|7124:6|
+text|0.0|Rheumatology clinic|C3812871|[mnob, hcro]|"Rheumatology clinic"-tx-10-"Rheumatology
+Clinic"-NNP-0|tx|1604:19|
+text|0.0|Rheumatology clinic - RoleCode|C1550686|[inpr]|"Rheumatology clinic - RoleCode"-tx-10-"Rheumatology
+Clinic"-NNP-0|tx|1604:19|
+text|0.0|Natures|C1262865|[ftcn]|"Natures"-tx-131-"nature"-NN-0|tx|10266:6|
+text|0.0|Nature|C0349590|[idcn]|"Nature"-tx-131-"nature"-NN-0|tx|10266:6|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-46-"patient"-JJ-0|tx|4232:7|
+text|0.0|Consistent with|C0332290|[idcn]|"Consistent with"-tx-126-"consistent with"-JJ-0|tx|9538:15|
+text|0.0|Muscle|C0026845|[tisu]|"Muscle"-tx-91-"muscles"-NNS-0|tx|6932:7|
+text|0.0|Set of muscles|C1995013|[bpoc]|"Set of muscles"-tx-91-"muscles"-NNS-0|tx|6932:7|
+text|0.0|Reconstructive Surgical Procedures|C0524865|[topp]|"Reconstructive Surgical Procedures"-tx-75-"reconstruction"-NN-0|tx|6024:14|
+text|0.0|Structure of right foot|C0230460|[bpoc]|"Structure of right foot"-tx-50-"right foot"-JJ-0|tx|4733:10|
+text|0.0|Chronic Obstructive Airway Disease|C0024117|[dsyn]|"Chronic Obstructive Airway Disease"-tx-28-"Reactive airway disease"-NNP-0|tx|3126:23|
+text|0.0|Reactive airway disease|C3714497|[dsyn]|"Reactive airway disease"-tx-28-"Reactive airway disease"-NNP-0|tx|3126:23|
+text|0.0|Kidney Diseases|C0022658|[dsyn]|"Kidney Diseases"-tx-120-"nephropathy"-JJ-1|tx|9122:11|
+text|0.0|Transitory|C0205374|[tmco]|"Transitory"-tx-119-"transient"-JJ-0|tx|9021:9|
+text|0.0|Clinic|C0442592|[mnob, hcro]|"Clinic"-tx-47-"clinic"-NN-0|tx|4378:6|
+text|0.0|sensory exam|C2229507|[hlca]|"sensory exam"-tx-24-"sensation"-NN-0|tx|2839:9|
+text|0.0|Esthesia|C0036658|[ortf]|"Esthesia"-tx-24-"sensation"-NN-0|tx|2839:9|
+text|0.0|Observation of Sensation|C0542538|[fndg]|"Observation of Sensation"-tx-24-"sensation"-NN-0|tx|2839:9|
+text|0.0|Rheumatologist|C0334889|[prog]|"Rheumatologist"-tx-135-"RHEUMATOLOGIST"-NN-0|tx|10518:14|
+text|0.0|Therapeutic procedure|C0087111|[topp]|"Therapeutic procedure"-tx-22-"Treatment"-NNP-0|tx|2730:9|
+text|0.0|Administration procedure|C1533734|[topp]|"Administration procedure"-tx-22-"Treatment"-NNP-0|tx|2730:9|
+text|0.0|Treating|C1522326|[ftcn]|"Treating"-tx-22-"Treatment"-NNP-0|tx|2730:9|
+text|0.0|therapeutic aspects|C0039798|[ftcn]|"therapeutic aspects"-tx-22-"Treatment"-NNP-0|tx|2730:9|
+text|0.0|Treatment Epoch|C3538994|[resa]|"Treatment Epoch"-tx-22-"Treatment"-NNP-0|tx|2730:9|
+text|0.0|Biomaterial Treatment|C1705169|[cnce]|"Biomaterial Treatment"-tx-22-"Treatment"-NNP-0|tx|2730:9|
+text|0.0|Entire heart|C1281570|[bpoc]|"Entire heart"-tx-96-"HEART"-NN-0|tx|7092:5|
+text|0.0|Heart|C0018787|[bpoc]|"Heart"-tx-96-"HEART"-NN-0|tx|7092:5|
+text|0.0|persistent|C0205322|[tmco]|"persistent"-tx-50-"persistent"-JJ-0|tx|4757:10|
+text|0.0|therapeutic aspects|C0039798|[ftcn]|"therapeutic aspects"-tx-118-"treatment"-NN-0|tx|8871:9|
+text|0.0|Therapeutic procedure|C0087111|[topp]|"Therapeutic procedure"-tx-118-"treatment"-NN-0|tx|8871:9|
+text|0.0|Review of systems:Finding:Point in time:^Patient:Narrative:Reported|C0488564|[clna]|"Review of systems:Finding:Point in time:^Patient:Narrative:Reported"-tx-56-"REVIEW OF SYSTEMS"-NNP-0|tx|5368:17|
+text|0.0|Review of systems (procedure)|C0489633|[hlca]|"Review of systems (procedure)"-tx-56-"REVIEW OF SYSTEMS"-NNP-0|tx|5368:17|
+text|0.0|Review of systems:Finding:Point in time:^Patient:Nominal:Reported|C0488565|[clna]|"Review of systems:Finding:Point in time:^Patient:Nominal:Reported"-tx-56-"REVIEW OF SYSTEMS"-NNP-0|tx|5368:17|
+text|0.0|Esthesia|C0036658|[ortf]|"Esthesia"-tx-53-"sensation"-NN-0|tx|5092:9|
+text|0.0|sensory exam|C2229507|[hlca]|"sensory exam"-tx-53-"sensation"-NN-0|tx|5092:9|
+text|0.0|Observation of Sensation|C0542538|[fndg]|"Observation of Sensation"-tx-53-"sensation"-NN-0|tx|5092:9|
+text|0.0|Patient Visit|C1512346|[hlca]|"Patient Visit"-tx-45-"visit"-NN-0|tx|4022:5|
+text|0.0|Twice a day|C0585361|[tmco]|"Twice a day"-tx-5-"twice a day"-RB-0|tx|440:11|
+text|0.0|Hand|C0018563|[bpoc]|"Hand"-tx-52-"hands"-NNS-0|tx|4960:5|
+text|0.0|Cor pulmonale|C0034072|[dsyn]|"Cor pulmonale"-tx-30-"cardiopulmonary disease"-JJ-1|tx|3282:23|
+text|0.0|Neck|C0027530|[blor]|"Neck"-tx-94-"NECK"-NN-0|tx|7006:4|
+text|0.0|Radial|C0442038|[cnce]|"Radial"-tx-108-"radial"-JJ-0|tx|7939:6|
+text|0.0|Circumpennate|C0920847|[cnce]|"Circumpennate"-tx-108-"radial"-JJ-0|tx|7939:6|
+text|0.0|Entire hand|C1281583|[bpoc]|"Entire hand"-tx-52-"entire hand"-JJ-0|tx|5041:11|
+text|0.0|Aspect (characteristic)|C1879746|[qlco]|"Aspect (characteristic)"-tx-52-"aspect"-NN-0|tx|5010:6|
+text|0.0|Aspect - Kind of quantity|C1547011|[qnco]|"Aspect - Kind of quantity"-tx-52-"aspect"-NN-0|tx|5010:6|
+text|0.0|teratologic|C0000769|[ftcn]|"teratologic"-tx-45-"abnormalities"-NNS-0|tx|4096:13|
+text|0.0|Personal failure|C0680095|[inbe]|"Personal failure"-tx-14-"failure"-NN-0|tx|2088:7|
+text|0.0|Failure (biologic function)|C0231174|[ftcn]|"Failure (biologic function)"-tx-14-"failure"-NN-0|tx|2088:7|
+text|0.0|With intensity|C0522510|[qlco]|"With intensity"-tx-52-"intensity"-NN-0|tx|4934:9|
+text|0.0|Esthesia|C0036658|[ortf]|"Esthesia"-tx-101-"sensation"-NN-0|tx|7407:9|
+text|0.0|Observation of Sensation|C0542538|[fndg]|"Observation of Sensation"-tx-101-"sensation"-NN-0|tx|7407:9|
+text|0.0|sensory exam|C2229507|[hlca]|"sensory exam"-tx-101-"sensation"-NN-0|tx|7407:9|
+text|0.0|Dorsal|C0205095|[spco]|"Dorsal"-tx-81-"posterior"-JJ-0|tx|6459:9|
+text|0.0|Urticarial vasculitis|C1304408|[sosy]|"Urticarial vasculitis"-tx-119-"urticarial vasculitis"-JJ-0|tx|8950:21|
+text|0.0|Hypocomplementemic urticarial vasculitis|C0343206|[dsyn]|"Hypocomplementemic urticarial vasculitis"-tx-119-"urticarial vasculitis"-JJ-0|tx|8950:21|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-123-"patient"-NN-0|tx|9243:7|
+text|0.0|Sleep Apnea, Obstructive|C0520679|[dsyn]|"Sleep Apnea, Obstructive"-tx-28-"OSA"-NNP-0|tx|3152:3|
+text|0.0|OSA protein, Drosophila|C0764906|[bacs, aapp]|"OSA protein, Drosophila"-tx-28-"OSA"-NNP-0|tx|3152:3|
+text|0.0|Table Cell Horizontal Align - left|C1552822|[ftcn]|"Table Cell Horizontal Align - left"-tx-127-"left"-JJ-0|tx|9603:4|
+text|0.0|Left|C0205091|[spco]|"Left"-tx-127-"left"-JJ-0|tx|9603:4|
+text|0.0|Distress|C0231303|[menp]|"Distress"-tx-89-"distress"-NN-1|tx|6856:8|
+text|0.0|Emotional distress|C0700361|[mobd]|"Emotional distress"-tx-89-"distress"-NN-1|tx|6856:8|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-8-"mouth"-NN-0|tx|1064:5|
+text|0.0|month|C0439231|[tmco]|"month"-tx-134-"months"-NNS-0|tx|10458:6|
+text|0.0|Fasciitis, Plantar|C0149756|[dsyn]|"Fasciitis, Plantar"-tx-38-"Plantar fasciitis"-NNP-0|tx|3806:17|
+text|0.0|Greater Than|C0439093|[qnco]|"Greater Than"-tx-113-"greater than"-JJR-0|tx|8452:12|
+text|0.0|Ribonucleoproteins|C0035544|[bacs, aapp]|"Ribonucleoproteins"-tx-13-"RNP"-NNP-0|tx|1927:3|
+text|0.0|ribonucleoprotein complex location|C1167298|[celc]|"ribonucleoprotein complex location"-tx-13-"RNP"-NNP-0|tx|1927:3|
+text|0.0|Evaluation procedure|C1261322|[hlca]|"Evaluation procedure"-tx-130-"evaluation"-NN-0|tx|10135:10|
+text|0.0|Evaluation|C0220825|[hlca]|"Evaluation"-tx-130-"evaluation"-NN-0|tx|10135:10|
+text|0.0|Physical Examination|C0031809|[hlca]|"Physical Examination"-tx-89-"PHYSICAL EXAMINATION"-JJ-0|tx|6780:20|
+text|0.0|Upper Extremity|C1140618|[bpoc]|"Upper Extremity"-tx-101-"upper extremities"-JJ-0|tx|7386:17|
+text|0.0|Fatigue|C0015672|[sosy]|"Fatigue"-tx-29-"fatigue"-NN-0|tx|3214:7|
+text|0.0|Provider|C1138603|[prog]|"Provider"-tx-8-"Provider"-NNP-0|tx|932:8|
+text|0.0|Act Code - provider|C1555587|[idcn]|"Act Code - provider"-tx-8-"Provider"-NNP-0|tx|932:8|
+text|0.0|Plain chest X-ray|C0039985|[diap]|"Plain chest X-ray"-tx-30-"chest x-ray"-NN-0|tx|3260:11|
+text|0.0|Laboratory|C0022877|[orgt, mnob]|"Laboratory"-tx-13-"laboratory"-NN-0|tx|1850:10|
+text|0.0|Laboratory domain|C3244292|[ftcn]|"Laboratory domain"-tx-13-"laboratory"-NN-0|tx|1850:10|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-8-"tablet"-NN-0|tx|885:6|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-8-"tablet"-NN-0|tx|885:6|
+text|0.0|Problems - What subject filter|C1546466|[idcn]|"Problems - What subject filter"-tx-11-"problems"-NNS-0|tx|1706:8|
+text|0.0|Synovectomy|C0185304|[topp]|"Synovectomy"-tx-82-"synovectomy"-NN-0|tx|6506:11|
+text|0.0|Temporomandibular joint synovectomy|C0498272|[topp]|"Temporomandibular joint synovectomy"-tx-82-"synovectomy"-NN-0|tx|6506:11|
+text|0.0|Tender|C0234234|[qlco]|"Tender"-tx-102-"tender"-JJ-0|tx|7558:6|
+text|0.0|Synovectomy of tendon sheath|C0185306|[topp]|"Synovectomy of tendon sheath"-tx-81-"Tenosynovectomy"-NNP-0|tx|6437:15|
+text|0.0|Encounter due to counseling|C0740209|[fndg]|"Encounter due to counseling"-tx-130-"advice"-NN-0|tx|10170:6|
+text|0.0|Advice|C0150600|[hlca]|"Advice"-tx-130-"advice"-NN-0|tx|10170:6|
+text|0.0|Bilateral|C0238767|[spco]|"Bilateral"-tx-25-"bilateral"-JJ-0|tx|2929:9|
+text|0.0|Shoulder|C0037004|[blor]|"Shoulder"-tx-72-"shoulder"-NN-0|tx|5842:8|
+text|0.0|day|C0439228|[tmco]|"day"-tx-9-"day"-NN-0|tx|1152:3|
+text|0.0|Electromyography|C0013839|[diap]|"Electromyography"-tx-128-"electromyography"-NN-0|tx|9661:16|
+text|0.0|Table Cell Horizontal Align - left|C1552822|[ftcn]|"Table Cell Horizontal Align - left"-tx-108-"left"-JJ-0|tx|7902:4|
+text|0.0|Left|C0205091|[spco]|"Left"-tx-108-"left"-JJ-0|tx|7902:4|
+text|0.0|Debridement|C0011079|[topp]|"Debridement"-tx-73-"Debridement"-NN-0|tx|5892:11|
+text|0.0|HEENT|C1512338|[blor]|"HEENT"-tx-90-"HEENT"-NN-0|tx|6866:5|
+text|0.0|Herpes zoster disease|C0019360|[dsyn]|"Herpes zoster disease"-tx-59-"Herpes zoster"-NNP-0|tx|5500:13|
+text|0.0|Human herpesvirus 3|C0042338|[virs]|"Human herpesvirus 3"-tx-59-"Herpes zoster"-NNP-0|tx|5500:13|
+text|0.0|Heart murmur|C0018808|[fndg]|"Heart murmur"-tx-96-"murmurs"-NNS-1|tx|7145:7|
+text|0.0|Exercise|C0015259|[dora]|"Exercise"-tx-39-"exercises"-NNS-0|tx|3855:9|
+text|0.0|Physical therapy exercises|C0452240|[topp]|"Physical therapy exercises"-tx-39-"exercises"-NNS-0|tx|3855:9|
+text|0.0|Mild (qualifier value)|C2945599|[qlco]|"Mild (qualifier value)"-tx-112-"mild"-JJ-0|tx|8223:4|
+text|0.0|agreement|C0680240|[socb]|"agreement"-tx-132-"agreement"-NN-0|tx|10346:9|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-8-"tablet"-NN-0|tx|793:6|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-8-"tablet"-NN-0|tx|793:6|
+text|0.0|Lung|C0024109|[bpoc]|"Lung"-tx-95-"LUNGS"-NNS-0|tx|7062:5|
+text|0.0|Left carpal tunnel|C0833262|[bsoj]|"Left carpal tunnel"-tx-125-"left carpal tunnel"-JJ-0|tx|9460:18|
+text|0.0|Tunnel structure|C0337138|[mnob]|"Tunnel structure"-tx-129-"tunnel"-NN-0|tx|10089:6|
+text|0.0|Body Weight|C0005910|[orga]|"Body Weight"-tx-2-"Weight"-NN-0|tx|185:6|
+text|0.0|Importance Weight|C1705104|[idcn]|"Importance Weight"-tx-2-"Weight"-NN-0|tx|185:6|
+text|0.0|Weight symptom (finding)|C0424653|[sosy]|"Weight symptom (finding)"-tx-2-"Weight"-NN-0|tx|185:6|
+text|0.0|Weight|C0043100|[qnco]|"Weight"-tx-2-"Weight"-NN-0|tx|185:6|
+text|0.0|Weighing patient|C1305866|[diap]|"Weighing patient"-tx-2-"Weight"-NN-0|tx|185:6|
+text|0.0|Local|C0205276|[spco]|"Local"-tx-78-"local"-JJ-0|tx|6193:5|
+text|0.0|Question (inquiry)|C1522634|[inpr]|"Question (inquiry)"-tx-129-"question"-NN-0|tx|9861:8|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-8-"mouth"-NN-0|tx|898:5|
+text|0.0|Hashimoto Disease|C0677607|[dsyn]|"Hashimoto Disease"-tx-58-"Hashimoto's thyroiditis"-NNP-0|tx|5472:23|
+text|0.0|Device Plate|C1139930|[medd]|"Device Plate"-tx-79-"plate"-NN-0|tx|6270:5|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-8-"Tablet"-NN-0|tx|1051:6|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-8-"Tablet"-NN-0|tx|1051:6|
+text|0.0|Hypesthesia|C0020580|[fndg]|"Hypesthesia"-tx-24-"numbness"-NN-0|tx|2852:8|
+text|0.0|Numbness|C0028643|[sosy]|"Numbness"-tx-24-"numbness"-NN-0|tx|2852:8|
+text|0.0|Secondary to|C0175668|[tmco]|"Secondary to"-tx-129-"secondary to"-JJ-0|tx|10038:12|
+text|0.0|Electromyography|C0013839|[diap]|"Electromyography"-tx-126-"electromyography"-NN-0|tx|9493:16|
+text|0.0|Presentation|C0449450|[idcn]|"Presentation"-tx-12-"Presented"-NNP-0|tx|1761:9|
+text|0.0|Unit per Milliliter|C2945590|[qnco]|"Unit per Milliliter"-tx-7-"unit/mL"-NN-0|tx|619:7|
+text|0.0|Function Axis|C0700205|[clas]|"Function Axis"-tx-31-"function"-NN-0|tx|3317:8|
+text|0.0|Function|C0542341|[ftcn]|"Function"-tx-31-"function"-NN-0|tx|3317:8|
+text|0.0|Mathematical Operator|C1705273|[inpr]|"Mathematical Operator"-tx-31-"function"-NN-0|tx|3317:8|
+text|0.0|physiological aspects|C0031843|[phsf]|"physiological aspects"-tx-31-"function"-NN-0|tx|3317:8|
+text|0.0|Clear|C2963144|[qlco]|"Clear"-tx-116-"clear"-JJ-0|tx|8662:5|
+text|0.0|Following|C0332282|[tmco]|"Following"-tx-11-"following"-JJ-0|tx|1696:9|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-9-"mouth"-NN-0|tx|1144:5|
+text|0.0|Negative|C0205160|[qlco]|"Negative"-tx-44-"negative"-JJ-0|tx|3978:8|
+text|0.0|Anterior cervical spine approach|C0442011|[spco]|"Anterior cervical spine approach"-tx-77-"Anterior cervical"-NNP-0|tx|6126:17|
+text|0.0|Immune|C0439662|[ftcn]|"Immune"-tx-131-"immune"-JJ-0|tx|10259:6|
+text|0.0|day|C0439228|[tmco]|"day"-tx-48-"day"-NN-0|tx|4569:3|
+text|0.0|Previous|C0205156|[tmco]|"Previous"-tx-115-"previous"-JJ-0|tx|8585:8|
+text|0.0|Act Relationship Subset - previous|C1552607|[tmco]|"Act Relationship Subset - previous"-tx-115-"previous"-JJ-0|tx|8585:8|
+text|0.0|Oral cavity|C0226896|[bsoj]|"Oral cavity"-tx-93-"Mouth"-NNP-0|tx|6967:5|
+text|0.0|Tablet Dosage Form|C0039225|[bodm]|"Tablet Dosage Form"-tx-6-"tablet"-NN-0|tx|543:6|
+text|0.0|Tablet Dosing Unit|C1705223|[qnco]|"Tablet Dosing Unit"-tx-6-"tablet"-NN-0|tx|543:6|
+text|0.0|Plaquenil|C0699177|[orch, phsu]|"Plaquenil"-tx-26-"Plaquenil"-NNP-0|tx|3039:9|
+text|0.0|Lesion|C0221198|[fndg]|"Lesion"-tx-103-"lesions"-NNS-1|tx|7595:7|
+text|0.0|Child|C0008059|[aggp]|"Child"-tx-88-"children"-NNS-0|tx|6770:8|
+text|0.0|More|C0205172|[ftcn]|"More"-tx-128-"more"-JJR-0|tx|9812:4|
+text|0.0|Organ|C0178784|[bpoc]|"Organ"-tx-120-"organ"-NN-0|tx|9152:5|
+text|0.0|Patients|C0030705|[podg]|"Patients"-tx-130-"patient"-JJ-0|tx|10116:7|
+text|0.0|instrumentation aspects|C0021632|[qlco]|"instrumentation aspects"-tx-77-"instrumentation"-NN-0|tx|6150:15|
+text|0.0|Instrumentation (attribute)|C1704339|[qnco]|"Instrumentation (attribute)"-tx-77-"instrumentation"-NN-0|tx|6150:15|
+text|0.0|Syndrome|C0039082|[dsyn]|"Syndrome"-tx-111-"syndrome"-NN-0|tx|8182:8|
+text|0.0|Rate|C1521828|[qnco]|"Rate"-tx-1-"Rate"-NNP-0|tx|175:4|
+text|0.0|Rating (action)|C0871208|[acty]|"Rating (action)"-tx-1-"Rate"-NNP-0|tx|175:4|
+text|0.0|motor movement|C1513492|[ftcn]|"motor movement"-tx-100-"Motor"-NNP-0|tx|7308:5|
+text|0.0|Device Motor|C1705994|[mnob]|"Device Motor"-tx-100-"Motor"-NNP-0|tx|7308:5|
+text|0.0|Whiplash Injuries|C0043145|[inpo]|"Whiplash Injuries"-tx-65-"Whiplash"-NN-0|tx|5594:8|
+text|0.0|Absent|C0332197|[ftcn]|"Absent"-tx-115-"absent"-JJ-0|tx|8594:6|
+text|0.0|Preventive monitoring|C0150369|[hlca]|"Preventive monitoring"-tx-26-"monitoring"-NN-0|tx|3049:10|
+text|0.0|Clinical Trials, Monitoring|C1516647|[resa]|"Clinical Trials, Monitoring"-tx-26-"monitoring"-NN-0|tx|3049:10|
+text|0.0|Structure of left shoulder region|C0524469|[blor]|"Structure of left shoulder region"-tx-71-"Left shoulder"-NNP-0|tx|5779:13|
+text|0.0|Therapeutic procedure|C0087111|[topp]|"Therapeutic procedure"-tx-131-"treatment"-NN-0|tx|10299:9|
+text|0.0|therapeutic aspects|C0039798|[ftcn]|"therapeutic aspects"-tx-131-"treatment"-NN-0|tx|10299:9|
