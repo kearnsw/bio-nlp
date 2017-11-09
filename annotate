@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cat $1 | $METAMAP_HOME/metamaplite.sh --pipe > $1.ann
-python ./bionlp/annotate/metamap.py --text $1 --annotations $1.ann
+cat $1 | $METAMAP_HOME/metamap -I --JSONn > $1.mm
+python -m bionlp.annotate.HTMLAnnotator --text $1 --annotations $1.mm --version mm
 

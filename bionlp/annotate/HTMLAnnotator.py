@@ -1,9 +1,21 @@
+"""
+HTML Taggers
+
+@author: Will Kearns
+"""
 from bionlp.core.LinkedList import LinkedList
 from argparse import ArgumentParser
 from spacy import displacy
 import json
 
-class Annotator(object):
+
+class HTMLAnnotator(object):
+    """
+    Class: Annotator
+    Description: Generates and serves HTML annotations from an annotation file
+    
+    Must override the parse method for specific doc type 
+    """
     def __init__(self):
         self.entities = []
         self.annotations = []
@@ -12,10 +24,16 @@ class Annotator(object):
         self.options = None
         self.title = None
 
-    def annotate(self, text, ann):
+    def parse(self, text, ann):
         pass
 
     def define_colors(self, palette):
+        """
+        Set color options for renderer
+        
+        :param palette: (list) Set of colors to map entities to
+        :return: None
+        """
         # Define colors
         colors = {}
         i = 0
@@ -27,25 +45,44 @@ class Annotator(object):
         self.options = {'ents': list(colors.keys()), 'colors': colors}
 
     def serve(self):
-        displacy.serve(self.annotations, style='ent', manual=True, options=self.options)
+        """
+        Run displacy server of parse
+        :return: None
+        """
+        return displacy.serve(self.annotations, style='ent', manual=True, options=self.options)
 
     def render(self):
+        """
+        Write annotations as an HTML file
+        :return: 
+        """
         html = displacy.render(self.annotations, style='ent', manual=True, options=self.options)
         with open('index.html', 'w') as f:
             f.write(html)
 
     def ingest_text(self, text):
+        """
+        Store text and create a linked list of characters for inserting XML tags
+        :param text: 
+        :return: a linked list of characters
+        """
         self.text = text
         # Convert text to char linked list
         self.char_ll.from_string(text)
 
+        return self.char_ll
 
-class MetaMapLiteAnnotator(Annotator):
+
+class MetaMapLiteAnnotator(HTMLAnnotator):
+    """
+    Class: MetaMapLiteAnnotator
+    Description: MetaMapLiteAnnotator uses the output of MetaMapLite to label the reference text entities with HTML tags
+    """
     def __init__(self):
         super().__init__()
         self.title = "MetaMap Lite"
 
-    def annotate(self, text, mm_out):
+    def parse(self, text, mm_out):
         # Store text for later use
         self.ingest_text(text)
 
@@ -64,12 +101,18 @@ class MetaMapLiteAnnotator(Annotator):
         return self.annotations
 
 
-class MetaMapAnnotator(Annotator):
+class MetaMapAnnotator(HTMLAnnotator):
+    """
+    Class: MetaMapAnnotator 
+    Description: MetaMapAnnotator parses the JSON output of MetaMap to label the entities in a reference text with HTML 
+                 tags
+    """
     def __init__(self):
         super().__init__()
         self.title = "MetaMap"
+        self.banned_sem_types = ["ftcn"]
 
-    def annotate(self, text, mm_out):
+    def parse(self, text, mm_out):
         self.ingest_text(text)
         for doc in mm_out["AllDocuments"]:
             doc = doc["Document"]
@@ -82,12 +125,18 @@ class MetaMapAnnotator(Annotator):
                         for cand in top_mapping["MappingCandidates"]:
                             score = cand["CandidateScore"]
                             cui = cand["CandidateCUI"]
+                            symtypes = cand["SemTypes"]
+                            if any(semtype in self.banned_sem_types for semtype in symtypes):
+                                continue
+
                             term = cand["CandidatePreferred"]
+                            for type in symtypes:
+                                term += ":" + type
+
                             ## Possible bug here need to adjust for discontinuous entities
                             loc = cand["ConceptPIs"][0]
                             start = int(loc["StartPos"])
                             end = start + int(loc["Length"])
-                            print(start, end)
                             self.entities.append({'start': start, 'end': end, 'label': term.upper()})
 
         self.annotations.append({'text': self.text, 'ents': self.entities, 'title': self.title})
@@ -109,13 +158,15 @@ if __name__ == "__main__":
     if args.version == "mm":
         parser = MetaMapAnnotator()
         with open(args.annotations, "r") as f:
-            annotations = json.load(f)
+            header = f.readline()
+            data = f.read()
+            annotations = json.loads(data)
     else:
         parser = MetaMapLiteAnnotator()
         with open(args.annotations, "r") as f:
             annotations = f.readlines()
 
-    parser.annotate(raw_text, annotations)
+    parser.parse(raw_text, annotations)
     parser.define_colors(['#9b38bd', '#34c3b9', '#abd8d8', '#c2d54a', '#e0eaa9'])
     parser.serve()
 
