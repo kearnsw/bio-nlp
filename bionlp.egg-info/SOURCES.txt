@@ -1,0 +1,7 @@
+README.md
+setup.py
+bionlp.egg-info/PKG-INFO
+bionlp.egg-info/SOURCES.txt
+bionlp.egg-info/dependency_links.txt
+bionlp.egg-info/requires.txt
+bionlp.egg-info/top_level.txt

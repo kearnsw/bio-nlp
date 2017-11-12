@@ -1,5 +1,7 @@
 data
 vectors
 models
+logs
+*.log
 *.pyc
 __pycache__
