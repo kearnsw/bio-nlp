@@ -156,7 +156,6 @@ class MetaMapAnnotator(HTMLAnnotator):
                 line = line.split("|")
                 self.symtypes[line[0]] = line[2]
 
-
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--pipe', action='store_true', help='take input from stdin')

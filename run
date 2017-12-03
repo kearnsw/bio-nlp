@@ -1,6 +1,0 @@
-#!/bin/bash
-
-#python src/BiLSTM.py -e "vectors/PubMed-shuffle-win-2.bin" -d 200 --text "data/cadec/text/" --ann "data/cadec/original/" --hidden 6 --epochs 10
-python bionlp/src/BiLSTM.py -e "/home/yeerk/data/glove/glove.6B.50d.txt" -d 50 --text "data/cadec/text/" --ann "data/cadec/original/" --hidden 64 --epochs 100 --layers 2 --models "models"
-
-

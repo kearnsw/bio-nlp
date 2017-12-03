@@ -3,4 +3,3 @@ class Word:
         self.pos = None
         self.lexical_form = lexical_form
         self.vector = None
-
