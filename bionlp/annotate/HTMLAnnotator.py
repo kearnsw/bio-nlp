@@ -6,6 +6,7 @@ HTML Taggers
 from bionlp.core.LinkedList import LinkedList
 from argparse import ArgumentParser
 from spacy import displacy
+import os
 import json
 
 
@@ -16,6 +17,7 @@ class HTMLAnnotator(object):
     
     Must override the parse method for specific doc type 
     """
+
     def __init__(self):
         self.entities = []
         self.annotations = []
@@ -56,9 +58,7 @@ class HTMLAnnotator(object):
         Write annotations as an HTML file
         :return: 
         """
-        html = displacy.render(self.annotations, style='ent', manual=True, options=self.options)
-        with open('index.html', 'w') as f:
-            f.write(html)
+        return displacy.render(self.annotations, style='ent', manual=True, options=self.options)
 
     def ingest_text(self, text):
         """
@@ -78,6 +78,7 @@ class MetaMapLiteAnnotator(HTMLAnnotator):
     Class: MetaMapLiteAnnotator
     Description: MetaMapLiteAnnotator uses the output of MetaMapLite to label the reference text entities with HTML tags
     """
+
     def __init__(self):
         super().__init__()
         self.title = "MetaMap Lite"
@@ -107,10 +108,13 @@ class MetaMapAnnotator(HTMLAnnotator):
     Description: MetaMapAnnotator parses the JSON output of MetaMap to label the entities in a reference text with HTML 
                  tags
     """
+
     def __init__(self):
         super().__init__()
         self.title = "MetaMap"
-        self.banned_sem_types = ["ftcn"]
+        self.whitelist = ["dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab"]
+        self.symtypes = {}
+        self.load_semtype_dict()
 
     def parse(self, text, mm_out):
         self.ingest_text(text)
@@ -120,54 +124,77 @@ class MetaMapAnnotator(HTMLAnnotator):
                 for phrase in utt["Phrases"]:
                     phrase_start = phrase["PhraseStartPos"]
                     phrase_end = int(phrase_start) + int(phrase["PhraseLength"])
-                    if phrase["Mappings"]:
-                        top_mapping = phrase["Mappings"][0]
-                        for cand in top_mapping["MappingCandidates"]:
+                    cuis = []
+                    for mapping in phrase["Mappings"]:
+                        for cand in mapping["MappingCandidates"]:
                             score = cand["CandidateScore"]
                             cui = cand["CandidateCUI"]
                             symtypes = cand["SemTypes"]
-                            if any(semtype in self.banned_sem_types for semtype in symtypes):
-                                continue
-
+                            if cui in cuis:
+                                break
+                            cuis.append(cui)
                             term = cand["CandidatePreferred"]
-                            for type in symtypes:
-                                term += ":" + type
+                            term += ":" + cui
+                            for _type in symtypes:
+                                if _type in self.whitelist:
+                                    term += ":" + self.symtypes[_type]
 
-                            ## Possible bug here need to adjust for discontinuous entities
-                            loc = cand["ConceptPIs"][0]
-                            start = int(loc["StartPos"])
-                            end = start + int(loc["Length"])
-                            self.entities.append({'start': start, 'end': end, 'label': term.upper()})
+                                    ## Possible bug here need to adjust for discontinuous entities
+                                    loc = cand["ConceptPIs"][0]
+                                    start = int(loc["StartPos"])
+                                    end = start + int(loc["Length"])
+                                    self.entities.append({'start': start, 'end': end, 'label': term.upper()})
 
         self.annotations.append({'text': self.text, 'ents': self.entities, 'title': self.title})
 
         return self.annotations
 
+    def load_semtype_dict(self):
+        dir = os.path.dirname(__file__)
+        with open(os.path.join(dir, 'SemanticTypes_2013AA.txt'), "r") as input_file:
+            for line in input_file.readlines():
+                line = line.split("|")
+                self.symtypes[line[0]] = line[2]
+
+
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--text', type=str, help='raw text file to be annotated')
-    parser.add_argument('--annotations', type=str, help='metamap annotations')
-    parser.add_argument('--version', type=str, default="mml", help='use metamap (mm) or metamap lite (mml)')
+    parser.add_argument('--pipe', action='store_true', help='take input from stdin')
+    parser.add_argument('--text', type=str, help='raw text to be annotated')
+    parser.add_argument('--file', type=str, help='file containing the raw text')
+    parser.add_argument('--annotations', type=str, help='annotation file in metamap (mm) or (mml) format ')
+    parser.add_argument('--format', type=str, default="mm", help='use metamap (mm) or metamap lite (mml)')
     args = parser.parse_args()
 
-    print("Running...")
-
-    with open(args.text, "r") as f:
-        raw_text = f.read()
-
-    if args.version == "mm":
+    if args.pipe:
+        import sys
+        from bionlp.annotate.MetaMap import run_metamap
+        raw_text = sys.stdin.read()
+        annotations = run_metamap(raw_text)
         parser = MetaMapAnnotator()
-        with open(args.annotations, "r") as f:
-            header = f.readline()
-            data = f.read()
-            annotations = json.loads(data)
+    elif args.text:
+        import sys
+        from bionlp.annotate.MetaMap import run_metamap
+        raw_text = args.text
+        annotations = run_metamap(raw_text)
+        parser = MetaMapAnnotator()
     else:
-        parser = MetaMapLiteAnnotator()
-        with open(args.annotations, "r") as f:
-            annotations = f.readlines()
+        with open(args.text, "r") as f:
+            raw_text = f.read()
+
+        if args.format == "mm":
+            parser = MetaMapAnnotator()
+            with open(args.annotations, "r") as f:
+                header = f.readline()
+                data = f.read()
+                annotations = json.loads(data)
+        else:
+            parser = MetaMapLiteAnnotator()
+            with open(args.annotations, "r") as f:
+                annotations = f.readlines()
 
     parser.parse(raw_text, annotations)
     parser.define_colors(['#9b38bd', '#34c3b9', '#abd8d8', '#c2d54a', '#e0eaa9'])
     parser.serve()
-
-
+    sys.stdout.write(parser.render())
+    sys.stdout.flush()
