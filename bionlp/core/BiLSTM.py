@@ -60,7 +60,7 @@ class BiLSTM(nn.Module):
         emb = self.embeddings(sentence)
         lstm_out, (self.hidden, self.cell_state) = self.lstm(emb.view(len(sentence), 1, -1), (self.hidden, self.cell_state))
         tag_space = self.hidden2tag(lstm_out.view(len(sentence), self.hidden_units))
-        tag_scores = func.log_softmax(tag_space)
+        tag_scores = func.log_softmax(tag_space, dim=0)
         return tag_scores
 
 
