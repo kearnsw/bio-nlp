@@ -90,17 +90,7 @@ def load_emb(filename):
         return KeyedVectors.load_word2vec_format(filename, binary=True)
 
     elif ".txt" in filename:
-        word2vec = {}
-        print("Loading Word Embeddings...")
-        with open(filename, "r") as f:
-            lines = f.read().split("\n")
-            for line in tqdm(lines):
-                if line:
-                    cols = line.split()
-                    word = cols[0]
-                    embedding = np.array(cols[1:], dtype=np.float)
-                    word2vec[word] = embedding
-        return word2vec
+        return KeyedVectors.load_word2vec_format(filename, binary=False)
 
 
 def generate_emb_matrix(word2vec, dims):
