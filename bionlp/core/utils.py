@@ -40,7 +40,7 @@ def text2seq(sentence, word2idx, autograd=True, max_len=None):
     """
 
     if max_len:
-        sequence = np.full(max_len, len(word2idx), dtype=int)  # Pad the sentence to max_len with unknown tokens **should this be zero token**
+        sequence = np.full(max_len, len(word2idx)+1, dtype=int)  # Pad the sentence to max_len with zeros
     else:
         sequence = np.zeros(len(sentence), dtype=int)   # LongTensor requires dtype int, e.g. breaks with np.int8
 
@@ -105,18 +105,18 @@ def generate_emb_matrix(word2vec, dims):
     print("Initializing Embedding Matrix...")
 
     if type(word2vec) == dict:
-        embedding_matrix = np.zeros((len(word2vec) + 1, dims))
+        embedding_matrix = np.zeros((len(word2vec) + 2, dims))
         for idx, word in enumerate(tqdm(word2vec)):
             embedding_matrix[idx] = word2vec[word]
             word2idx[word] = idx
 
     else:
-        embedding_matrix = np.zeros((len(word2vec.vocab) + 1, dims))
+        embedding_matrix = np.zeros((len(word2vec.vocab) + 2, dims))
         for idx, word in enumerate(tqdm(word2vec.vocab)):
             embedding_matrix[idx] = word2vec.word_vec(word)
             word2idx[word] = idx
 
-    embedding_matrix[-1] = np.random.rand(1, dims)          # Add vector for <UNK>
+    embedding_matrix[-2] = np.random.rand(1, dims)          # Add vector for <UNK>
 
     return embedding_matrix, word2idx
 
