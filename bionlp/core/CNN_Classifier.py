@@ -21,7 +21,7 @@ class CNN(nn.Module):
     def __init__(self, **kwargs):
         super().__init__()
         self.word2idx = kwargs["word2idx"]
-        self.vocab_size = len(self.word2idx) + 1  # Plus one to include <UNK>
+        self.vocab_size = len(self.word2idx) + 2  # Plus two to include <UNK> and <PAD>
         self.emb_dims = kwargs["embedding_matrix"].shape[1]
         self.filters = kwargs["filters"]
         self.nb_classes = kwargs["nb_classes"]
@@ -32,7 +32,7 @@ class CNN(nn.Module):
 
         # Model Layers
         # Embedding layer holds a dictionary of word_index keys mapped to word_embedding values
-        self.embedding = nn.Embedding(self.vocab_size, self.emb_dims, padding_idx=len(self.embedding_matrix)-1)
+        self.embedding = nn.Embedding(self.vocab_size, self.emb_dims, padding_idx=self.vocab_size - 1)
         self.embedding.weight = nn.Parameter(torch.from_numpy(self.embedding_matrix).float(),
                                              requires_grad=True)
 
@@ -43,7 +43,10 @@ class CNN(nn.Module):
 
         #
         self.conv2class = nn.Linear(len(self.filters) * self.nb_filters, self.nb_classes)
-        self.softmax = nn.LogSoftmax()
+
+        for l in self.conv_layers:
+            n = l.kernel_size[0] * l.out_channels
+            l.weight.data.normal_(0, np.sqrt(2./n))
 
     def forward(self, sentence):
         emb = self.embedding(sentence).view(-1, 1, self.emb_dims * self.max_len)  # flatten to 1d
@@ -51,7 +54,7 @@ class CNN(nn.Module):
         pooled = [func.max_pool1d(conv, self.max_len - self.filters[idx] + 1).view(-1, self.nb_filters) for idx, conv in enumerate(convs)]
         combined = torch.cat(pooled, dim=1)
         dropout = func.dropout(combined, self.dropout)
-        return func.log_softmax(self.conv2class(dropout).view(self.nb_classes, -1))
+        return self.conv2class(dropout).view(self.nb_classes, -1)
 
 
 def load_data(GARD_FILE):
@@ -75,7 +78,6 @@ if __name__ == "__main__":
     cli_parser.add_argument("--models", type=str, help="model directory")
     args = cli_parser.parse_args()
 
-
     state_file = os.sep.join([args.models, "CNN.states"])
     model_file = os.sep.join([args.models, "CNN.model"])
 
@@ -85,9 +87,10 @@ if __name__ == "__main__":
     types = set([q["qt"] for q in questions])
     type2idx = {type: idx for idx, type in enumerate(sorted(types))}
     data = [(q.text, q["qt"]) for q in questions]
-    posts = [x for x, y in data]
-    labels = [y for x, y in data]
+    posts = [q for q, qt in data]
+    labels = [qt for q, qt in data]
     max_len = max([len(post) for post in posts])
+
     # Split training and dev data
     split_idx = round(.9 * len(posts))
     x_train = posts[:split_idx]
@@ -125,8 +128,7 @@ if __name__ == "__main__":
     model = CNN(**opts)
     loss_func = nn.CrossEntropyLoss()  # weight=torch.FloatTensor(class_weights))
     optimizer = torch.optim.Adam(model.parameters(),
-                                 lr=0.1,
-                                 weight_decay=0.01)
+                                 lr=0.1)
 
     # Create files to store intermediate model states and the final best model
     try:
@@ -156,9 +158,9 @@ if __name__ == "__main__":
         for mini_batch in tqdm(mini_batches, total=len(mini_batches)):
             batch_loss = Variable(torch.FloatTensor([0]))  # Zero out the loss from last batch
             model.zero_grad()                              # Zero out the gradient from last batch
-            for doc, tags in mini_batch:
+            for doc, label in mini_batch:
                 class_pred = model(doc)
-                batch_loss += loss_func(class_pred.view(-1, args.nb_classes), tags)
+                batch_loss += loss_func(class_pred.view(-1, args.nb_classes), label)
 
             # Backpropagate the loss for each mini-batch
             batch_loss.backward()
@@ -170,72 +172,11 @@ if __name__ == "__main__":
         sys.stdout.flush()
 
         # Early Stopping
-        if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
-            break
+        # if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
+        #    break
 
         # Checkpoint
         torch.save(model.state_dict(), state_file, pickle_protocol=4)
 
     # Save best models
     torch.save(model, model_file, pickle_protocol=4)
-"""
-=================================================================
-
-
-    # Create model and set loss and optimization parameters
-    model = CNN(**opts)
-    loss_func = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(),
-                                 lr=0.1,
-                                 weight_decay=0.01)
-
-    # Load checkpoint file if it exists
-    if os.path.isfile(state_file):
-        print("Initializing model state from file...")
-        model.load_state_dict(torch.load(state_file))
-
-    # Store loss from each epoch for early stopping and plotting loss-curve
-    loss = np.zeros(args.epochs)
-
-    # Move model parameters and data to GPU
-    if args.cuda:
-        model.cuda()
-        x_train = [var.cuda() for var in x_train]
-        y_train = [var.cuda() for var in y_train]
-
-    # Create batches
-    mini_batches = create_batches(list(zip(x_train, y_train)), 100)
-
-    print("Number of training examples:{0}".format(len(y_train)))
-    # Train model using mini-batches
-    for epoch in range(args.epochs):
-        sys.stdout.write("Epoch {0}...\n".format(epoch))
-        sys.stdout.flush()
-
-        for mini_batch in tqdm(mini_batches, total=len(mini_batches)):
-            batch_loss = Variable(torch.FloatTensor([0]))  # Zero out the loss from last batch
-            model.zero_grad()  # Zero out the gradient from last batch
-            for doc, tags in mini_batch:
-                pred_tags = model(doc)
-                print(pred_tags)
-                batch_loss += loss_func(pred_tags, tags)
-
-            # Backpropagate the loss for each mini-batch
-            batch_loss.backward()
-            optimizer.step()
-            loss[epoch] += batch_loss.data[0]
-
-        sys.stdout.write("Loss: {0}\n".format(loss[epoch] / len(x_train)))
-        sys.stdout.flush()
-
-        # Early Stopping
-        if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
-            break
-
-        # Checkpoint
-        torch.save(model.state_dict(), state_file)
-
-    # Save best model
-    torch.save(model, model_file)
-
-    plot_loss(loss)"""
