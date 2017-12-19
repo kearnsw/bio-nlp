@@ -50,9 +50,6 @@ def text2seq(sentence, word2idx, autograd=True):
             oov_count += 1
             sequence[i] = len(word2idx)
     
-    sys.stdout.write("{0} words were indexed as <UNK>.".format(oov_count))
-    sys.stdout.flush()
-
     # Return embeddings as a np.array or autograd variable
     if autograd:
         return Variable(torch.LongTensor(sequence))
