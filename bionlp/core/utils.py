@@ -30,7 +30,7 @@ def idx_words(text):
     return word2idx
 
 
-def text2seq(sentence, word2idx, autograd=True):
+def text2seq(sentence, word2idx, autograd=True, max_len=None):
     """
     Convert a sequence of words into a sequence of indices
     :param sentence: the sentence to be converted to indexed sequence
@@ -38,7 +38,12 @@ def text2seq(sentence, word2idx, autograd=True):
     :param autograd: if true return an autograd variable, else return a numpy array
     :return: 
     """
-    sequence = np.zeros(len(sentence), dtype=int)   #LongTensor requires dtype int, e.g. breaks with np.int8
+
+    if max_len:
+        sequence = np.full(max_len, len(word2idx), dtype=int)  # Pad the sentence to max_len with unknown tokens **should this be zero token**
+    else:
+        sequence = np.zeros(len(sentence), dtype=int)   # LongTensor requires dtype int, e.g. breaks with np.int8
+
     oov_count = 0
 
     for i, word in enumerate(sentence):
@@ -49,7 +54,7 @@ def text2seq(sentence, word2idx, autograd=True):
         else:
             oov_count += 1
             sequence[i] = len(word2idx)
-    
+
     # Return embeddings as a np.array or autograd variable
     if autograd:
         return Variable(torch.LongTensor(sequence))
