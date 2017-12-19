@@ -39,6 +39,7 @@ def text2seq(sentence, word2idx, autograd=True):
     :return: 
     """
     sequence = np.zeros(len(sentence), dtype=int)   #LongTensor requires dtype int, e.g. breaks with np.int8
+    oov_count = 0
 
     for i, word in enumerate(sentence):
         # If the word is in the vocabulary then return the index
@@ -46,7 +47,11 @@ def text2seq(sentence, word2idx, autograd=True):
         if word in word2idx:
             sequence[i] = word2idx[word]
         else:
+            oov_count += 1
             sequence[i] = len(word2idx)
+    
+    sys.stdout.write("{0} words were indexed as <UNK>.".format(oov_count))
+    sys.stdout.flush()
 
     # Return embeddings as a np.array or autograd variable
     if autograd:
@@ -87,10 +92,10 @@ def idx_tags(tags):
 def load_emb(filename):
 
     if ".bin" in filename:
-        return KeyedVectors.load_word2vec_format(filename, binary=True)
+        return KeyedVectors.load_word2vec_format(filename, binary=True, unicode_errors='ignore')
 
     elif ".txt" in filename:
-        return KeyedVectors.load_word2vec_format(filename, binary=False)
+        return KeyedVectors.load_word2vec_format(filename, binary=False, unicode_errors='ignore')
 
 
 def generate_emb_matrix(word2vec, dims):
