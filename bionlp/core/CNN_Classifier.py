@@ -78,6 +78,7 @@ if __name__ == "__main__":
     cli_parser.add_argument("--nb_classes", type=int, default=13)
     cli_parser.add_argument("--cuda", action="store_true")
     cli_parser.add_argument("--models", type=str, help="model directory")
+    cli_parser.add_argument("-lr", "--learning_rate", type=float, default=0.01, help="learning rate for optimizer")
     args = cli_parser.parse_args()
 
     state_file = os.sep.join([args.models, "CNN.states"])
@@ -131,7 +132,7 @@ if __name__ == "__main__":
     model = CNN(**opts)
     loss_func = nn.CrossEntropyLoss()  # weight=torch.FloatTensor(class_weights))
     optimizer = torch.optim.Adam(model.parameters(),
-                                 lr=0.1)
+                                 lr=args.learning_rate)
 
     # Create files to store intermediate model states and the final best model
     try:
