@@ -9,12 +9,14 @@ import numpy as np
 import sys
 import os
 import re
+import random
 from argparse import ArgumentParser
 from bs4 import BeautifulSoup
 from gensim.models import Word2Vec
 from sklearn.utils import class_weight
 
 torch.manual_seed(1)
+random.seed(1986)
 
 
 class CNN(nn.Module):
@@ -87,6 +89,7 @@ if __name__ == "__main__":
     types = set([q["qt"] for q in questions])
     type2idx = {type: idx for idx, type in enumerate(sorted(types))}
     data = [(q.text, q["qt"]) for q in questions]
+    random.shuffle(data)
     posts = [q for q, qt in data]
     labels = [qt for q, qt in data]
     max_len = max([len(post) for post in posts])
