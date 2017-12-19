@@ -174,9 +174,9 @@ if __name__ == "__main__":
         # sys.stdout.write("Accuracy: {0}\n".format(accuracy_count/len(x_train)))
         sys.stdout.flush()
 
-        # Early Stopping
-        # if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
-        #    break
+        # Early Stopping ** train with higher learning rate then lower the learning rate **
+        if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
+            break
 
         # Checkpoint
         torch.save(model.state_dict(), state_file, pickle_protocol=4)
