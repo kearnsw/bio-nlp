@@ -130,7 +130,7 @@ if __name__ == "__main__":
     }
 
     model = CNN(**opts)
-    loss_func = nn.CrossEntropyLoss()  # weight=torch.FloatTensor(class_weights))
+    loss_func = nn.CrossEntropyLoss(weight=torch.FloatTensor(class_weights))
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=args.learning_rate)
 
@@ -176,7 +176,7 @@ if __name__ == "__main__":
         sys.stdout.flush()
 
         # Early Stopping ** train with higher learning rate then lower the learning rate **
-        if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
+        if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.0001:
             break
 
         # Checkpoint
