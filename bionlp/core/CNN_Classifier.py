@@ -39,7 +39,9 @@ class CNN(nn.Module):
                                              requires_grad=True)
 
         # Create N convolutional layers equal to the number of filter variants, default = 3 (Kim 2014)
-        # Each convolutional layer is of dimension 1 x
+        # Each convolutional layer has form (in_channels, out_channels, kernel size) since we are dealing with a
+        # 1-dimensional convolution and have flattened our input, we want our filter to be of size embedding x filter size
+        # and to take a stride equal to the length of one word, i.e. the embedding dimension.
         self.conv_layers = [nn.Conv1d(1, self.nb_filters, kernel_size * self.emb_dims, stride=self.emb_dims)
                             for idx, kernel_size in enumerate(self.filters)]
 
