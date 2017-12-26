@@ -59,7 +59,13 @@ def text2seq(sentence, word2idx, autograd=True, max_len=None):
     if autograd:
         return Variable(torch.LongTensor(sequence))
     else:
-        return sequence
+        return torch.LongTensor(sequence)
+
+
+def text2multichannel(sentence, w2is, max_len=None):
+
+    seqs = [text2seq(sentence, word2idx=w2i, autograd=False, max_len=max_len) for w2i in w2is]
+    return torch.stack(seqs)
 
 
 def tags2idx(tags, tag2idx, autograd=True):
