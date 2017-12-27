@@ -14,6 +14,7 @@ class GARD(Dataset):
         with open(path, "r", encoding="utf-8") as f:
             xml_data = f.read()
         questions = BeautifulSoup(xml_data, "xml").find_all("SubQuestion")
+        print(len(questions))
         data = [q.text for q in questions]
         labels = [q["qt"] for q in questions]
         return data, labels

@@ -98,7 +98,7 @@ def idx_tags(tags):
     return tag2idx
 
 
-def load_emb(filename):
+def load_embedding_file(filename):
 
     if ".bin" in filename:
         return KeyedVectors.load_word2vec_format(filename, binary=True, unicode_errors='ignore')
@@ -136,7 +136,7 @@ def load_embeddings(filename, dims):
     :param dims: number of dimensions of the embeddings
     :return: a tuple of (embedding matrix, word2idx)
     """
-    return generate_emb_matrix(load_emb(filename), dims)
+    return generate_emb_matrix(load_embedding_file(filename), dims)
 
 
 def to_one_hot(idx, nb_classes):
@@ -225,7 +225,7 @@ def load_emb(path, emb_dims):
 
 if __name__ == "__main__":
 
-    emb_matrix, word2idx = generate_emb_matrix(load_emb("../vectors/PubMed-shuffle-win-30.bin"), 200)
+    emb_matrix, word2idx = generate_emb_matrix(load_embedding_file("../vectors/PubMed-shuffle-win-30.bin"), 200)
 
     nausea = emb_matrix[word2idx["nausea"]]
     vomitting = emb_matrix[word2idx["vomitting"]]
