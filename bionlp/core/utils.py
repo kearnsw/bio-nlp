@@ -8,6 +8,7 @@ import torch
 from torch.autograd import Variable
 import numpy as np
 from gensim.models.keyedvectors import KeyedVectors
+from gensim.models import Word2Vec
 from tqdm import *
 import matplotlib.pyplot as plt
 import seaborn as sb
@@ -211,6 +212,16 @@ def plot_loss(loss_array):
 
     # Save to disk
     plt.savefig("loss_plot.png")
+
+def load_emb(path, emb_dims):
+    if "webQA" in path:
+        model = Word2Vec.load(path)
+        embeddings, word2idx = generate_emb_matrix(model.wv, emb_dims)
+    else:
+        embeddings, word2idx = load_embeddings(path, emb_dims)
+    return embeddings, word2idx
+
+
 
 if __name__ == "__main__":
 
