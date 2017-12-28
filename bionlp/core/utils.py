@@ -213,6 +213,7 @@ def plot_loss(loss_array):
     # Save to disk
     plt.savefig("loss_plot.png")
 
+
 def load_emb(path, emb_dims):
     if "webQA" in path:
         model = Word2Vec.load(path)
@@ -222,9 +223,21 @@ def load_emb(path, emb_dims):
     return embeddings, word2idx
 
 
+def kmax_pooling(X, dim, k):
+    """
+    Adopted from https://discuss.pytorch.org/t/resolved-how-to-implement-k-max-pooling-for-cnn-text-classification/931/2
+    :param X: tensor
+    :param dim: dimension to pool
+    :param k: number of values to return
+    :return: top k activations for the given convolution preserving relative order
+    """
+    index = X.topk(k, dim=dim)[1].sort(dim=dim)[0]
+    return X.gather(dim, index)
+
 
 if __name__ == "__main__":
 
+    """
     emb_matrix, word2idx = generate_emb_matrix(load_embedding_file("../vectors/PubMed-shuffle-win-30.bin"), 200)
 
     nausea = emb_matrix[word2idx["nausea"]]
@@ -235,3 +248,10 @@ if __name__ == "__main__":
     print(np.dot(nausea, vomitting.T))
     print(np.dot(nausea, diabetes.T))
     print(np.dot(nausea, the.T))
+    """
+
+    torch.manual_seed(1)
+    x = torch.rand(1, 1, 230)
+    y = kmax_pooling(x, dim=2, k=5)
+    print(x[0, 0])
+    print(y[0, 0])
