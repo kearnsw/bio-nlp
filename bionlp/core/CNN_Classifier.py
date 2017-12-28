@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
     # Split training and dev data
     nb_examples = len(dataset)
-    split_idx = round(.8 * nb_examples)
+    split_idx = round(.9 * nb_examples)
     train_loader = DataLoader(dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(list(range(split_idx))))
     valid_loader = DataLoader(dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(list(range(split_idx,
                                                                                                           nb_examples))))
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     loss_func = nn.CrossEntropyLoss(weight=torch.FloatTensor(type_weights))
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()),
                                  lr=args.learning_rate)
-    scheduler = ReduceLROnPlateau(optimizer, factor=0.1, patience=2, verbose=True, mode="max")
+    scheduler = ReduceLROnPlateau(optimizer, factor=0.01, patience=2, verbose=True, mode="max")
 
     # Load checkpoint file if it exists
     if os.path.isfile(model_file):

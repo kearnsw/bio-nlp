@@ -47,7 +47,7 @@ def train(model, optimizer, train_loader, valid_loader, nb_classes, loss_func=Cr
     loss = np.zeros(epochs)
 
     # Train models using mini-batches
-    nb_examples = len(train_loader)
+    nb_examples = len(train_loader.dataset)
     print("Number of training examples:{0}".format(nb_examples))
     for epoch in range(epochs):
         sys.stdout.write("Epoch {0}...\n".format(epoch))
