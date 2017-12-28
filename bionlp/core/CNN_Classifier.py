@@ -5,16 +5,14 @@ from torch.nn.functional import dropout as Dropout
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-from torch.autograd import Variable
 from bionlp.core.utils import load_emb, text2multichannel
-from tqdm import *
+from bionlp.train.multiclass import train
 import numpy as np
-import sys
 import os
 import random
 from argparse import ArgumentParser
 from sklearn.utils import class_weight
-from sklearn.metrics import accuracy_score
+
 
 torch.manual_seed(1)
 random.seed(1986)
@@ -90,19 +88,6 @@ class CNN(nn.Module):
         combined = torch.cat(pool1, dim=1)
         dropout = Dropout(combined, self.dropout)
         return self.fc(dropout).view(self.nb_classes, -1)
-
-
-def validate(model, valid_loader):
-    model.eval()
-    y_pred = []
-    y_true = []
-    for idx, mini_batch in enumerate(valid_loader):
-        for question, true_type in list(zip(mini_batch[0], mini_batch[1])):
-            class_predictions = model(question).data.numpy()
-            prediction = np.argmax(class_predictions)
-            y_true.append(true_type)
-            y_pred.append(prediction)
-    return accuracy_score(y_true, y_pred)
 
 
 if __name__ == "__main__":
@@ -186,46 +171,9 @@ if __name__ == "__main__":
     ####################################################################################################################
     # Train Model
     ####################################################################################################################
-    # Store loss from each epoch for early stopping and plotting loss-curve
     if args.train:
-        loss = np.zeros(args.epochs)
-
-        # Train models using mini-batches
-        print("Number of training examples:{0}".format(split_idx))
-        for epoch in range(args.epochs):
-            sys.stdout.write("Epoch {0}...\n".format(epoch))
-            sys.stdout.flush()
-            model.train()
-            for mini_batch in tqdm(train_loader, total=len(train_loader)):
-                batch_loss = Variable(torch.FloatTensor([0]))  # Zero out the loss from last batch
-                model.zero_grad()                              # Zero out the gradient from last batch
-
-                for doc, label in list(zip(mini_batch[0], mini_batch[1])):
-                    class_pred = model(doc)
-                    batch_loss += loss_func(class_pred.view(-1, args.nb_classes), Variable(torch.LongTensor([label])))
-
-                # Backpropagate the loss for each mini-batch
-                batch_loss.backward()
-                optimizer.step()
-                loss[epoch] += batch_loss.data[0]
-
-            sys.stdout.write("Loss: {0}\n".format(loss[epoch]/split_idx))
-            sys.stdout.flush()
-
-            # Early Stopping
-            if epoch > 0 and (loss[epoch - 1] - loss[epoch])/split_idx <= 0.00001:
-                break
-
-            val_loss = validate(model, valid_loader)
-            print("Accuracy: {0}".format(val_loss))
-            scheduler.step(val_loss)
-
-            # Checkpoint
-            torch.save(model.state_dict(), state_file, pickle_protocol=4)
-
-        # Save best models
-        torch.save(model, model_file, pickle_protocol=4)
-
+        train(model, optimizer, train_loader, valid_loader, args.nb_classes, loss_func, args.epochs,
+              scheduler, state_file, model_file)
     ####################################################################################################################
     # Validation
     ####################################################################################################################
