@@ -3,6 +3,7 @@ import torch.nn as nn
 from torch.nn.functional import relu, max_pool1d
 from torch.nn.functional import dropout as Dropout
 from torch.utils.data import DataLoader
+from torch.autograd import Variable
 from torch.utils.data.sampler import SubsetRandomSampler
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from bionlp.core.utils import load_emb, text2seq
@@ -185,7 +186,7 @@ if __name__ == "__main__":
 
         for idx, mini_batch in enumerate(valid_loader):
             for question, true_type in list(zip(mini_batch[0], mini_batch[1])):
-                class_predictions = model(question).data.numpy()
+                class_predictions = model(Variable(question)).data.numpy()
                 prediction = np.argmax(class_predictions)
                 y_true.append(true_type)
                 y_pred.append(prediction)
