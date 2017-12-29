@@ -29,9 +29,9 @@ class VDCNN(nn.Module):
         self.vocab_size = embedding.shape[0]
         self.emb_dims = embedding.shape[1]
         self.blocks = blocks
-        self.nb_filters = 64
+        self.nb_filters = 32
         self.kernel_size = 3
-        self.padding = floor(self.kernel_size/2)
+        self.padding = floor(self.kernel_size/2)    # Implement same padding to preserve temporal dimension
 
         # Model layers
         self.emb = nn.Embedding(self.vocab_size, self.emb_dims, padding_idx=self.vocab_size - 1)
@@ -40,20 +40,19 @@ class VDCNN(nn.Module):
         self.conv2 = ConvBlock(self.nb_filters, self.nb_filters, 3)
         self.conv3 = ConvBlock(self.nb_filters, self.nb_filters*2, 3)
         self.conv4 = ConvBlock(self.nb_filters*2, self.nb_filters*2, 3)
-        self.conv5 = ConvBlock(self.nb_filters*2, self.nb_filters*4, 3)
-        self.conv6 = ConvBlock(self.nb_filters*4, self.nb_filters*4, 3)
-        self.conv7 = ConvBlock(self.nb_filters*4, self.nb_filters*8, 3)
-        self.conv8 = ConvBlock(self.nb_filters*8, self.nb_filters*8, 3)
+        # self.conv5 = ConvBlock(self.nb_filters*2, self.nb_filters*4, 3)
+        # self.conv6 = ConvBlock(self.nb_filters*4, self.nb_filters*4, 3)
+        # self.conv7 = ConvBlock(self.nb_filters*4, self.nb_filters*8, 3)
+        # self.conv8 = ConvBlock(self.nb_filters*8, self.nb_filters*8, 3)
 
-        self.fc1 = nn.Linear(8*128, 1024)
-        self.fc2 = nn.Linear(1024, 13)
+        self.fc = nn.Linear(8*self.nb_filters*len(blocks), 13)
 
-        # Initialize the weights of the convolution layers
+        # Initialize parameters
         for m in self.modules():
-            if type(m) == nn.modules.conv.Conv1d:
+            if isinstance(m, nn.Conv1d):
                 norm_const = m.kernel_size[0] * m.out_channels
                 m.weight.data.normal_(0, np.sqrt(2. / norm_const))
-            elif type(m) == nn.modules.sparse.Embedding:
+            elif isinstance(m, nn.Embedding):
                 m.weight = nn.Parameter(torch.from_numpy(self.embedding).float(), requires_grad=False)
             elif isinstance(m, nn.Linear):
                 m.weight.data.normal_(0.0, 0.5)
@@ -79,26 +78,30 @@ class VDCNN(nn.Module):
         """
 
         kpool = kmax_pooling(conv4, -1, 8)
-        fc1 = self.fc1.forward(kpool.view(-1, 128*8))
-        fc2 = self.fc2.forward(relu(fc1))
-        return relu(fc2)
+        fc = self.fc.forward(kpool.view(-1, 8*self.nb_filters*len(self.blocks)))
+        return relu(fc)
 
 
 class ConvBlock(nn.Module):
 
-    def __init__(self, input_dim, nb_filters, kernel_size):
+    def __init__(self, in_channels, out_channels, kernel_size):
         super().__init__()
         self.padding = floor(kernel_size/2)
-        self.conv1 = nn.Conv1d(input_dim, nb_filters, kernel_size, padding=self.padding)
-        self.conv2 = nn.Conv1d(nb_filters, nb_filters, kernel_size, padding=self.padding)
-        self.bn1 = nn.BatchNorm1d(nb_filters)
-        self.bn2 = nn.BatchNorm1d(nb_filters)
+        self.conv1 = nn.Conv1d(in_channels, out_channels, kernel_size, padding=self.padding)
+        self.conv2 = nn.Conv1d(out_channels, out_channels, kernel_size, padding=self.padding)
+        self.bn1 = nn.BatchNorm1d(out_channels)
+        self.bn2 = nn.BatchNorm1d(out_channels)
+        self.identity = nn.Conv1d(in_channels, out_channels, kernel_size, padding=self.padding)
+        self.identity_flag = (in_channels != out_channels)     # True if channel dimensions are not equal false otherwise
 
     def forward(self, _input):
+        residual = _input
         conv1 = self.conv1(_input)
         a_1 = relu(self.bn1(conv1))
         conv2 = self.conv2(a_1)
-        return relu(self.bn2(conv2))
+        if self.identity_flag:
+            residual = self.identity(_input)
+        return relu(self.bn2(conv2) + residual)
 
 
 if __name__ == "__main__":
@@ -112,7 +115,7 @@ if __name__ == "__main__":
     cli_parser.add_argument("--nb_classes", type=int, default=13)
     cli_parser.add_argument("--cuda", action="store_true")
     cli_parser.add_argument("--models", type=str, help="model directory")
-    cli_parser.add_argument("-lr", "--learning_rate", type=float, default=0.01, help="learning rate for optimizer")
+    cli_parser.add_argument("-lr", "--learning_rate", type=float, default=0.1, help="learning rate for optimizer")
     cli_parser.add_argument("--train", action="store_true")
     cli_parser.add_argument("--validate", action="store_true")
     args = cli_parser.parse_args()
@@ -154,7 +157,7 @@ if __name__ == "__main__":
     # Create model and set loss function and optimizer
     opts = {
         "embedding": emb,
-        "blocks": []
+        "blocks": [64, 128]
     }
 
     model = VDCNN(**opts)
