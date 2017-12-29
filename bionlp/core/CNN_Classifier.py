@@ -5,7 +5,7 @@ from torch.nn.functional import dropout as Dropout
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-from bionlp.core.utils import load_emb, text2multichannel
+from bionlp.core.utils import load_emb, text2seq
 from bionlp.train.multiclass import train
 import numpy as np
 import os
@@ -19,7 +19,7 @@ random.seed(1986)
 
 
 class CNN(nn.Module):
-    def __init__(self, embeddings, filters, nb_classes, dropout, max_len, nb_filters):
+    def __init__(self, embedding, filters, nb_classes, dropout, max_len, nb_filters, multichannel=True):
         """
         Convolutional Neural Network (CNN) for Sentence Classification based on Kim 2014
 
@@ -35,20 +35,24 @@ class CNN(nn.Module):
         self.dropout = dropout
         self.nb_filters = nb_filters
         self.max_len = max_len
-        self.embeddings = embeddings
-        self.emb_dims = embeddings[0].shape[1]
-        self.nb_channels = len(embeddings)
-
-        # Ensure all embeddings are of the same dimensions
-        assert all(embedding.shape[1] == self.emb_dims for embedding in self.embeddings)
+        self.embedding = embedding
+        self.vocab_size = embedding.shape[0]
+        self.emb_dims = embedding.shape[1]
+        self.nb_channels = 2 if multichannel else 1
 
         ################################################################################################################
         # Model Parameters
         ################################################################################################################
 
         # Create an embedding for each channel
-        self.emb_layers = nn.ModuleList([nn.Embedding(embedding.shape[0], self.emb_dims, padding_idx=embedding.shape[0]-1)
-                                         for embedding in self.embeddings])
+        self.emb_layers = nn.ModuleList()
+        self.static_emb = nn.Embedding(self.vocab_size, self.emb_dims, padding_idx=self.vocab_size-1)
+        self.static_emb.weight = nn.Parameter(torch.from_numpy(self.embedding).float(), requires_grad=False)
+        self.emb_layers.append(self.static_emb)
+        if multichannel:
+            self.nonstatic_emb = nn.Embedding(self.vocab_size, self.emb_dims, padding_idx=self.vocab_size-1)
+            self.nonstatic_emb.weight = nn.Parameter(torch.from_numpy(self.embedding).float(), requires_grad=True)
+            self.emb_layers.append(self.nonstatic_emb)
 
         # Create N convolutional layers equal to the number of filter variants, default = 3 (Kim 2014)
         # Each convolutional layer has form (in_channels, out_channels, kernel size) since we are dealing with a
@@ -64,13 +68,9 @@ class CNN(nn.Module):
         # Initialize Weights
         ################################################################################################################
 
-        # Set weights to the embedding matrices, i.e. a matrix where each word embedding row corresponds to a word index
-        for idx, emb in enumerate(self.emb_layers):
-            emb.weight = nn.Parameter(torch.from_numpy(self.embeddings[idx]).float(), requires_grad=False)
-
         # Initialize the weights of the convolution layers
         for m in self.modules():
-            if type(m) == nn.modules.conv.Conv1d:
+            if isinstance(m, nn.Conv1d):
                 norm_const = m.kernel_size[0] * m.out_channels
                 m.weight.data.normal_(0, np.sqrt(2./norm_const))
 
@@ -81,7 +81,7 @@ class CNN(nn.Module):
         :param sequence: an array of dimension (max_len, nb_channels) that contains the index of all words in sequence
         :return: prediction for each class
         """
-        emb = [emb(sequence[channel]) for channel, emb in enumerate(self.emb_layers)]
+        emb = [l(sequence) for l in self.emb_layers]
         emb = torch.stack(emb).view(-1, self.nb_channels, self.emb_dims * self.max_len)  # flatten to 1d by nb_channels
         conv1 = [relu(conv(emb)) for conv in self.conv1]
         pool1 = [max_pool1d(conv, self.max_len - self.filters[idx] + 1).view(-1, self.nb_filters)
@@ -114,9 +114,7 @@ if __name__ == "__main__":
     model_file = os.sep.join([args.models, "CNN.model"])
 
     # Load embeddings
-    emb_w2i = [load_emb(path, args.emb_dim) for path in args.word_emb.split(',')]
-    embeddings = [emb for emb, w2i in emb_w2i]
-    w2is = [w2i for emb, w2i in emb_w2i]
+    embedding, w2i = load_emb(args.word_emb, args.emb_dim)
 
     # Load training data
     from bionlp.utils.Datasets import GARD
@@ -129,12 +127,12 @@ if __name__ == "__main__":
     data = list(zip(dataset.data, dataset.labels))
     random.shuffle(data)
     dataset.data, dataset.labels = zip(*data)
-    dataset.data = [text2multichannel(sentence.split(), w2is, max_len=max_len) for sentence in dataset.data]
+    dataset.data = [text2seq(sentence.split(), w2i, max_len=max_len, autograd=False) for sentence in dataset.data]
     dataset.labels = [type2idx[label] for label in dataset.labels]
 
     # Split training and dev data
     nb_examples = len(dataset)
-    split_idx = round(.9 * nb_examples)
+    split_idx = round(.95 * nb_examples)
     train_loader = DataLoader(dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(list(range(split_idx))))
     valid_loader = DataLoader(dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(list(range(split_idx,
                                                                                                           nb_examples))))
@@ -145,7 +143,7 @@ if __name__ == "__main__":
 
     # Create model and set loss function and optimizer
     opts = {
-        "embeddings": embeddings,
+        "embedding": embedding,
         "filters": [3, 4, 5],
         "nb_classes": 13,
         "dropout": 0.5,
