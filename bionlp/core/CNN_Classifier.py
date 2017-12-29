@@ -47,8 +47,8 @@ class CNN(nn.Module):
         ################################################################################################################
 
         # Create an embedding for each channel
-        self.emb_layers = [nn.Embedding(embedding.shape[0], self.emb_dims, padding_idx=embedding.shape[0]-1)
-                           for embedding in self.embeddings]
+        self.emb_layers = nn.ModuleList([nn.Embedding(embedding.shape[0], self.emb_dims, padding_idx=embedding.shape[0]-1)
+                                         for embedding in self.embeddings])
 
         # Create N convolutional layers equal to the number of filter variants, default = 3 (Kim 2014)
         # Each convolutional layer has form (in_channels, out_channels, kernel size) since we are dealing with a
@@ -69,9 +69,10 @@ class CNN(nn.Module):
             emb.weight = nn.Parameter(torch.from_numpy(self.embeddings[idx]).float(), requires_grad=False)
 
         # Initialize the weights of the convolution layers
-        for l in self.conv1:
-            norm_const = l.kernel_size[0] * l.out_channels
-            l.weight.data.normal_(0, np.sqrt(2./norm_const))
+        for m in self.modules():
+            if type(m) == nn.modules.conv.Conv1d:
+                norm_const = m.kernel_size[0] * m.out_channels
+                m.weight.data.normal_(0, np.sqrt(2./norm_const))
 
     def forward(self, sequence):
         """
@@ -157,7 +158,7 @@ if __name__ == "__main__":
     loss_func = nn.CrossEntropyLoss(weight=torch.FloatTensor(type_weights))
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()),
                                  lr=args.learning_rate)
-    scheduler = ReduceLROnPlateau(optimizer, factor=0.01, patience=2, verbose=True, mode="max")
+    scheduler = ReduceLROnPlateau(optimizer, factor=0.1, patience=2, verbose=True, mode="max")
 
     # Load checkpoint file if it exists
     if os.path.isfile(model_file):

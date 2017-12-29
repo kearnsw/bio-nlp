@@ -19,7 +19,7 @@ def validate(model, valid_loader):
     y_true = []
     for idx, mini_batch in enumerate(valid_loader):
         for question, true_type in list(zip(mini_batch[0], mini_batch[1])):
-            class_predictions = model(question).data.numpy()
+            class_predictions = model(Variable(question)).data.numpy()
             prediction = np.argmax(class_predictions)
             y_true.append(true_type)
             y_pred.append(prediction)
@@ -58,7 +58,7 @@ def train(model, optimizer, train_loader, valid_loader, nb_classes, loss_func=Cr
             model.zero_grad()                              # Zero out the gradient from last batch
 
             for doc, label in list(zip(mini_batch[0], mini_batch[1])):
-                class_pred = model(doc)
+                class_pred = model(Variable(doc))
                 batch_loss += loss_func(class_pred.view(-1, nb_classes), Variable(torch.LongTensor([label])))
 
             # Backpropagate the loss for each mini-batch
