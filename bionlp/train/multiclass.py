@@ -6,7 +6,6 @@ from torch.nn import CrossEntropyLoss
 from torch.autograd import Variable
 from sklearn.metrics import accuracy_score
 
-
 def validate(model, valid_loader):
     """
     Returns an accuracy metric for validation
@@ -26,7 +25,7 @@ def validate(model, valid_loader):
     return accuracy_score(y_true, y_pred)
 
 
-def train(model, optimizer, train_loader, valid_loader, nb_classes, loss_func=CrossEntropyLoss(), epochs=100,
+def train(model, optimizer, train_loader, valid_loader, loss_func=CrossEntropyLoss(), epochs=100,
           scheduler=None, state_file="states.pkl", model_file="model.pkl"):
     """
     Train a model using backpropagation for a multi-class classification task
@@ -35,7 +34,6 @@ def train(model, optimizer, train_loader, valid_loader, nb_classes, loss_func=Cr
     :param optimizer: An optimizer to perform gradient descent
     :param train_loader: A DataLoader class containing the indexed training examples and labels
     :param valid_loader: A DataLoader class containing the indexed validation examples and labels
-    :param nb_classes: Number of classes over which to make a prediction
     :param loss_func: (optional) Loss function for computing the loss for each batch, default is CrossEntropyLoss()
     :param epochs: (optional) Number of epochs to run gradient descent, default is 100
     :param scheduler: (optional) A scheduler class for updating the learning rate based on a validation metric
@@ -54,12 +52,10 @@ def train(model, optimizer, train_loader, valid_loader, nb_classes, loss_func=Cr
         sys.stdout.flush()
         model.train()
         for mini_batch in tqdm(train_loader, total=len(train_loader)):
-            batch_loss = Variable(torch.FloatTensor([0]))  # Zero out the loss from last batch
             model.zero_grad()                              # Zero out the gradient from last batch
 
-            for doc, label in list(zip(mini_batch[0], mini_batch[1])):
-                class_pred = model(Variable(doc))
-                batch_loss += loss_func(class_pred.view(-1, nb_classes), Variable(torch.LongTensor([label])))
+            class_pred = model(Variable(mini_batch[0]))
+            batch_loss = loss_func(class_pred, Variable(torch.LongTensor(mini_batch[1])))
 
             # Backpropagate the loss for each mini-batch
             batch_loss.backward()
