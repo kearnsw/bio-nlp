@@ -176,7 +176,7 @@ if __name__ == "__main__":
         sys.stdout.flush()
 
         # Early Stopping ** train with higher learning rate then lower the learning rate **
-        if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.01:
+        if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.00001:
             break
 
         # Checkpoint
