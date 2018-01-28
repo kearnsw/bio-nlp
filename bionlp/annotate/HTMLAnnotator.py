@@ -4,6 +4,7 @@ HTML Taggers
 @author: Will Kearns
 """
 from bionlp.core.LinkedList import LinkedList
+from collections import Counter
 from argparse import ArgumentParser
 from spacy import displacy
 import os
@@ -71,7 +72,17 @@ class HTMLAnnotator(object):
         self.char_ll.from_string(text)
 
         return self.char_ll
-
+    
+    def prep_entities(self):
+        
+        entities = [entity["label"] for entity in self.entities]
+        counts = Counter(entities)
+        res = []
+        for entity, count in counts.items():
+            display_name, cui, semtype = entity.split(":")
+            res.append({"display_name": display_name, "count": count, "type": semtype})
+        return res 
+            
 
 class MetaMapLiteAnnotator(HTMLAnnotator):
     """
@@ -112,7 +123,7 @@ class MetaMapAnnotator(HTMLAnnotator):
     def __init__(self):
         super().__init__()
         self.title = "MetaMap"
-        self.whitelist = ["dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab"]
+        self.whitelist = ["neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab"]
         self.symtypes = {}
         self.load_semtype_dict()
 
@@ -154,7 +165,7 @@ class MetaMapAnnotator(HTMLAnnotator):
         with open(os.path.join(dir, 'SemanticTypes_2013AA.txt'), "r") as input_file:
             for line in input_file.readlines():
                 line = line.split("|")
-                self.symtypes[line[0]] = line[2]
+                self.symtypes[line[0]] = line[2].strip()
 
 if __name__ == "__main__":
     parser = ArgumentParser()
@@ -163,6 +174,7 @@ if __name__ == "__main__":
     parser.add_argument('--file', type=str, help='file containing the raw text')
     parser.add_argument('--annotations', type=str, help='annotation file in metamap (mm) or (mml) format ')
     parser.add_argument('--format', type=str, default="mm", help='use metamap (mm) or metamap lite (mml)')
+    parser.add_argument('--output_format', type=str, default="html", help='html or json output')
     args = parser.parse_args()
 
     if args.pipe:
@@ -194,6 +206,10 @@ if __name__ == "__main__":
 
     parser.parse(raw_text, annotations)
     parser.define_colors(['#9b38bd', '#34c3b9', '#abd8d8', '#c2d54a', '#e0eaa9'])
-    parser.serve()
-    sys.stdout.write(parser.render())
-    sys.stdout.flush()
+    if args.output_format == "html":
+        sys.stdout.write(parser.render())
+        sys.stdout.flush()
+    else:
+        sys.stdout.write(str(parser.prep_entities()))
+        sys.stdout.flush()
+

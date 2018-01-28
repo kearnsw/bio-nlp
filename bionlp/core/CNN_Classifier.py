@@ -1,76 +1,101 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as func
+from torch.nn.functional import relu, max_pool1d
+from torch.nn.functional import dropout as Dropout
+from torch.utils.data import DataLoader
 from torch.autograd import Variable
-from bionlp.core.utils import text2seq, idx_tags, tags2idx, load_embeddings, plot_loss, generate_emb_matrix
-from bionlp.core.utils import create_batches
-from tqdm import *
+from torch.utils.data.sampler import SubsetRandomSampler
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+from bionlp.core.utils import load_emb, text2seq
+from bionlp.train.multiclass import train
 import numpy as np
-import sys
 import os
-import re
 import random
 from argparse import ArgumentParser
-from bs4 import BeautifulSoup
-from gensim.models import Word2Vec
 from sklearn.utils import class_weight
+
 
 torch.manual_seed(1)
 random.seed(1986)
 
 
 class CNN(nn.Module):
-    def __init__(self, **kwargs):
-        super().__init__()
-        self.word2idx = kwargs["word2idx"]
-        self.vocab_size = len(self.word2idx) + 2  # Plus two to include <UNK> and <PAD>
-        self.emb_dims = kwargs["embedding_matrix"].shape[1]
-        self.filters = kwargs["filters"]
-        self.nb_classes = kwargs["nb_classes"]
-        self.embedding_matrix = kwargs["embedding_matrix"]
-        self.dropout = kwargs["dropout"]
-        self.nb_filters = 100
-        self.max_len = kwargs["max_len"]
+    def __init__(self, embedding, filters, nb_classes, dropout, max_len, nb_filters, multichannel=True):
+        """
+        Convolutional Neural Network (CNN) for Sentence Classification based on Kim 2014
 
-        # Model Layers
-        # Embedding layer holds a dictionary of word_index keys mapped to word_embedding values
-        self.embedding = nn.Embedding(self.vocab_size, self.emb_dims, padding_idx=self.vocab_size - 1)
-        self.embedding.weight = nn.Parameter(torch.from_numpy(self.embedding_matrix).float(),
-                                             requires_grad=True)
+        :param embeddings (list): a list of embedding matrices, embeddings are keyed by word indices
+        :param filters (list): a list of ints corresponding to number of words to include per filter
+        :param nb_classes (int): number of classes to make a prediction over
+        :param dropout (float): percent of cells to knockout per epoch
+        :param max_len (int): length of longest sequence
+        """
+        super().__init__()
+        self.filters = filters
+        self.nb_classes = nb_classes
+        self.dropout = dropout
+        self.nb_filters = nb_filters
+        self.max_len = max_len
+        self.embedding = embedding
+        self.vocab_size = embedding.shape[0]
+        self.emb_dims = embedding.shape[1]
+        self.nb_channels = 2 if multichannel else 1
+
+        ################################################################################################################
+        # Model Parameters
+        ################################################################################################################
+
+        # Create an embedding for each channel
+        self.emb_layers = nn.ModuleList()
+        self.static_emb = nn.Embedding(self.vocab_size, self.emb_dims, padding_idx=self.vocab_size-1)
+        self.static_emb.weight = nn.Parameter(torch.from_numpy(self.embedding).float(), requires_grad=False)
+        self.emb_layers.append(self.static_emb)
+        if multichannel:
+            self.nonstatic_emb = nn.Embedding(self.vocab_size, self.emb_dims, padding_idx=self.vocab_size-1)
+            self.nonstatic_emb.weight = nn.Parameter(torch.from_numpy(self.embedding).float(), requires_grad=True)
+            self.emb_layers.append(self.nonstatic_emb)
 
         # Create N convolutional layers equal to the number of filter variants, default = 3 (Kim 2014)
-        # Each convolutional layer is of dimension 1 x
-        self.conv_layers = [nn.Conv1d(1, self.nb_filters, kernel_size * self.emb_dims, stride=self.emb_dims)
-                            for idx, kernel_size in enumerate(self.filters)]
+        # Each convolutional layer has form (in_channels, out_channels, kernel size) since we are dealing with a
+        # 1-dimensional convolution and have flattened our input, we want our filter to be of size embedding x filter
+        # size and to take a stride equal to the length of one word, i.e. the embedding dimension.
+        self.conv1 = nn.ModuleList([nn.Conv1d(self.nb_channels, self.nb_filters, kernel_size * self.emb_dims,
+                                              stride=self.emb_dims) for idx, kernel_size in enumerate(self.filters)])
 
-        #
-        self.conv2class = nn.Linear(len(self.filters) * self.nb_filters, self.nb_classes)
+        # Fully connected layer with output equal to the number of classes
+        self.fc = nn.Linear(len(self.filters) * self.nb_filters, self.nb_classes)
 
-        for l in self.conv_layers:
-            n = l.kernel_size[0] * l.out_channels
-            l.weight.data.normal_(0, np.sqrt(2./n))
+        ################################################################################################################
+        # Initialize Weights
+        ################################################################################################################
 
-    def forward(self, sentence):
-        emb = self.embedding(sentence).view(-1, 1, self.emb_dims * self.max_len)  # flatten to 1d
-        convs = [func.relu(conv(emb)) for conv in self.conv_layers]
-        pooled = [func.max_pool1d(conv, self.max_len - self.filters[idx] + 1).view(-1, self.nb_filters) for idx, conv in enumerate(convs)]
-        combined = torch.cat(pooled, dim=1)
-        dropout = func.dropout(combined, self.dropout)
-        return self.conv2class(dropout).view(self.nb_classes, -1)
+        # Initialize the weights of the convolution layers
+        for m in self.modules():
+            if isinstance(m, nn.Conv1d):
+                norm_const = m.kernel_size[0] * m.out_channels
+                m.weight.data.normal_(0, np.sqrt(2./norm_const))
 
+    def forward(self, sequence):
+        """
+        Forward propagation step
 
-def load_data(GARD_FILE):
-    with open(GARD_FILE, "r", encoding="utf-8") as f:
-        xml_data = f.read()
-        soup = BeautifulSoup(xml_data, "xml")
-
-    return soup.find_all("SubQuestion")
+        :param sequence: an array of dimension (max_len, nb_channels) that contains the index of all words in sequence
+        :return: prediction for each class
+        """
+        emb = [l(sequence) for l in self.emb_layers]
+        emb = torch.stack(emb).view(-1, self.nb_channels, self.emb_dims * self.max_len)  # flatten to 1d by nb_channels
+        conv1 = [relu(conv(emb)) for conv in self.conv1]
+        pool1 = [max_pool1d(conv, self.max_len - self.filters[idx] + 1).view(-1, self.nb_filters)
+                 for idx, conv in enumerate(conv1)]
+        combined = torch.cat(pool1, dim=1)
+        dropout = Dropout(combined, self.dropout)
+        return self.fc(dropout).view(self.nb_classes, -1)
 
 
 if __name__ == "__main__":
 
     cli_parser = ArgumentParser()
-    cli_parser.add_argument("-e", "--word_emb", type=str, help="Path to the binary embedding file")
+    cli_parser.add_argument("-e", "--word_emb", type=str, help="Comma separated list of paths to embedding files")
     cli_parser.add_argument("-d", "--emb_dim", type=int, help="Embedding dimensions")
     cli_parser.add_argument("--text", type=str, help="Directory with raw text files")
     cli_parser.add_argument("--epochs", type=int, help="Number of epochs")
@@ -79,80 +104,67 @@ if __name__ == "__main__":
     cli_parser.add_argument("--cuda", action="store_true")
     cli_parser.add_argument("--models", type=str, help="model directory")
     cli_parser.add_argument("-lr", "--learning_rate", type=float, default=0.01, help="learning rate for optimizer")
+    cli_parser.add_argument("--train", action="store_true")
+    cli_parser.add_argument("--validate", action="store_true")
     args = cli_parser.parse_args()
 
+    ####################################################################################################################
+    # Load Data
+    ####################################################################################################################
     state_file = os.sep.join([args.models, "CNN.states"])
     model_file = os.sep.join([args.models, "CNN.model"])
 
-    # Load training data and split into training and dev
+    # Load embeddings
+    embedding, w2i = load_emb(args.word_emb, args.emb_dim)
 
-    questions = load_data(args.text)
-    types = set([q["qt"] for q in questions])
+    # Load training data
+    from bionlp.utils.Datasets import GARD
+    dataset = GARD(args.text)
+    max_len = max([len(q) for q in dataset.data])
+    types = set(dataset.labels)
     type2idx = {type: idx for idx, type in enumerate(sorted(types))}
-    data = [(q.text, q["qt"]) for q in questions]
+
+    # Convert strings to indices within data to speed up embedding layer
+    data = list(zip(dataset.data, dataset.labels))
     random.shuffle(data)
-    posts = [q for q, qt in data]
-    labels = [qt for q, qt in data]
-    max_len = max([len(post) for post in posts])
+    dataset.data, dataset.labels = zip(*data)
+    dataset.data = [text2seq(sentence.split(), w2i, max_len=max_len, autograd=False) for sentence in dataset.data]
+    dataset.labels = [type2idx[label] for label in dataset.labels]
 
     # Split training and dev data
-    split_idx = round(.9 * len(posts))
-    x_train = posts[:split_idx]
-    y_train = labels[:split_idx]
-    x_dev = posts[split_idx:]
-    y_dev = labels[split_idx:]
+    nb_examples = len(dataset)
+    split_idx = round(.95 * nb_examples)
+    train_loader = DataLoader(dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(list(range(split_idx))))
+    valid_loader = DataLoader(dataset, batch_size=args.batch_size, sampler=SubsetRandomSampler(list(range(split_idx,
+                                                                                                          nb_examples))))
 
-    # Convert sentences to embeddings and question types to class indices
-    if "webQA" in args.word_emb:
-        model = Word2Vec.load(args.word_emb)
-        embeddings, word2idx = generate_emb_matrix(model.wv, 100)
-    else:
-        embeddings, word2idx = load_embeddings(args.word_emb, args.emb_dim)
-
-    # Convert data into sequence using indices from embeddings and padding the sequences
-    x_train = [text2seq(sentence.split(), word2idx, max_len=max_len) for sentence in x_train]
-    y_train = [type2idx[qt] for qt in y_train]
-    x_dev = [text2seq(sentence.split(), word2idx, max_len=max_len) for sentence in x_dev]
-    y_dev = [type2idx[qt] for qt in y_dev]
-
-    class_weights = class_weight.compute_class_weight('balanced', np.unique(y_train), y_train)
-
-    y_train = [Variable(torch.LongTensor([y])) for y in y_train]
+    ####################################################################################################################
+    # Load Model
+    ####################################################################################################################
 
     # Create model and set loss function and optimizer
     opts = {
-        "word2idx": word2idx,
-        "embedding_matrix": embeddings,
+        "embedding": embedding,
         "filters": [3, 4, 5],
         "nb_classes": 13,
         "dropout": 0.5,
-        "max_len": max_len
+        "max_len": max_len,
+        "nb_filters": 100
     }
 
     model = CNN(**opts)
-    loss_func = nn.CrossEntropyLoss()  # weight=torch.FloatTensor(class_weights))
-    optimizer = torch.optim.Adam(model.parameters(),
+    type_weights = class_weight.compute_class_weight('balanced', np.unique(dataset.labels), dataset.labels)
+    loss_func = nn.CrossEntropyLoss(weight=torch.FloatTensor(type_weights))
+    optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()),
                                  lr=args.learning_rate)
-
-    # Create files to store intermediate model states and the final best model
-    try:
-        emb_version = re.match(r".*(?=\.[^/.]+)", os.path.basename(args.word_emb))[0]
-    except:
-        print("failed to extract embedding name, expected filename of type filename.* (e.g. glove.6B.50d.txt or "
-              "PubMed-win-2.bin)")
-        emb_version = ""
+    scheduler = ReduceLROnPlateau(optimizer, factor=0.1, patience=2, verbose=True, mode="max")
 
     # Load checkpoint file if it exists
-    if os.path.isfile(state_file):
-        print("Initializing models state from file...")
-        model.load_state_dict(torch.load(state_file))
+    if os.path.isfile(model_file):
+        print("Loading model from {0}...".format(model_file))
+        model = torch.load(model_file)
 
-    # Store loss from each epoch for early stopping and plotting loss-curve
-    loss = np.zeros(args.epochs)
-
-    # Create batches
-    mini_batches = create_batches(list(zip(x_train, y_train)), args.batch_size)
-
+<<<<<<< HEAD
     print("Number of training examples:{0}".format(len(y_train)))
     # Train models using mini-batches
     for epoch in range(args.epochs):
@@ -178,9 +190,32 @@ if __name__ == "__main__":
         # Early Stopping ** train with higher learning rate then lower the learning rate **
         if epoch > 0 and loss[epoch - 1] - loss[epoch] <= 0.00001:
             break
+    elif os.path.isfile(state_file):
+        print("Initializing models state from {0}".format(state_file))
+        model.load_state_dict(torch.load(state_file))
 
-        # Checkpoint
-        torch.save(model.state_dict(), state_file, pickle_protocol=4)
+    ####################################################################################################################
+    # Train Model
+    ####################################################################################################################
+    if args.train:
+        train(model, optimizer, train_loader, valid_loader, args.nb_classes, loss_func, args.epochs,
+              scheduler, state_file, model_file)
+    ####################################################################################################################
+    # Validation
+    ####################################################################################################################
+    if args.validate:
+        from sklearn.metrics import classification_report
 
-    # Save best models
-    torch.save(model, model_file, pickle_protocol=4)
+        y_true = []
+        y_pred = []
+        idx2type = {v: k for k, v in type2idx.items()}
+
+        for idx, mini_batch in enumerate(valid_loader):
+            for question, true_type in list(zip(mini_batch[0], mini_batch[1])):
+                class_predictions = model(Variable(question)).data.numpy()
+                prediction = np.argmax(class_predictions)
+                y_true.append(true_type)
+                y_pred.append(prediction)
+
+        print(classification_report(y_true, y_pred))
+

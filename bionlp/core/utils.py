@@ -8,6 +8,7 @@ import torch
 from torch.autograd import Variable
 import numpy as np
 from gensim.models.keyedvectors import KeyedVectors
+from gensim.models import Word2Vec
 from tqdm import *
 import matplotlib.pyplot as plt
 import seaborn as sb
@@ -59,7 +60,13 @@ def text2seq(sentence, word2idx, autograd=True, max_len=None):
     if autograd:
         return Variable(torch.LongTensor(sequence))
     else:
-        return sequence
+        return torch.LongTensor(sequence)
+
+
+def text2multichannel(sentence, w2is, max_len=None):
+
+    seqs = [text2seq(sentence, word2idx=w2i, autograd=False, max_len=max_len) for w2i in w2is]
+    return torch.stack(seqs)
 
 
 def tags2idx(tags, tag2idx, autograd=True):
@@ -91,7 +98,7 @@ def idx_tags(tags):
     return tag2idx
 
 
-def load_emb(filename):
+def load_embedding_file(filename):
 
     if ".bin" in filename:
         return KeyedVectors.load_word2vec_format(filename, binary=True, unicode_errors='ignore')
@@ -129,7 +136,7 @@ def load_embeddings(filename, dims):
     :param dims: number of dimensions of the embeddings
     :return: a tuple of (embedding matrix, word2idx)
     """
-    return generate_emb_matrix(load_emb(filename), dims)
+    return generate_emb_matrix(load_embedding_file(filename), dims)
 
 
 def to_one_hot(idx, nb_classes):
@@ -206,9 +213,32 @@ def plot_loss(loss_array):
     # Save to disk
     plt.savefig("loss_plot.png")
 
+
+def load_emb(path, emb_dims):
+    if "webQA" in path:
+        model = Word2Vec.load(path)
+        embeddings, word2idx = generate_emb_matrix(model.wv, emb_dims)
+    else:
+        embeddings, word2idx = load_embeddings(path, emb_dims)
+    return embeddings, word2idx
+
+
+def kmax_pooling(X, dim, k):
+    """
+    Adopted from https://discuss.pytorch.org/t/resolved-how-to-implement-k-max-pooling-for-cnn-text-classification/931/2
+    :param X: tensor
+    :param dim: dimension to pool
+    :param k: number of values to return
+    :return: top k activations for the given convolution preserving relative order
+    """
+    index = X.topk(k, dim=dim)[1].sort(dim=dim)[0]
+    return X.gather(dim, index)
+
+
 if __name__ == "__main__":
 
-    emb_matrix, word2idx = generate_emb_matrix(load_emb("../vectors/PubMed-shuffle-win-30.bin"), 200)
+    """
+    emb_matrix, word2idx = generate_emb_matrix(load_embedding_file("../vectors/PubMed-shuffle-win-30.bin"), 200)
 
     nausea = emb_matrix[word2idx["nausea"]]
     vomitting = emb_matrix[word2idx["vomitting"]]
@@ -218,3 +248,10 @@ if __name__ == "__main__":
     print(np.dot(nausea, vomitting.T))
     print(np.dot(nausea, diabetes.T))
     print(np.dot(nausea, the.T))
+    """
+
+    torch.manual_seed(1)
+    x = torch.rand(1, 1, 230)
+    y = kmax_pooling(x, dim=2, k=5)
+    print(x[0, 0])
+    print(y[0, 0])
