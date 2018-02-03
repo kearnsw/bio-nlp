@@ -110,7 +110,7 @@ class MetaMapLiteAnnotator(HTMLAnnotator):
 
         self.annotations.append({'text': text, 'ents': self.entities, 'title': "MetaMap Lite"})
 
-        return self.annotations
+        return json.dumps(self.annotations)
 
 
 class MetaMapAnnotator(HTMLAnnotator):
@@ -156,7 +156,7 @@ class MetaMapAnnotator(HTMLAnnotator):
                                     end = start + int(loc["Length"])
                                     self.entities.append({'start': start, 'end': end, 'label': term.upper()})
 
-        self.annotations.append({'text': self.text, 'ents': self.entities, 'title': self.title})
+        self.annotations.append({"text": self.text, "ents": self.entities, "title": self.title})
 
         return self.annotations
 
@@ -210,6 +210,6 @@ if __name__ == "__main__":
         sys.stdout.write(parser.render())
         sys.stdout.flush()
     else:
-        sys.stdout.write(str(parser.prep_entities()))
+        sys.stdout.write(json.dumps(parser.prep_entities()))
         sys.stdout.flush()
 
