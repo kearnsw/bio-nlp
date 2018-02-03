@@ -26,6 +26,7 @@ class HTMLAnnotator(object):
         self.char_ll = LinkedList()
         self.options = None
         self.title = None
+        self.timestamps = None
 
     def parse(self, text, ann):
         pass
@@ -175,6 +176,7 @@ if __name__ == "__main__":
     parser.add_argument('--annotations', type=str, help='annotation file in metamap (mm) or (mml) format ')
     parser.add_argument('--format', type=str, default="mm", help='use metamap (mm) or metamap lite (mml)')
     parser.add_argument('--output_format', type=str, default="html", help='html or json output')
+    parser.add_argument('--timestamps', type=list, default=None, help='list of tab delimited time stamp (word,start,end')
     args = parser.parse_args()
 
     if args.pipe:
@@ -203,6 +205,9 @@ if __name__ == "__main__":
             parser = MetaMapLiteAnnotator()
             with open(args.annotations, "r") as f:
                 annotations = f.readlines()
+
+    if args.timestamps:
+        parser.timestamps = args.timestamps
 
     parser.parse(raw_text, annotations)
     parser.define_colors(['#9b38bd', '#34c3b9', '#abd8d8', '#c2d54a', '#e0eaa9'])
