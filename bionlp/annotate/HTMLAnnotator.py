@@ -9,6 +9,10 @@ from argparse import ArgumentParser
 from spacy import displacy
 import os
 import json
+import ast
+from collections import defaultdict
+
+from typing import Dict, List
 
 
 class HTMLAnnotator(object):
@@ -75,15 +79,41 @@ class HTMLAnnotator(object):
         return self.char_ll
     
     def prep_entities(self):
-        
+
+        indices = {}
         entities = [entity["label"] for entity in self.entities]
+        if self.timestamps:
+            for entity in self.entities:
+                indices[entity["label"]] = self.find_time_of_string(entity["surface"])
+
         counts = Counter(entities)
         res = []
         for entity, count in counts.items():
             display_name, cui, semtype = entity.split(":")
-            res.append({"display_name": display_name, "count": count, "type": semtype})
-        return res 
-            
+            if self.timestamps:
+                res.append({"display_name": display_name, "count": count, "type": semtype, "timestamp": indices[entity]})
+            else:
+                res.append({"display_name": display_name, "count": count, "type": semtype})
+        return res
+
+    def find_time_of_string(self, s: str) -> List:
+        tokens = s.split()
+        starttimes = []
+        for i, timestamp in enumerate(self.timestamps):
+            if tokens[0] == timestamp[0]:
+                start = timestamp[1]
+                if len(tokens) > 1:
+                    for j, token in enumerate(tokens[1:]):
+                        if token == self.timestamps[i + j + 1]:
+                            if j == len(tokens[1:]):
+                                starttimes.append(start)
+                            continue
+                        else:
+                            break
+                else:
+                    starttimes.append(start)
+        return starttimes
+
 
 class MetaMapLiteAnnotator(HTMLAnnotator):
     """
@@ -146,6 +176,7 @@ class MetaMapAnnotator(HTMLAnnotator):
                                 break
                             cuis.append(cui)
                             term = cand["CandidatePreferred"]
+                            surface = cand["MatchedWords"]
                             term += ":" + cui
                             for _type in symtypes:
                                 if _type in self.whitelist:
@@ -155,7 +186,8 @@ class MetaMapAnnotator(HTMLAnnotator):
                                     loc = cand["ConceptPIs"][0]
                                     start = int(loc["StartPos"])
                                     end = start + int(loc["Length"])
-                                    self.entities.append({'start': start, 'end': end, 'label': term.upper()})
+                                    self.entities.append({'start': start, 'end': end, 'label': term.upper(),
+                                                          'surface': " ".join(surface)})
 
         self.annotations.append({"text": self.text, "ents": self.entities, "title": self.title})
 
@@ -168,6 +200,7 @@ class MetaMapAnnotator(HTMLAnnotator):
                 line = line.split("|")
                 self.symtypes[line[0]] = line[2].strip()
 
+
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--pipe', action='store_true', help='take input from stdin')
@@ -176,7 +209,7 @@ if __name__ == "__main__":
     parser.add_argument('--annotations', type=str, help='annotation file in metamap (mm) or (mml) format ')
     parser.add_argument('--format', type=str, default="mm", help='use metamap (mm) or metamap lite (mml)')
     parser.add_argument('--output_format', type=str, default="html", help='html or json output')
-    parser.add_argument('--timestamps', type=list, default=None, help='list of tab delimited time stamp (word,start,end')
+    parser.add_argument('--timestamps', type=str, default=None, help='list of tab delimited time stamp (word,start,end')
     args = parser.parse_args()
 
     if args.pipe:
@@ -207,7 +240,10 @@ if __name__ == "__main__":
                 annotations = f.readlines()
 
     if args.timestamps:
-        parser.timestamps = args.timestamps
+        parser.timestamps = []
+        for timestamp in ast.literal_eval(args.timestamps):
+            timestamp = timestamp.split("\t")
+            parser.timestamps.append((timestamp[0], timestamp[1]))
 
     parser.parse(raw_text, annotations)
     parser.define_colors(['#9b38bd', '#34c3b9', '#abd8d8', '#c2d54a', '#e0eaa9'])
