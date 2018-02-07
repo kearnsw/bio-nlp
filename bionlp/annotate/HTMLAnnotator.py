@@ -11,7 +11,7 @@ import os
 import json
 import ast
 from collections import defaultdict
-
+import sys
 from typing import Dict, List
 
 
@@ -212,6 +212,7 @@ if __name__ == "__main__":
     parser.add_argument('--timestamps', type=str, default=None, help='list of tab delimited time stamp (word,start,end')
     args = parser.parse_args()
 
+    sys.stderr.write("test")
     if args.pipe:
         import sys
         from bionlp.annotate.MetaMap import run_metamap
@@ -241,8 +242,9 @@ if __name__ == "__main__":
 
     if args.timestamps:
         parser.timestamps = []
-        for timestamp in ast.literal_eval(args.timestamps):
-            timestamp = timestamp.split("\t")
+        l = args.timestamps.split(",")
+        for timestamp in l:
+            timestamp = timestamp.split()
             parser.timestamps.append((timestamp[0], timestamp[1]))
 
     parser.parse(raw_text, annotations)
