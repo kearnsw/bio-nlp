@@ -5,15 +5,20 @@ HTML Taggers
 """
 from bionlp.core.LinkedList import LinkedList
 from collections import Counter
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from spacy import displacy
 import os
 import json
 import ast
 from collections import defaultdict
 import sys
+import sys
+from bionlp.annotate.MetaMap import run_metamap
+from datetime import datetime
 from typing import Dict, List
 
+import logging
+logging.basicConfig(filename="annotator.log", filemode="w", level=logging.DEBUG)
 
 class HTMLAnnotator(object):
     """
@@ -78,34 +83,61 @@ class HTMLAnnotator(object):
 
         return self.char_ll
     
-    def prep_entities(self):
-
+    def prep_entities(self) -> List:
+        """
+        Prepare output from metamap for use in API
+        1) Adds timestamps to words
+        2) Merges entities
+        3) Calculate counts
+        4) Format as JSON Array
+        :return: JSON array of with keys display name, type, count, and timestamp.
+        """
         indices = {}
         entities = [entity["label"] for entity in self.entities]
         if self.timestamps:
             for entity in self.entities:
                 indices[entity["label"]] = self.find_time_of_string(entity["surface"])
-
+        logging.debug(indices)
         counts = Counter(entities)
         res = []
         for entity, count in counts.items():
-            display_name, cui, semtype = entity.split(":")
+            if ":" in entity:
+                display_name, cui, semtype = entity.split(":")
+            else:
+                display_name = entity
+                semtype = "question"
+
             if self.timestamps:
                 res.append({"display_name": display_name, "count": count, "type": semtype, "timestamp": indices[entity]})
             else:
                 res.append({"display_name": display_name, "count": count, "type": semtype})
+        
+        with open("logs/annotation_{0}".format(datetime.now()), "w+") as f:
+            f.write(str(res) + "\n")
+
+
         return res
 
+
     def find_time_of_string(self, s: str) -> List:
+        """
+        Check list of (word, start) tuples for matching strings
+        :param s: the original surface form of the entity to be matched
+        :return: a list of start times in ms 
+        """
         tokens = s.split()
         starttimes = []
         for i, timestamp in enumerate(self.timestamps):
+            logging.debug((tokens[0], timestamp[0]))
             if tokens[0] == timestamp[0]:
                 start = timestamp[1]
                 if len(tokens) > 1:
                     for j, token in enumerate(tokens[1:]):
-                        if token == self.timestamps[i + j + 1]:
-                            if j == len(tokens[1:]):
+                        logging.debug((token, self.timestamps[i + j + 1][0]))
+                        logging.debug((token == self.timestamps[i + j + 1][0]))
+                        if token == self.timestamps[i + j + 1][0]:
+                            logging.debug((j, len(tokens[1:])))
+                            if j == (len(tokens[1:]) - 1):
                                 starttimes.append(start)
                             continue
                         else:
@@ -154,12 +186,15 @@ class MetaMapAnnotator(HTMLAnnotator):
     def __init__(self):
         super().__init__()
         self.title = "MetaMap"
-        self.whitelist = ["neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab"]
+        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab"]
         self.symtypes = {}
         self.load_semtype_dict()
 
     def parse(self, text, mm_out):
+        self.parse_questions(text)
         self.ingest_text(text)
+        with open("logs/mm_out_{0}".format(datetime.now()), "w+") as f:
+            f.write(str(mm_out) + "\n")
         for doc in mm_out["AllDocuments"]:
             doc = doc["Document"]
             for utt in doc["Utterances"]:
@@ -177,6 +212,7 @@ class MetaMapAnnotator(HTMLAnnotator):
                             cuis.append(cui)
                             term = cand["CandidatePreferred"]
                             surface = cand["MatchedWords"]
+                            term = " ".join(surface)
                             term += ":" + cui
                             for _type in symtypes:
                                 if _type in self.whitelist:
@@ -188,9 +224,8 @@ class MetaMapAnnotator(HTMLAnnotator):
                                     end = start + int(loc["Length"])
                                     self.entities.append({'start': start, 'end': end, 'label': term.upper(),
                                                           'surface': " ".join(surface)})
-
+                        break
         self.annotations.append({"text": self.text, "ents": self.entities, "title": self.title})
-
         return self.annotations
 
     def load_semtype_dict(self):
@@ -200,8 +235,20 @@ class MetaMapAnnotator(HTMLAnnotator):
                 line = line.split("|")
                 self.symtypes[line[0]] = line[2].strip()
 
-
-if __name__ == "__main__":
+    def parse_questions(self, text):
+        punc = ["!", ".", "?"]
+        for p in punc:
+            text = text.replace(p, p + "\n")
+        sentences = text.split("\n")
+        for sentence in sentences:
+            if "?" in sentence:
+                tokens = sentence.split()
+                self.entities.append({'start': tokens[0], 'end': tokens[-1], 'label': sentence.strip(), 'surface': sentence.strip()}) 
+def main():
+    """
+    
+    :return: 
+    """
     parser = ArgumentParser()
     parser.add_argument('--pipe', action='store_true', help='take input from stdin')
     parser.add_argument('--text', type=str, help='raw text to be annotated')
@@ -209,37 +256,35 @@ if __name__ == "__main__":
     parser.add_argument('--annotations', type=str, help='annotation file in metamap (mm) or (mml) format ')
     parser.add_argument('--format', type=str, default="mm", help='use metamap (mm) or metamap lite (mml)')
     parser.add_argument('--output_format', type=str, default="html", help='html or json output')
-    parser.add_argument('--timestamps', type=str, default=None, help='list of tab delimited time stamp (word,start,end')
+    parser.add_argument('--timestamps', type=str, default=None,
+                        help='list of tab delimited time stamp (word,start,end')
     args = parser.parse_args()
 
-    sys.stderr.write("test")
+    # Get text input
     if args.pipe:
-        import sys
-        from bionlp.annotate.MetaMap import run_metamap
         raw_text = sys.stdin.read()
-        annotations = run_metamap(raw_text)
-        parser = MetaMapAnnotator()
     elif args.text:
-        import sys
-        from bionlp.annotate.MetaMap import run_metamap
         raw_text = args.text
-        annotations = run_metamap(raw_text)
-        parser = MetaMapAnnotator()
     else:
         with open(args.text, "r") as f:
             raw_text = f.read()
 
-        if args.format == "mm":
-            parser = MetaMapAnnotator()
-            with open(args.annotations, "r") as f:
-                header = f.readline()
-                data = f.read()
-                annotations = json.loads(data)
-        else:
-            parser = MetaMapLiteAnnotator()
-            with open(args.annotations, "r") as f:
-                annotations = f.readlines()
+    # Get annotations
+    try:
+        with open(args.annotations, "r") as f:
+            annotations = f.read()
+    except:
+        annotations = run_metamap(raw_text)
 
+    # Create parser
+    if args.format == "mm":
+        parser = MetaMapAnnotator()
+        if isinstance(annotations, list):
+            annotations = json.loads(annotations[1:])  # ignore header
+    else:
+        parser = MetaMapLiteAnnotator()
+
+    # Load timestamps
     if args.timestamps:
         parser.timestamps = []
         l = args.timestamps.split(",")
@@ -247,12 +292,19 @@ if __name__ == "__main__":
             timestamp = timestamp.split()
             parser.timestamps.append((timestamp[0], timestamp[1]))
 
+    # Parse the data
     parser.parse(raw_text, annotations)
-    parser.define_colors(['#9b38bd', '#34c3b9', '#abd8d8', '#c2d54a', '#e0eaa9'])
+
+    # Output data as html or as a json object
     if args.output_format == "html":
+        parser.define_colors(['#9b38bd', '#34c3b9', '#abd8d8', '#c2d54a', '#e0eaa9'])
         sys.stdout.write(parser.render())
         sys.stdout.flush()
     else:
         sys.stdout.write(json.dumps(parser.prep_entities()))
         sys.stdout.flush()
+
+
+if __name__ == "__main__":
+    main()
 
