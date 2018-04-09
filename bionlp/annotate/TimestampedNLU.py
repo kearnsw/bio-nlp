@@ -120,7 +120,6 @@ class NLU:
                     text = " ".join([entity.word for entity in self.entities[start_idx:end_idx+1]]).capitalize()
                     self.questions.append({"startIndex": start_idx, "endIndex": end_idx, "text": text})
 
-
     def load_semtype_dict(self):
         dir = os.path.dirname(__file__)
         with open(os.path.join(dir, 'SemanticTypes_2013AA.txt'), "r") as input_file:
@@ -152,18 +151,12 @@ def main():
         raw_text = args.text
 
     # Get annotations
-    try:
-        with open(args.annotations, "r") as f:
-            annotations = f.read()
-    except:
-        annotations = run_metamap(raw_text)
-        with open(args.annotations, "wb") as f:
-            f.write(annotations)
+    annotations = run_metamap(raw_text)
 
     # Create parser
     if args.format == "mm":
         parser = NLU()
-        annotations = annotations.split("\n")
+        annotations = annotations.decode().split("\n")
         if isinstance(annotations, list):
             annotations = json.loads("\n".join(annotations[1:]))  # ignore header
 
@@ -185,7 +178,6 @@ def main():
 
 
 if __name__ == "__main__":
-    """
     sys.argv.append("--text")
     sys.argv.append("Hello, what is my current level of my white blood cell? How much white blood cell she'd like"
                     " assumed to keep myself healthy. White blood cell, okay.")
@@ -219,6 +211,5 @@ if __name__ == "__main__":
                      "okay.	16.1	17.0"])
     sys.argv.append("--annotations")
     sys.argv.append("annotations.txt")
-    """
     main()
 
