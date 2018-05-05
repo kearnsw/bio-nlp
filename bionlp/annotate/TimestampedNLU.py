@@ -48,7 +48,7 @@ class NLU:
         self.options = None
         self.title = None
         self.timestamps: List = []
-        self.whitelist = ["neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
+        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
         self.semtypes = {}
         self.load_semtype_dict()
         self.questions = []
@@ -82,9 +82,10 @@ class NLU:
         phrase_start = int(phrase["PhraseStartPos"])
         for token in tokens:
             phrase_text = token["InputMatch"]
-            phrase_end = int(phrase_start) + len(phrase_text)
+            phrase_end = int(phrase_start) + len(phrase_text) - 1
             entities.append(Token(start_char=phrase_start, end_char=phrase_end, surface_form=phrase_text, label=None))
-            phrase_start = phrase_end + 1  # Add one for space
+            if phrase_text not in string.punctuation:
+                phrase_start = phrase_end + 1  # Add one for space
         return entities
 
     def add_timestamps(self):
@@ -105,8 +106,8 @@ class NLU:
 
             offset += start - end       # Update offset for length of token
 
-            ent.startTime = self.timestamps[start][1]
-            ent.endTime = self.timestamps[end][2]
+            ent.startTime = float(self.timestamps[start][1])
+            ent.endTime = float(self.timestamps[end][2])
 
     def parse_questions(self):
         for idx, token in enumerate(self.entities):
