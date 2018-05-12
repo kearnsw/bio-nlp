@@ -174,36 +174,45 @@ class MetaMapAnnotator(HTMLAnnotator):
 
     def parse(self, text, mm_out):
         self.ingest_text(text)
+        print(mm_out)
         for doc in mm_out["AllDocuments"]:
             doc = doc["Document"]
             for utt in doc["Utterances"]:
                 for phrase in utt["Phrases"]:
-                    phrase_start = phrase["PhraseStartPos"]
-                    phrase_end = int(phrase_start) + int(phrase["PhraseLength"])
                     cuis = []
-                    for mapping in phrase["Mappings"]:
-                        for cand in mapping["MappingCandidates"]:
-                            score = cand["CandidateScore"]
-                            cui = cand["CandidateCUI"]
-                            symtypes = cand["SemTypes"]
-                            if cui in cuis:
-                                break
-                            cuis.append(cui)
-                            term = cand["CandidatePreferred"]
-                            surface = cand["MatchedWords"]
-                            term = " ".join(surface)
-                            term += ":" + cui
-                            for _type in symtypes:
-                                if _type in self.whitelist:
-                                    term += ":" + self.symtypes[_type]
+                    semtype_matched = False
+                    if phrase["Mappings"] is not []:
+                        for mapping in phrase["Mappings"]:
+                            for cand in mapping["MappingCandidates"]:
+                                score = cand["CandidateScore"]
+                                cui = cand["CandidateCUI"]
+                                symtypes = cand["SemTypes"]
+                                if cui in cuis:
+                                    break
+                                cuis.append(cui)
+                                term = cand["CandidatePreferred"]
+                                surface = cand["MatchedWords"]
+                                term = " ".join(surface)
+                                term += ":" + cui
+                                for _type in symtypes:
+                                    if _type in self.whitelist:
+                                        semtype_matched = True
+                                        term += ":" + self.symtypes[_type]
+                                        ## Possible bug here need to adjust for discontinuous entities
+                                        loc = cand["ConceptPIs"][0]
+                                        start = int(loc["StartPos"])
+                                        end = start + int(loc["Length"])
+                                        self.entities.append({'start': start, 'end': end, 'label': term.upper(),
+                                                              'surface': " ".join(surface)})
+                            break
 
-                                    ## Possible bug here need to adjust for discontinuous entities
-                                    loc = cand["ConceptPIs"][0]
-                                    start = int(loc["StartPos"])
-                                    end = start + int(loc["Length"])
-                                    self.entities.append({'start': start, 'end': end, 'label': term.upper(),
-                                                          'surface': " ".join(surface)})
-                        break
+                    if not semtype_matched:
+                        phrase_start = phrase["PhraseStartPos"]
+                        phrase_end = int(phrase_start) + int(phrase["PhraseLength"])
+                        phrase_text = phrase["PhraseText"]
+                        self.entities.append({'start': phrase_start, 'end': phrase_end, 'label': None,
+                                              'surface': phrase_text})
+
         self.annotations.append({"text": self.text, "ents": self.entities, "title": self.title})
 
         return self.annotations
@@ -227,7 +236,7 @@ def main():
     parser.add_argument('--file', type=str, help='file containing the raw text')
     parser.add_argument('--annotations', type=str, help='annotation file in metamap (mm) or (mml) format ')
     parser.add_argument('--format', type=str, default="mm", help='use metamap (mm) or metamap lite (mml)')
-    parser.add_argument('--output_format', type=str, default="html", help='html or json output')
+    parser.add_argument('--output_format', type=str, default="json", help='html or json output')
     parser.add_argument('--timestamps', type=str, default=None,
                         help='list of tab delimited time stamp (word,start,end')
     args = parser.parse_args()
@@ -251,8 +260,9 @@ def main():
     # Create parser
     if args.format == "mm":
         parser = MetaMapAnnotator()
+        annotations = annotations.split("\n")
         if isinstance(annotations, list):
-            annotations = json.loads(annotations[1:])  # ignore header
+            annotations = json.loads("\n".join(annotations[1:]))  # ignore header
     else:
         parser = MetaMapLiteAnnotator()
 
