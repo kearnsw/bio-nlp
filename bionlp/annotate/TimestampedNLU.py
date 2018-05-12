@@ -88,10 +88,11 @@ class NLU:
         tokens = phrase["SyntaxUnits"]
         for token in tokens:
             phrase_text = token["InputMatch"]
+            if phrase_text in [",", ":", ";", "!", "?", "."]:
+                self.index -= 1
             phrase_end = int(self.index) + len(phrase_text) - 1
             entities.append(Token(start_char=self.index, end_char=phrase_end, surface_form=phrase_text, label=None))
-            if phrase_text not in string.punctuation:
-                self.index = phrase_end + 1  # Add one for space
+            self.index = phrase_end + 2
         return entities
 
     def add_timestamps(self):
@@ -181,7 +182,6 @@ def main():
         timestamp = args.timestamps.split("|,")
         for ts in timestamp:
             parser.timestamps.append(ts.split("\t"))
-        print(parser.timestamps)
 
     # Parse the data
     doc = parser.parse(raw_text, annotations)
