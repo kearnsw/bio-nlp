@@ -1,59 +1,60 @@
 """
-HTML Taggers
+Natural Language Understanding
 
-@author: Will Kearns
+@Copyright Will Kearns
 """
-from collections import Counter
+
+
 from argparse import ArgumentParser
-from spacy import displacy
 import os
-import json
-import ast
 import sys
-from bionlp.annotate.MetaMap import run_metamap
 import string
-from typing import Dict, List
-
-import logging
-
+import json
+from bionlp.annotate.MetaMap import run_metamap
+from typing import Dict, List, Tuple
 
 
 class Token:
     def __init__(self, start_char: int, end_char: int, surface_form: str, label: str):
-        self.startIndex = start_char
-        self.endIndex = end_char
-        self.word = surface_form
-        self.type = label
-        self.startTime = None
-        self.endTime = None
+        """
+        A token consists of one or more words and holds meta-information about the token
 
-
-class Doc:
-    def __init__(self, _id: int):
-        self.id = _id
-        self.tokens: List[Token] = []
+        :param start_char: character index of the first character in the token
+        :param end_char: character index of the last character in the token
+        :param surface_form: the text of the token
+        :param label: semantic type of the token
+        """
+        self.startIndex: int = start_char
+        self.endIndex: int = end_char
+        self.word: str = surface_form
+        self.type: str = label
+        self.startTime: int = None
+        self.endTime: int = None
+        self.cui: str = None
 
 
 class NLU:
-    """
-    Class: Annotator
-    Description: Generates and serves HTML annotations from an annotation file
-
-    Must override the parse method for specific doc type
-    """
-
     def __init__(self):
-        self.entities: List[Token] = []
-        self.text = None
-        self.options = None
-        self.title = None
-        self.timestamps: List = []
-        self.whitelist = ["neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
-        self.semtypes = {}
-        self.load_semtype_dict()
+        """
+        Class: Natural Language Understanding Component
+        Description: Connect time-indexed speech recognition with MetaMap named entity recognition
+        """
+        self.doc: List[Token] = []
+        self.text: str = None
+        self.options: Dict = None
+        self.timestamps: List = [Tuple]
+        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
+        self.code2semtype: Dict[str, str] = self.load_semtype_dict()
         self.questions = []
+        self.index = 0
 
     def parse(self, text, mm_out):
+        """
+        Parses Metamap output
+        :param text: Input Text
+        :param mm_out: Metamap output
+        :return: Tokens
+        """
         self.text = text
         for doc in mm_out["AllDocuments"]:
             doc = doc["Document"]
@@ -66,31 +67,29 @@ class NLU:
                                 symtypes = cand["SemTypes"]
                                 for _type in symtypes:
                                     if _type in self.whitelist:
-                                        term = self.semtypes[_type]
+                                        term = self.code2semtype[_type]
                                         start = int(cand["ConceptPIs"][0]["StartPos"])
                                         for token in tokens:
                                             if token.startIndex == start:
                                                 token.type = term.upper()
                             break
-                    self.entities += tokens
-        return self.entities
+                    self.doc += tokens
+        return self.doc
 
-    @staticmethod
-    def tokenize(phrase):
+    def tokenize(self, phrase):
         entities = []  # Used to store all tokens temporarily until we can check UMLS mappings
         tokens = phrase["SyntaxUnits"]
-        phrase_start = int(phrase["PhraseStartPos"])
         for token in tokens:
             phrase_text = token["InputMatch"]
-            phrase_end = int(phrase_start) + len(phrase_text)
-            entities.append(Token(start_char=phrase_start, end_char=phrase_end, surface_form=phrase_text, label=None))
-            phrase_start = phrase_end + 1  # Add one for space
+            phrase_end = int(self.index) + len(phrase_text)
+            entities.append(Token(start_char=self.index, end_char=phrase_end, surface_form=phrase_text, label=None))
+            self.index = phrase_end + 1  # Add one for space
         return entities
 
     def add_timestamps(self):
         offset = 0          # Keep track of punctuations to offset the index to match up with GC Speech
 
-        for idx, ent in enumerate(self.entities):
+        for idx, ent in enumerate(self.doc):
             text = ent.word
 
             if text in string.punctuation:
@@ -109,26 +108,30 @@ class NLU:
             ent.endTime = self.timestamps[end][2]
 
     def parse_questions(self):
-        for idx, token in enumerate(self.entities):
+        for idx, token in enumerate(self.doc):
             if token.word == "?":
                 end_idx = idx
                 start_idx = idx
                 while start_idx >= 0:
                     start_idx -= 1
-                    if self.entities[start_idx].type == "PUNC":
+                    if self.doc[start_idx].type == "PUNC":
                         start_idx += 1
                         break
 
                 if end_idx != start_idx:
-                    text = " ".join([entity.word for entity in self.entities[start_idx:end_idx+1]]).capitalize()
+                    text = " ".join([entity.word for entity in self.doc[start_idx:end_idx + 1]]).capitalize()
                     self.questions.append({"startIndex": start_idx, "endIndex": end_idx, "text": text})
+        return self.questions
 
-    def load_semtype_dict(self):
-        dir = os.path.dirname(__file__)
-        with open(os.path.join(dir, 'SemanticTypes_2013AA.txt'), "r") as input_file:
+    @staticmethod
+    def load_semtype_dict():
+        _dir = os.path.dirname(__file__)
+        semtypes = {}
+        with open(os.path.join(_dir, 'SemanticTypes_2013AA.txt'), "r") as input_file:
             for line in input_file.readlines():
                 line = line.split("|")
-                self.semtypes[line[0]] = line[2].strip()
+                semtypes[line[0]] = line[2].strip()
+        return semtypes
 
 
 def main():
@@ -167,17 +170,17 @@ def main():
     # Load timestamps
     if args.timestamps:
         parser.timestamps = []
-        l = args.timestamps.split("|,")
-        for ts in l:
-            timestamp = ts.split("\t")
-            parser.timestamps.append((timestamp[0], timestamp[1], timestamp[2]))
+        timestamp = args.timestamps.split("|,")
+        for ts in timestamp:
+            parser.timestamps.append(ts.split("\t"))
+        print(parser.timestamps)
 
     # Parse the data
-    ents = parser.parse(raw_text, annotations)
-    ents = [ent.__dict__ for ent in ents]
+    doc = parser.parse(raw_text, annotations)
+    doc = [token.__dict__ for token in doc]
     parser.add_timestamps()
-    parser.parse_questions()
-    sys.stdout.write(json.dumps({"tokens": ents, "questions": parser.questions}))
+    qs = parser.parse_questions()
+    sys.stdout.write(json.dumps({"tokens": doc, "questions": qs}))
     sys.stdout.flush()
 
 
