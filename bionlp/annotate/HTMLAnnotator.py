@@ -10,12 +10,15 @@ from spacy import displacy
 import os
 import json
 import ast
+from collections import defaultdict
+import sys
 import sys
 from bionlp.annotate.MetaMap import run_metamap
-
-
+from datetime import datetime
 from typing import Dict, List
 
+import logging
+logging.basicConfig(filename="annotator.log", filemode="w", level=logging.DEBUG)
 
 class HTMLAnnotator(object):
     """
@@ -94,16 +97,27 @@ class HTMLAnnotator(object):
         if self.timestamps:
             for entity in self.entities:
                 indices[entity["label"]] = self.find_time_of_string(entity["surface"])
-
+        logging.debug(indices)
         counts = Counter(entities)
         res = []
         for entity, count in counts.items():
-            display_name, cui, semtype = entity.split(":")
+            if ":" in entity:
+                display_name, cui, semtype = entity.split(":")
+            else:
+                display_name = entity
+                semtype = "question"
+
             if self.timestamps:
                 res.append({"display_name": display_name, "count": count, "type": semtype, "timestamp": indices[entity]})
             else:
                 res.append({"display_name": display_name, "count": count, "type": semtype})
+        
+        with open("logs/annotation_{0}".format(datetime.now()), "w+") as f:
+            f.write(str(res) + "\n")
+
+
         return res
+
 
     def find_time_of_string(self, s: str) -> List:
         """
@@ -114,12 +128,16 @@ class HTMLAnnotator(object):
         tokens = s.split()
         starttimes = []
         for i, timestamp in enumerate(self.timestamps):
+            logging.debug((tokens[0], timestamp[0]))
             if tokens[0] == timestamp[0]:
                 start = timestamp[1]
                 if len(tokens) > 1:
                     for j, token in enumerate(tokens[1:]):
-                        if token == self.timestamps[i + j + 1]:
-                            if j == len(tokens[1:]):
+                        logging.debug((token, self.timestamps[i + j + 1][0]))
+                        logging.debug((token == self.timestamps[i + j + 1][0]))
+                        if token == self.timestamps[i + j + 1][0]:
+                            logging.debug((j, len(tokens[1:])))
+                            if j == (len(tokens[1:]) - 1):
                                 starttimes.append(start)
                             continue
                         else:
@@ -168,13 +186,15 @@ class MetaMapAnnotator(HTMLAnnotator):
     def __init__(self):
         super().__init__()
         self.title = "MetaMap"
-        self.whitelist = ["neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab"]
+        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab"]
         self.symtypes = {}
         self.load_semtype_dict()
 
     def parse(self, text, mm_out):
+        self.parse_questions(text)
         self.ingest_text(text)
-        print(mm_out)
+        with open("logs/mm_out_{0}".format(datetime.now()), "w+") as f:
+            f.write(str(mm_out) + "\n")
         for doc in mm_out["AllDocuments"]:
             doc = doc["Document"]
             for utt in doc["Utterances"]:
@@ -214,7 +234,6 @@ class MetaMapAnnotator(HTMLAnnotator):
                                               'surface': phrase_text})
 
         self.annotations.append({"text": self.text, "ents": self.entities, "title": self.title})
-
         return self.annotations
 
     def load_semtype_dict(self):
@@ -224,7 +243,15 @@ class MetaMapAnnotator(HTMLAnnotator):
                 line = line.split("|")
                 self.symtypes[line[0]] = line[2].strip()
 
-
+    def parse_questions(self, text):
+        punc = ["!", ".", "?"]
+        for p in punc:
+            text = text.replace(p, p + "\n")
+        sentences = text.split("\n")
+        for sentence in sentences:
+            if "?" in sentence:
+                tokens = sentence.split()
+                self.entities.append({'start': tokens[0], 'end': tokens[-1], 'label': sentence.strip(), 'surface': sentence.strip()}) 
 def main():
     """
     
@@ -269,8 +296,9 @@ def main():
     # Load timestamps
     if args.timestamps:
         parser.timestamps = []
-        for timestamp in ast.literal_eval(args.timestamps):
-            timestamp = timestamp.split("\t")
+        l = args.timestamps.split(",")
+        for timestamp in l:
+            timestamp = timestamp.split()
             parser.timestamps.append((timestamp[0], timestamp[1]))
 
     # Parse the data

@@ -45,6 +45,13 @@ class NLU:
         self.timestamps: List = [Tuple]
         self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
         self.code2semtype: Dict[str, str] = self.load_semtype_dict()
+        self.entities: List[Token] = []
+        self.text = None
+        self.title = None
+        self.timestamps: List = []
+        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
+        self.semtypes = {}
+        self.load_semtype_dict()
         self.questions = []
         self.index = 0
 
@@ -81,9 +88,10 @@ class NLU:
         tokens = phrase["SyntaxUnits"]
         for token in tokens:
             phrase_text = token["InputMatch"]
-            phrase_end = int(self.index) + len(phrase_text)
+            phrase_end = int(self.index) + len(phrase_text) - 1
             entities.append(Token(start_char=self.index, end_char=phrase_end, surface_form=phrase_text, label=None))
-            self.index = phrase_end + 1  # Add one for space
+            if phrase_text not in string.punctuation:
+                self.index = phrase_end + 1  # Add one for space
         return entities
 
     def add_timestamps(self):
@@ -104,8 +112,8 @@ class NLU:
 
             offset += start - end       # Update offset for length of token
 
-            ent.startTime = self.timestamps[start][1]
-            ent.endTime = self.timestamps[end][2]
+            ent.startTime = float(self.timestamps[start][1])
+            ent.endTime = float(self.timestamps[end][2])
 
     def parse_questions(self):
         for idx, token in enumerate(self.doc):
@@ -168,8 +176,8 @@ def main():
             annotations = json.loads("\n".join(annotations[1:]))  # ignore header
 
     # Load timestamps
+    parser.timestamps = []
     if args.timestamps:
-        parser.timestamps = []
         timestamp = args.timestamps.split("|,")
         for ts in timestamp:
             parser.timestamps.append(ts.split("\t"))
@@ -178,7 +186,8 @@ def main():
     # Parse the data
     doc = parser.parse(raw_text, annotations)
     doc = [token.__dict__ for token in doc]
-    parser.add_timestamps()
+    if args.timestamps:
+        parser.add_timestamps()
     qs = parser.parse_questions()
     sys.stdout.write(json.dumps({"tokens": doc, "questions": qs}))
     sys.stdout.flush()
