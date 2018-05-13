@@ -66,8 +66,10 @@ class NLU:
         for doc in mm_out["AllDocuments"]:
             doc = doc["Document"]
             for utt in doc["Utterances"]:
+                # Loop over all phrases in the document
                 for phrase in utt["Phrases"]:
                     tokens = self.tokenize(phrase)
+                    # Check for mapping to UMLS terminologies
                     if phrase["Mappings"] is not []:
                         for mapping in phrase["Mappings"]:
                             for cand in mapping["MappingCandidates"]:
@@ -75,10 +77,9 @@ class NLU:
                                 for _type in symtypes:
                                     if _type in self.whitelist:
                                         term = self.code2semtype[_type]
-                                        start = int(cand["ConceptPIs"][0]["StartPos"])
+                                        # start = int(cand["ConceptPIs"][0]["StartPos"])
                                         for token in tokens:
-                                            if token.startIndex == start:
-                                                token.type = term.upper()
+                                            token.type = term.upper()
                             break
                     self.doc += tokens
         return self.doc
@@ -129,7 +130,7 @@ class NLU:
 
                 if end_idx != start_idx:
                     text = " ".join([entity.word for entity in self.doc[start_idx:end_idx + 1]]).capitalize()
-                    self.questions.append({"startIndex": start_idx, "endIndex": end_idx, "text": text})
+                    self.questions.append({"startTokenIndex": start_idx, "endTokenIndex": end_idx, "text": text})
         return self.questions
 
     @staticmethod
@@ -189,7 +190,17 @@ def main():
     if args.timestamps:
         parser.add_timestamps()
     qs = parser.parse_questions()
-    sys.stdout.write(json.dumps({"tokens": doc, "questions": qs}))
+    materials = [
+                    {
+                        "startTokenIndex": 0,
+                        "endTokenIndex": 3,
+                        "title":"Side effects of not washing your hands",
+                        "url": "https://blah.org/material",
+                        "source": "Blah.org",
+                    }
+                ]
+
+    sys.stdout.write(json.dumps({"tokens": doc, "questions": qs, "educationalMaterials": materials}))
     sys.stdout.flush()
 
 
