@@ -98,19 +98,16 @@ class NLU:
 
         for idx, ent in enumerate(self.doc):
             text = ent.word
+            print(text)
 
             if text in string.punctuation:
                 ent.type = "PUNC"
                 offset += 1
             start = idx - offset
-            if "'" in text:
-                offset += 1
-                end = start + len(text.split()) - 2
-            else:
-                end = start + len(text.split()) - 1
+            end = start + len(text.split()) - 1
 
             offset += start - end       # Update offset for length of token
-
+            print(start, end)
             ent.startTime = float(self.timestamps[start][1])
             ent.endTime = float(self.timestamps[end][2])
 
@@ -191,7 +188,7 @@ def main():
                     {
                         "startTokenIndex": 0,
                         "endTokenIndex": 3,
-                        "title":"Side effects of not washing your hands",
+                        "title": "Side effects of not washing your hands",
                         "url": "https://medlineplus.gov/asthma.html?utm_medium=service&utm_source=mplusconnect",
                         "source": "Blah.org",
                         "summary": "<p>Asthma is a chronic disease that affects your airways. Your airways are tubes that carry air in and out of your lungs. If you have asthma, the inside walls of your airways become sore and swollen. That makes them very sensitive, and they may react strongly to things that you are <a href=\"https://medlineplus.gov/allergy.html?utm_medium=service&amp;utm_source=mplusconnect\">allergic</a> to or find irritating. When your airways react, they get narrower and your lungs get less air.</p>\n\n<p>Symptoms of asthma include</p>\n\n<ul>\n<li>Wheezing</li>\n<li>Coughing, especially early in the morning or at night</li>\n<li>Chest tightness</li>\n<li>Shortness of breath</li>\n</ul>\n\n<p>Not all people who have asthma have these symptoms. Having these symptoms doesn't always mean that you have asthma. Your doctor will diagnose asthma based on lung function tests, your medical history, and a physical exam. You may also have allergy tests.</p>\n\n<p>When your asthma symptoms become worse than usual, it's called an asthma attack. Severe asthma attacks may require emergency care, and they can be fatal.</p>\n\n<p>Asthma is treated with two kinds of medicines: quick-relief medicines to stop asthma symptoms and long-term control medicines to prevent symptoms. </p>\n\n<p class=\"NLMattribution\">  NIH: National Heart, Lung, and Blood Institute</p>\n<p class=\"NLMrelatedLinks\"><ul><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000487.htm?utm_medium=service&amp;utm_source=mplusconnect\">Allergies, asthma, and dust</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000488.htm?utm_medium=service&amp;utm_source=mplusconnect\">Allergies, asthma, and molds</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000489.htm?utm_medium=service&amp;utm_source=mplusconnect\">Allergies, asthma, and pollen</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/article/000141.htm?utm_medium=service&amp;utm_source=mplusconnect\">Asthma</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000005.htm?utm_medium=service&amp;utm_source=mplusconnect\">Asthma - control drugs</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000008.htm?utm_medium=service&amp;utm_source=mplusconnect\">Asthma - quick-relief drugs</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000036.htm?utm_medium=service&amp;utm_source=mplusconnect\">Exercise-induced asthma</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000053.htm?utm_medium=service&amp;utm_source=mplusconnect\">How to breathe when you are short of breath</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000006.htm?utm_medium=service&amp;utm_source=mplusconnect\">How to use a nebulizer</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000041.htm?utm_medium=service&amp;utm_source=mplusconnect\">How to use an inhaler - no spacer</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000042.htm?utm_medium=service&amp;utm_source=mplusconnect\">How to use an inhaler - with spacer</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/article/003853.htm?utm_medium=service&amp;utm_source=mplusconnect\">Pulmonary function tests</a> (Medical Encyclopedia)\n        </li><li><a href=\"https://medlineplus.gov/ency/patientinstructions/000062.htm?utm_medium=service&amp;utm_source=mplusconnect\">Signs of an asthma attack</a> (Medical Encyclopedia)\n        </li></ul></p>"
