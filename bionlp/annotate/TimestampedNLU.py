@@ -98,7 +98,6 @@ class NLU:
 
         for idx, ent in enumerate(self.doc):
             text = ent.word
-            print(text)
 
             if text in string.punctuation:
                 ent.type = "PUNC"
@@ -107,7 +106,6 @@ class NLU:
             end = start + len(text.split()) - 1
 
             offset += start - end       # Update offset for length of token
-            print(start, end)
             ent.startTime = float(self.timestamps[start][1])
             ent.endTime = float(self.timestamps[end][2])
 
