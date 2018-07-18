@@ -46,7 +46,7 @@ class NLU:
         self.code2semtype: Dict[str, str] = self.load_semtype_dict()
         self.entities: List[Token] = []
         self.title = None
-        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
+        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell", "lbpr"]
         self.semtypes = {}
         self.load_semtype_dict()
         self.questions = []
@@ -76,7 +76,12 @@ class NLU:
                                         term = self.code2semtype[_type]
                                         # start = int(cand["ConceptPIs"][0]["StartPos"])
                                         for token in tokens:
-                                            token.type = term.upper()
+                                            for word in token.word.lower().split():
+                                                print(word)
+                                                print(cand["MatchedWords"])
+                                                if word in cand["MatchedWords"]:
+                                                    token.type = term.upper()
+
                             break
                     self.doc += tokens
         return self.doc
@@ -206,5 +211,7 @@ def main():
 
 
 if __name__ == "__main__":
+    text = "you dont know what cancer is until you no longer have it and you think you do"
+    print(run_metamap(text))
     main()
 
