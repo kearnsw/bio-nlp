@@ -103,11 +103,19 @@ class NLU:
                 ent.type = "PUNC"
                 offset += 1
             start = idx - offset
-            end = start + len(text.split()) - 1
+
+            if " '" in text:
+                offset += 1
+                end = start + len(text.split()) - 2
+            else:
+                end = start + len(text.split()) - 1
 
             offset += start - end       # Update offset for length of token
-            ent.startTime = float(self.timestamps[start][1])
-            ent.endTime = float(self.timestamps[end][2])
+            try:
+                ent.startTime = float(self.timestamps[start][1])
+                ent.endTime = float(self.timestamps[end][2])
+            except IndexError:
+                pass
 
     def parse_questions(self):
         for idx, token in enumerate(self.doc):
