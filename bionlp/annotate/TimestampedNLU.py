@@ -211,7 +211,6 @@ def main():
 
 
 if __name__ == "__main__":
-    text = "you dont know what cancer is until you no longer have it and you think you do"
     print(run_metamap(text))
     main()
 
