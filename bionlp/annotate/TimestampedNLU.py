@@ -81,8 +81,8 @@ class NLU:
                                                 print(cand["MatchedWords"])
                                                 if word in cand["MatchedWords"]:
                                                     token.type = term.upper()
-
-                            break
+                            if any([token.type is not None for token in tokens]):
+                                break
                     self.doc += tokens
         return self.doc
 
