@@ -46,7 +46,7 @@ class NLU:
         self.code2semtype: Dict[str, str] = self.load_semtype_dict()
         self.entities: List[Token] = []
         self.title = None
-        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell", "lbpr"]
+        self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
         self.semtypes = {}
         self.load_semtype_dict()
         self.questions = []
@@ -81,8 +81,8 @@ class NLU:
                                                 print(cand["MatchedWords"])
                                                 if word in cand["MatchedWords"]:
                                                     token.type = term.upper()
-
-                            break
+                            if any([token.type is not None for token in tokens]):
+                                break
                     self.doc += tokens
         return self.doc
 
