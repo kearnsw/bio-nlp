@@ -116,8 +116,11 @@ class NLU:
                 end = start + len(text.split()) - 1
 
             offset += start - end       # Update offset for length of token
-            ent.startTime = float(self.timestamps[start][1])
-            ent.endTime = float(self.timestamps[end][2])
+            try:
+                ent.startTime = float(self.timestamps[start][1])
+                ent.endTime = float(self.timestamps[end][2])
+            except IndexError:
+                pass
 
     def parse_questions(self):
         for idx, token in enumerate(self.doc):
@@ -208,7 +211,6 @@ def main():
 
 
 if __name__ == "__main__":
-    text = "you dont know what cancer is until you no longer have it and you think you do"
     print(run_metamap(text))
     main()
 
