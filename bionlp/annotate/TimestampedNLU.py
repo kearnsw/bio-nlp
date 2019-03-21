@@ -47,6 +47,7 @@ class NLU:
         self.entities: List[Token] = []
         self.title = None
         self.whitelist = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell"]
+        self.blacklist = ["today"]
         self.semtypes = {}
         self.load_semtype_dict()
         self.questions = []
@@ -79,7 +80,7 @@ class NLU:
                                             for word in token.word.lower().split():
                                                 print(word)
                                                 print(cand["MatchedWords"])
-                                                if word in cand["MatchedWords"]:
+                                                if word in cand["MatchedWords"] and word not in self.blacklist:
                                                     token.type = term.upper()
                             if any([token.type is not None for token in tokens]):
                                 break
