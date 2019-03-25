@@ -10,12 +10,16 @@ import os
 import sys
 import string
 import json
+import logging
 from bionlp.annotate.MetaMap import run_metamap
 from typing import Dict, List, Tuple
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 class Token:
-    def __init__(self, start_char: int, end_char: int, surface_form: str, label: str):
+    def __init__(self, start_char: int, end_char: int, surface_form: str, label: str = None):
         """
         A token consists of one or more words and holds meta-information about the token
 
@@ -34,7 +38,8 @@ class Token:
 
 
 class NLU:
-    def __init__(self):
+
+    def __init__(self, text: str):
         """
         Class: Natural Language Understanding Component
         Description: Connect time-indexed speech recognition with MetaMap named entity recognition
@@ -52,6 +57,10 @@ class NLU:
         self.load_semtype_dict()
         self.questions = []
         self.index = 0
+        self.annotations = run_metamap(text, _format="json")
+        print(self.annotations)
+        print(json.loads(self.annotations))
+        self.parse(text, self.annotations)
 
     def parse(self, text, mm_out):
         """
@@ -60,10 +69,14 @@ class NLU:
         :param mm_out: Metamap output
         :return: Tokens
         """
-        self.text = text
+        self.text = text.split("\n")
+
         for doc in mm_out["AllDocuments"]:
+
             doc = doc["Document"]
+
             for utt in doc["Utterances"]:
+
                 # Loop over all phrases in the document
                 for phrase in utt["Phrases"]:
                     tokens = self.tokenize(phrase)
@@ -95,7 +108,7 @@ class NLU:
             if phrase_text in [",", ":", ";", "!", "?", "."]:
                 self.index -= 1
             phrase_end = int(self.index) + len(phrase_text) - 1
-            entities.append(Token(start_char=self.index, end_char=phrase_end, surface_form=phrase_text, label=None))
+            entities.append(Token(start_char=self.index, end_char=phrase_end, surface_form=phrase_text))
             self.index = phrase_end + 2
         return entities
 
@@ -121,6 +134,8 @@ class NLU:
                 ent.startTime = float(self.timestamps[start][1])
                 ent.endTime = float(self.timestamps[end][2])
             except IndexError:
+                logger.debug(text)
+                logger.debug(IndexError)
                 pass
 
     def parse_questions(self):
@@ -137,6 +152,7 @@ class NLU:
                 if end_idx != start_idx:
                     text = " ".join([entity.word for entity in self.doc[start_idx:end_idx + 1]]).capitalize()
                     self.questions.append({"startTokenIndex": start_idx, "endTokenIndex": end_idx, "text": text})
+
         return self.questions
 
     @staticmethod
@@ -212,6 +228,7 @@ def main():
 
 
 if __name__ == "__main__":
-    print(run_metamap(text))
+    text = "You don't have breast cancer. Your test results show you may have ALL."
+    print(NLU(text))
     main()
 

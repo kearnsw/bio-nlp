@@ -1,0 +1,235 @@
+{
+     "Document": {
+         "CmdLine": {
+             "Command": "metamap --lexicon db -Z 2016AA -I --JSONf 4 --silent",
+             "Options": [
+                 {
+                     "OptName": "lexicon",
+                     "OptValue": "db"
+                 },
+                 {
+                     "OptName": "mm_data_year",
+                     "OptValue": "2016AA"
+                 },
+                 {
+                     "OptName": "show_cuis"
+                 },
+                 {
+                     "OptName": "JSONf",
+                     "OptValue": "4"
+                 },
+                 {
+                     "OptName": "silent"
+                 },
+                 {
+                     "OptName": "infile",
+                     "OptValue": "user_input"
+                 },
+                 {
+                     "OptName": "outfile",
+                     "OptValue": "user_output"
+                 }]
+         },
+         "AAs": [],
+         "Negations": [
+             {
+                 "NegType": "nega",
+                 "NegTrigger": "not have",
+                 "NegTriggerPIs": [
+                     {
+                         "StartPos": "7",
+                         "Length": "8"
+                     }],
+                 "NegConcepts": [
+                     {
+                         "NegConcCUI": "C0678222",
+                         "NegConcMatched": "Breast Cancer"
+                     },
+                     {
+                         "NegConcCUI": "C0006142",
+                         "NegConcMatched": "-- Breast Cancer"
+                     }],
+                 "NegConcPIs": [
+                     {
+                         "StartPos": "16",
+                         "Length": "13"
+                     }]
+             }],
+         "Utterances": [
+             {
+                 "PMID": "00000000",
+                 "UttSection": "tx",
+                 "UttNum": "1",
+                 "UttText": "You do not have Breast Cancer",
+                 "UttStartPos": "0",
+                 "UttLength": "29",
+                 "Phrases": [
+                     {
+                         "PhraseText": "You",
+                         "SyntaxUnits": [
+                             {
+                                 "SyntaxType": "pron",
+                                 "LexMatch": "you",
+                                 "InputMatch": "You",
+                                 "LexCat": "pron",
+                                 "Tokens": ["you"]
+                             }],
+                         "PhraseStartPos": "0",
+                         "PhraseLength": "3",
+                         "Candidates": [],
+                         "Mappings": []
+                     },
+                     {
+                         "PhraseText": "do",
+                         "SyntaxUnits": [
+                             {
+                                 "SyntaxType": "aux",
+                                 "LexMatch": "do",
+                                 "InputMatch": "do",
+                                 "LexCat": "aux",
+                                 "Tokens": ["do"]
+                             }],
+                         "PhraseStartPos": "4",
+                         "PhraseLength": "2",
+                         "Candidates": [],
+                         "Mappings": []
+                     },
+                     {
+                         "PhraseText": "not",
+                         "SyntaxUnits": [
+                             {
+                                 "SyntaxType": "adv",
+                                 "LexMatch": "not",
+                                 "InputMatch": "not",
+                                 "LexCat": "adv",
+                                 "Tokens": ["not"]
+                             }],
+                         "PhraseStartPos": "7",
+                         "PhraseLength": "3",
+                         "Candidates": [],
+                         "Mappings": [
+                             {
+                                 "MappingScore": "-1000",
+                                 "MappingCandidates": [
+                                     {
+                                         "CandidateScore": "-1000",
+                                         "CandidateCUI": "C1518422",
+                                         "CandidateMatched": "Not",
+                                         "CandidatePreferred": "Negation",
+                                         "MatchedWords": ["not"],
+                                         "SemTypes": ["ftcn"],
+                                         "MatchMaps": [
+                                             {
+                                                 "TextMatchStart": "1",
+                                                 "TextMatchEnd": "1",
+                                                 "ConcMatchStart": "1",
+                                                 "ConcMatchEnd": "1",
+                                                 "LexVariation": "0"
+                                             }],
+                                         "IsHead": "yes",
+                                         "IsOverMatch": "no",
+                                         "Sources": ["LNC","MTH","NCI"],
+                                         "ConceptPIs": [
+                                             {
+                                                 "StartPos": "7",
+                                                 "Length": "3"
+                                             }],
+                                         "Status": "0",
+                                         "Negated": "0"
+                                     }]
+                             }]
+                     },
+                     {
+                         "PhraseText": "have",
+                         "SyntaxUnits": [
+                             {
+                                 "SyntaxType": "aux",
+                                 "LexMatch": "have",
+                                 "InputMatch": "have",
+                                 "LexCat": "aux",
+                                 "Tokens": ["have"]
+                             }],
+                         "PhraseStartPos": "11",
+                         "PhraseLength": "4",
+                         "Candidates": [],
+                         "Mappings": []
+                     },
+                     {
+                         "PhraseText": "Breast Cancer",
+                         "SyntaxUnits": [
+                             {
+                                 "SyntaxType": "head",
+                                 "LexMatch": "breast cancer",
+                                 "InputMatch": "Breast Cancer",
+                                 "LexCat": "noun",
+                                 "Tokens": ["breast","cancer"]
+                             }],
+                         "PhraseStartPos": "16",
+                         "PhraseLength": "13",
+                         "Candidates": [],
+                         "Mappings": [
+                             {
+                                 "MappingScore": "-1000",
+                                 "MappingCandidates": [
+                                     {
+                                         "CandidateScore": "-1000",
+                                         "CandidateCUI": "C0006142",
+                                         "CandidateMatched": "-- Breast Cancer",
+                                         "CandidatePreferred": "Malignant neoplasm of breast",
+                                         "MatchedWords": ["breast","cancer"],
+                                         "SemTypes": ["neop"],
+                                         "MatchMaps": [
+                                             {
+                                                 "TextMatchStart": "1",
+                                                 "TextMatchEnd": "2",
+                                                 "ConcMatchStart": "1",
+                                                 "ConcMatchEnd": "2",
+                                                 "LexVariation": "0"
+                                             }],
+                                         "IsHead": "yes",
+                                         "IsOverMatch": "no",
+                                         "Sources": ["AOD","CCS","CCS_10","CHV","CSP","ICD10CM","ICPC","LCH_NW","LNC","MEDLINEPLUS","MSH","MTH","MTHICD9","NCI","NLMSubSyn","OMIM","PDQ","SNOMEDCT_US"],
+                                         "ConceptPIs": [
+                                             {
+                                                 "StartPos": "16",
+                                                 "Length": "13"
+                                             }],
+                                         "Status": "0",
+                                         "Negated": "1"
+                                     }]
+                             },
+                             {
+                                 "MappingScore": "-1000",
+                                 "MappingCandidates": [
+                                     {
+                                         "CandidateScore": "-1000",
+                                         "CandidateCUI": "C0678222",
+                                         "CandidateMatched": "Breast Cancer",
+                                         "CandidatePreferred": "Breast Carcinoma",
+                                         "MatchedWords": ["breast","cancer"],
+                                         "SemTypes": ["neop"],
+                                         "MatchMaps": [
+                                             {
+                                                 "TextMatchStart": "1",
+                                                 "TextMatchEnd": "2",
+                                                 "ConcMatchStart": "1",
+                                                 "ConcMatchEnd": "2",
+                                                 "LexVariation": "0"
+                                             }],
+                                         "IsHead": "yes",
+                                         "IsOverMatch": "no",
+                                         "Sources": ["CHV","COSTAR","CSP","CST","DXP","HPO","MTH","NCI","NCI_CTEP-SDC","NCI_FDA","NCI_NCI-GLOSS","NCI_NICHD","NLMSubSyn","OMIM","QMR","SNOMEDCT_US"],
+                                         "ConceptPIs": [
+                                             {
+                                                 "StartPos": "16",
+                                                 "Length": "13"
+                                             }],
+                                         "Status": "0",
+                                         "Negated": "1"
+                                     }]
+                             }]
+                     }]
+             }]
+     }
+ }
+]}
