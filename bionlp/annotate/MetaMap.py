@@ -10,6 +10,7 @@ class UMLSConcept:
         self.cui = concept.cui
         self.score = concept.score
         self.preferred_name = concept.preferred_name
+        self.trigger = concept.trigger
 
 
 def named_entity_recognition(text):
