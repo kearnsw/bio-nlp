@@ -4,10 +4,19 @@ import re
 from pymetamap import MetaMap
 
 
+class UMLSConcept:
+    def __init__(self, concept):
+        self.semtypes = concept.semtypes.replace("[", "").replace("]", "").split(",")
+        self.cui = concept.cui
+        self.score = concept.score
+        self.preferred_name = concept.preferred_name
+
+
 def named_entity_recognition(text):
     mm = MetaMap.get_instance('/Users/kearnsw/programs/public_mm/bin/metamap16')
     concepts, error = mm.extract_concepts([text])
-    return concepts
+
+    return [UMLSConcept(concept) for concept in concepts]
 
 
 def run_metamap(text, _format=None):
@@ -32,3 +41,15 @@ def get_lexical_form(concept):
         return matches[0].replace('"', '')
     else:
         return None
+
+
+if __name__ == "__main__":
+    white_list = ["antb", "neop", "dsyn", "vita", "virs", "phsu", "phsf", "clnd", "bpoc", "anab", "cell", "bacs"]
+    concepts = named_entity_recognition("cholesterol")
+    for concept in concepts:
+        print(type(concept.semtypes))
+        print([True if semtype in white_list else False for semtype in concept.semtypes])
+        if any([semtype in white_list for semtype in concept.semtypes]):
+            pass
+        else:
+            print(concept.semtypes)
